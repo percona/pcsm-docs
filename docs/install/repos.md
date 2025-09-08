@@ -60,7 +60,7 @@ Data migration is a resource-intensive task. Therefore, we recommend installing 
         $ sudo yum install percona-link-mongodb
         ``` 
 
-=== ":simple-amazon: On Amazon Linux 2023" 
+=== ":fontawesome-brands-amazon: On Amazon Linux 2023" 
 
     1. Install `percona-release`:
 

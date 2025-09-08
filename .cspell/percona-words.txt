@@ -6,5 +6,8 @@ PLM
 MongoDB
 mongos
 mongosh
+mongod
 MySQL 
 namespace
+sharding
+sharded

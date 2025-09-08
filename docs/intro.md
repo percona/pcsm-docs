@@ -1,23 +1,23 @@
 # How {{plm.full_name}} works
 
-{{plm.full_name}} is a binary process that replicates data between MongoDB deployments in real time until you manually finalize it. You can also make a one-time data migration from the source to the target with zero downtime. 
+{{plm.full_name}} (PLM) is a binary process that replicates data between MongoDB deployments in real time until you manually finalize it. You can also make a one-time data migration from the source to the target with zero downtime. 
 
 You operate with {{plm.full_name}} using the [set of commands](plm-commands.md) or [API calls](api.md). Depending on the request it receives, {{plm.full_name}} has several states as shown in the following diagram:
 
 ![PLM states](_images/state-transition-flow.jpg)
 
 * **Idle**: PLM is up and running but not migrating data
-* **Running** – PLM is replicating data from the source to the target. PLM enters the running state when you start and resume the replication 
-* **Paused** – PLM is not running and data is not replicated
-* **Finalizing** – PLM stops the replication and is doing final checks, creates indexes
-* **Finalized** – all checks are complete, data replication is stopped
-* **Failed** – PLM encountered an error
+* **Running**: PLM is replicating data from the source to the target. PLM enters the running state when you start and resume the replication 
+* **Paused**: PLM is not running and data is not replicated
+* **Finalizing**: PLM stops the replication and is doing final checks, creates indexes
+* **Finalized**: all checks are complete, data replication is stopped
+* **Failed**: PLM encountered an error
 
 ## Usage scenario
 
 Now, let's use the data migration from MongoDB Atlas to Percona Server for MongoDB as an example to understand how PLM works. 
 
-You run a MongoDB Atlas 8.0.8 deployed as a replica set. You need to migrate to Percona Server for MongoDB 8.0.8-3, also a replica set. You have a strict requirement to migrate with zero downtime; therefore, using PBM logical backups is a no-go. 
+You run a MongoDB Atlas 8.0.8 deployed as a replica set. You need to migrate to Percona Server for MongoDB 8.0.8-3, also a replica set. You have a strict requirement to migrate with zero downtime; therefore, using logical backups with [Percona Backup for MongoDB :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/logical.html) is a no-go. 
 
 A solution is to use Percona Link for MongoDB. MongoDB Atlas is your source. An empty Percona Server for MongoDB replica set is your target. Data migration is a resource-intensive task. Therefore, we recommend installing PLM closest to the target to reduce the network lag as much as possible. 
 
@@ -35,9 +35,12 @@ Afterwards, you will only need to switch your clients to connect to Percona Serv
 
 ## Filtered replication
 
-You can replicate the whole dataset or only specific subset of data. This is called a filtered replication. You can use it for various use cases. For example, to spin up a new development environment with a specific subset of data instead of the whole dataset. Or to optimize cloud storage costs for hybrid environments where your target MongoDB deployment runs in the cloud.
+You can replicate the whole dataset or only specific subset of data. Such replication is called a filtered replication. You can use it for various use cases, such as:
 
-Specify what namespaces - databases and collections - to include and/or exclude from the replication when you start it. Note that a filtered replication is currently available via the HTTP API.
+* Spin up a new development environment with a specific subset of data instead of the whole dataset. 
+* Optimize cloud storage costs for hybrid environments where your target MongoDB deployment runs in the cloud.
+
+Specify what namespaces - databases and collections - to include and/or exclude from the replication when you start it. 
 
 ## Next steps
 
