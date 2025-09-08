@@ -35,7 +35,7 @@ Afterwards, you will only need to switch your clients to connect to Percona Serv
 
 ## Filtered replication
 
-You can replicate the whole dataset or only specific subset of data. Such replication is called a filtered replication. You can use it for various use cases, such as:
+You can replicate the whole dataset or only a specific subset of data, which is a filtered replication. You can use filtered replication for various use cases, such as:
 
 * Spin up a new development environment with a specific subset of data instead of the whole dataset. 
 * Optimize cloud storage costs for hybrid environments where your target MongoDB deployment runs in the cloud.
