@@ -2,21 +2,13 @@
 
 To install the software from Percona repositories means to subscribe to them. Percona provides the [`percona-release` :octicons-link-external-16:](https://www.percona.com/doc/percona-repo-config/index.html) repository management tool. It automatically enables the required repository so that you can install and update both {{plm.full_name}} packages and required dependencies smoothly.
 
-## Supported operating systems
-
-{{plm.full_name}} is available on the following operating systems:
-
-* Debian 11
-* Debian 12
-* Ubuntu 20.04 (Focal Fossa)
-* Ubuntu 22.04 (Jammy Jellyfish)
-* Ubuntu 24.04 (Noble Numbat)
-* Red Hat Enterprise Linux and compatible derivatives 8 and 9
-* Amazon Linux 2023
-
 ## Before you start
 
-Check the [system requirements](../system-requirements.md) and [known limitations](../limitations.md).
+Check the following resources:
+
+* [system requirements](../system-requirements.md) 
+* [known limitations](../limitations.md)
+* [supported operating systems :octicons-link-external-16:](https://www.percona.com/services/policies/percona-software-support-lifecycle#mongodb).
 
 Data migration is a resource-intensive task. Therefore, we recommend installing PLM on the instance closest to the target to reduce the network lag as much as possible.s
 
