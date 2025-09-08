@@ -24,7 +24,7 @@ Starts the replication process.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `includeNamespaces` | string[] | No | List of namespaces to include in replication (e.g., ["db.*", "db.collection"]) |
+| `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
 
 Example:

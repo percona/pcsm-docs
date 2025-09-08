@@ -3,7 +3,7 @@
 When using the `--log-json` option, the logs will be output in JSON format with the following fields:
 
 - `time`: Unix time when the log entry was created.
-- `level`: Log level (e.g., "debug", "info", "warn", "error").
+- `level`: Log level ("debug", "info", "warn", "error").
 - `message`: Log message, if any.
 - `error`: Error message, if any.
 - `s`: Scope of the log entry.
