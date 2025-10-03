@@ -4,7 +4,7 @@ Use the following procedure to manually migrate your Persistent Query Settings t
 
 ## Steps
 
-### 1. Export Persistent Query Settings from the Source Cluster
+### 1. Export Persistent Query Settings from the source cluster
 
 Connect to your source cluster using `mongosh` and run the following command. This command uses the `$querySettings` aggregation stage to retrieve all defined query settings and outputs them as a JSON array to the console.
 
@@ -24,7 +24,7 @@ The output will look similar to this structure:
     "queryShapeHash": "8B401B2B",
     "representativeQuery": {
       "find": "users",
-      "filter": { "signup_date": { "$gte": new Date("2024-01-01T00:00:00.000Z") } },
+      "filter": { "signup_date": { "$gte": ISODate( "2023-01-20T00:00:00Z") } },
       "sort": { "last_login": -1 }
     },
     "settings": {
@@ -57,7 +57,7 @@ Based on the first object in the example array above, you would run:
 db.adminCommand({
    setQuerySettings: {
       "find": "users",
-      "filter": { "signup_date": { "$gte": new Date("2024-01-01T00:00:00.000Z") } },
+      "filter": { "signup_date": { "$gte": ISODate( "2023-01-20T00:00:00Z") } },
       "sort": { "last_login": -1 }
    },
    settings: {
