@@ -8,8 +8,10 @@ Use the following procedure to manually migrate your Persistent Query Settings t
 
 Connect to your source cluster using `mongosh` and run the following command. This command uses the `$querySettings` aggregation stage to retrieve all defined query settings and outputs them as a JSON array to the console.
 
+> **Note:** Replace `myDatabase` with the name of your source database.
+
 ```javascript
-mongosh --eval 'console.log(db.aggregate([{$querySettings:{}}]).toArray())'
+mongosh --eval 'use myDatabase; console.log(db.aggregate([{$querySettings:{}}]).toArray())'
 ```
 
 Copy the output array. You will use this data in the next step.
