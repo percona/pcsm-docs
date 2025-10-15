@@ -1,3 +1,5 @@
+!!! note "Applies only to source and target clusters in version 8.0 and above."
+
 # Migrate Persistent Query Settings
 
 Use the following procedure to manually migrate your Persistent Query Settings to the destination cluster, ensuring consistent query performance post-migration.
