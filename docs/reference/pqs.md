@@ -10,33 +10,30 @@ Use the following procedure to manually migrate your Persistent Query Settings t
 
 Connect to your source cluster using `mongosh` and run the following command. This command uses the `$querySettings` aggregation stage to retrieve all defined query settings and outputs them as a JSON array to the console.
 
-> **Note:** Replace `myDatabase` with the name of your source database.
-
 ```javascript
-mongosh --eval 'use myDatabase; console.log(db.aggregate([{$querySettings:{}}]).toArray())'
+db.aggregate([{ $querySettings: {} }])
 ```
 
-Copy the output array. You will use this data in the next step.
+Copy the output array. You will use this data in the next step. If an array is empty, it means that you have not defined any query settings.
 
 The output will look similar to this structure:
 
 ```json
 [
   {
-    "queryShapeHash": "8B401B2B",
-    "representativeQuery": {
-      "find": "users",
-      "filter": { "signup_date": { "$gte": ISODate( "2023-01-20T00:00:00Z") } },
-      "sort": { "last_login": -1 }
+    queryShapeHash: '7EF99ED4856D6DDF6224F8A728E553ECF016C9D1520BF921277A5D2B6618D125',
+    representativeQuery: {
+      find: 'products',
+      filter: { category: 'example' },
+      '$db': 'inventoryDB'
     },
-    "settings": {
-      "indexHints": { "ns": { "db": "analytics", "coll": "users" }, "hint": "signup_date_1_last_login_-1" }
-    }
-  },
-  {
-    "queryShapeHash": "A19F4D5C",
-    "settings": {
-      "comment": "Legacy reporting query, must not use a specific index."
+    settings: {
+      indexHints: [
+        {
+          ns: { db: 'inventoryDB', coll: 'products' },
+          allowedIndexes: [ 'category_index' ]
+        }
+      ]
     }
   }
 ]
@@ -57,14 +54,17 @@ Based on the first object in the example array above, you would run:
 
 ```JavaScript
 db.adminCommand({
-   setQuerySettings: {
-      "find": "users",
-      "filter": { "signup_date": { "$gte": ISODate( "2023-01-20T00:00:00Z") } },
-      "sort": { "last_login": -1 }
-   },
-   settings: {
-      "indexHints": { "ns": { "db": "analytics", "coll": "users" }, "hint": "signup_date_1_last_login_-1" }
-   }
+  setQuerySettings: {
+    find: "products",
+    filter: { category: "example" }, 
+    $db: "inventoryDB"
+  },
+  settings: {
+    indexHints: {
+      ns: { db: "inventoryDB", coll: "products" },
+      allowedIndexes: [ "category_index" ]
+    }
+  }
 })
 ```
 
@@ -80,5 +80,4 @@ db.adminCommand({
    }
 })
 ```
-
-After applying all the necessary query settings to your destination cluster, your queries will benefit from the same performance optimizations as they did on the source cluster. You can now safely complete the migration cutover process with Percona Link for MongoDB.
+The above example assumes the `queryShapeHash` contains a valid value. After applying all the necessary query settings to your destination cluster, your queries will benefit from the same performance optimizations as they did on the source cluster. You can now safely complete the migration cutover process with Percona Link for MongoDB.
