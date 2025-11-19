@@ -156,6 +156,7 @@ nav:
      - How PLM works: intro.md
      - compare.md
      - deployment.md
+     - limitations.md
   - Get started:
       - Quickstart: installation.md
       - System requirements: system-requirements.md
@@ -166,12 +167,12 @@ nav:
       - 3. Start PLM: install/start-plm.md
       - install/parameters.md
   - Use PLM: 
-    - Usage: install/usage.md   
+    - Usage: install/usage.md  
+    - pqs.md 
     - PLM commands: plm-commands.md
     - PLM HTTP API: api.md
   - Troubleshooting and debugging:
-    - Known limitations: limitations.md
-    - troubleshooting.md
+    - Troubleshooting guide: troubleshooting.md
     - oplog-sizing.md
     - logging.md
   - pmm-setup.md
@@ -183,7 +184,7 @@ nav:
   - Reference:
       - Glossary: reference/glossary.md 
       - reference/contributing.md
-      - About documentation": about-docs.md 
+      - About documentation: about-docs.md 
   - Legal:
       - Copyright and licensing: copyright.md
       - Trademark policy: trademark-policy.md 
