@@ -1,28 +1,83 @@
-# How to log JSON fields?
+# Logging in Percona Link for MongoDB
 
-When using the `--log-json` option, the logs will be output in JSON format with the following fields:
+Percona Link for MongoDB (PLM) provides a flexible logging system to help you monitor its operations, diagnose issues, and integrate with log management systems. You can control the log verbosity, format, and appearance using command-line flags.
 
-- `time`: Unix time when the log entry was created.
-- `level`: Log level ("debug", "info", "warn", "error").
-- `message`: Log message, if any.
-- `error`: Error message, if any.
-- `s`: Scope of the log entry.
-- `ns`: Namespace (database.collection format).
-- `elapsed_secs`: The duration in seconds for the specific operation to complete.
+## Configuration
 
-Example:
+You configure logging when the `plm` process starts. The following flags are available:
 
-```json
-{ "level": "info",
-  "s": "clone",
-  "ns": "db_1.coll_1",
-  "elapsed_secs": 0,
-  "time": "2025-02-23 11:26:03.758",
-  "message": "Cloned db_1.coll_1" }
+| Flag          | Description                                       | Default |
+|---------------|---------------------------------------------------|---------|
+| `--log-level` | Sets the verbosity of the logs.                   | `info`  |
+| `--log-json`  | Outputs logs in a structured JSON format.         | `false` |
+| `--no-color`  | Disables colorized output for text-based logs.    | `false` |
 
-{ "level": "info",
-  "s": "plm",
-  "elapsed_secs": 0,
-  "time": "2025-02-23 11:26:03.857",
-  "message": "Change replication stopped at 1740335163.1740335163 source cluster time" }
+### Log level
+
+The `--log-level` flag controls the minimum level of messages that will be recorded. The supported levels are, in order of severity:
+
+- `trace`: Highly detailed diagnostic information.
+- `debug`: Detailed information useful for debugging.
+- `info`: General information about the application's state and progress.
+- `warn`: Potentially harmful situations or unexpected events.
+- `error`: Errors that prevent a specific operation from completing but do not stop the application.
+- `fatal`: Severe errors that cause the application to terminate.
+
+**Example:** 
+
+To see detailed debugging messages, start `plm` with:
+
+```bash
+plm --source <source-uri> --target <target-uri> --log-level=debug
 ```
+
+### Log format
+
+PLM can output logs in two formats: human-readable text (default) and structured JSON.
+
+#### Text format (default)
+
+By default, logs are printed to the console in a color-coded, human-readable format. This is ideal for interactive use and manual inspection.
+
+??? example "Sample output"
+
+    ```text
+    2024-10-26 14:30:01.000 INF s=http Starting HTTP server at http://localhost:2242
+    2024-10-26 14:30:05.123 DBG s=repl:watch op=insert ns=test.coll1 op_ts=1729953005,1
+    ```
+
+You can disable the colorization with the `--no-color` flag. This is useful when redirecting log output to a file.
+
+```sh
+plm --source <source-uri> --target <target-uri> --no-color > plm.log
+```
+
+#### JSON format
+
+For automated processing and integration with log aggregation tools (like the ELK stack or Splunk), you can use the `--log-json` flag. This will output each log entry as a single line of JSON.
+
+??? example "Sample output"
+
+    ```json
+    {"level":"info","s":"http","time":"2024-10-01 14:30:01.000","message":"Starting HTTP server at http://localhost:2242"}
+    {"level":"debug","s":"repl:watch","op":"insert","ns":"test.coll1","op_ts":[1729953005,1],"time":"2024-10-26 14:30:05.123"}
+    ```
+
+### JSON field reference
+
+When `--log-json` is enabled, the following fields may appear in the log entries:
+
+| Field          | Type    | Description                                                                |
+|----------------|---------|----------------------------------------------------------------------------|
+| `level`        | string  | The severity of the log entry (e.g., info, debug).                         |
+| `s`	           | string	 | The scope or component where the log originated (e.g., http, clone, repl). |
+| `ns`	         | string	 | The MongoDB namespace (database.collection) related to the event.          |
+| `elapsed_secs` | float	 | The time taken for an operation to complete, in seconds.                   |
+| `time`	       | string  | The timestamp of the log event in YYYY-MM-DD HH:MM:SS.ms format.           |
+| `message`	     | string	 | The main log message.                                                      |
+| `error`	       | string	 | The error message, if an error occurred.                                   |
+| `op`	         | string	 | The type of operation (e.g., insert, createIndexes).                       |
+| `op_ts`	       | array	 | The MongoDB operation timestamp as [timestamp, increment].                 |
+| `count`	       | integer | A count of items, such as documents in a batch.                            |
+| `size_bytes`	 | integer | The size of data in bytes.                                                 |
+
