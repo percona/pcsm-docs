@@ -127,7 +127,7 @@ plugins:
     enabled: !ENV [ENABLED_GIT_REVISION_DATE, True]
   git-committers:
     enabled: !ENV [CI, false]
-    repository: percona-lab/plm-docs
+    repository: percona/plm-docs
     branch: "main"
   tags: {}
   glightbox: {}
