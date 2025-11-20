@@ -1,8 +1,14 @@
 # Migrate Persistent Query Settings
 
-Use the following procedure to manually migrate your [Persistent Query Settings](reference/glossary.md#persistent-query-settings) to the destination cluster, ensuring consistent query performance post-migration.
+Percona ClusterSync for MongoDB doesn't automatically migrate [Persistent Query 
+Settings (PQS)](reference/glossary.md#persistent-query-settings). If you have Persistent Query 
+Settings defined on your source cluster, you must manually migrate them from the source to the target cluster after the replication is complete and you have [finalized](install/usage.md#finalize-the-replication) it. With this post-migration step you ensure consistent query performance.
 
-!!! note "The procedure applies only to source and target clusters in version 8.0 and above."
+!!! note "For source and target clusters of version 8.0 and above"
+
+    The procedure in this document applies only to source and target clusters running MongoDB version 8.0 and above, as persistent query settings were introduced starting with MongoDB 8.0.
+
+Use the following procedure to manually migrate your [Persistent Query Settings](reference/glossary.md#persistent-query-settings) to the destination cluster:
 
 You'll need to:
 
@@ -86,4 +92,4 @@ db.adminCommand({
 })
 ```
 
-The above example assumes the `queryShapeHash` contains a valid value. After applying all the necessary query settings to your destination cluster, your queries will benefit from the same performance optimizations as they did on the source cluster. You can now safely complete the migration cutover process with Percona Link for MongoDB.
+The above example assumes the `queryShapeHash` contains a valid value. After applying all the necessary query settings to your destination cluster, your queries will benefit from the same performance optimizations as they did on the source cluster. You can now safely complete the migration cutover process with Percona ClusterSync for MongoDB.
