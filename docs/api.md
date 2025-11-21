@@ -149,7 +149,8 @@ The following are response fields:
 | `lagTimeSeconds` | number | Current lag time in logical seconds between source and target clusters. |
 | `eventsRead` | number | Total number of events read from the source |
 | `eventsApplied` | number | Total number of events applied to the target |
-| `lastReplicatedOpTime` | string | The last replicated operation time. It includes both the time stamp and its human-readable representation |
+| `lastReplicatedOpTime.ts` | string | The timestamp of the last replicated operation time.  |
+| `lastReplicatedOpTime.isoDate` | date.Time | The human-readable representation of the last replicated operation time.  |
 | `initialSync.completed` | boolean | Initial sync completion status |
 | `initialSync.lagTime` | number | The lag time in logical seconds until the initial sync completed|
 | `initialSync.cloneCompleted` | boolean | Clone process completion status |
