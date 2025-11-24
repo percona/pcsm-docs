@@ -66,6 +66,10 @@ The Isolation requirement means that no transaction can interfere with another.
 
 Percona Server for MongoDB is a drop-in replacement for MongoDB Community Edition with enterprise-grade features.
 
+## Persistent Query Settings
+
+Persistent Query Settings (PQS) in MongoDB are a way to define and retain query behavior (like index hints, rejection filters, or other optimizer inputs) for a given query shape across the entire cluster. Unlike temporary index filters, PQS are cluster-wide and survive restarts.
+
 ## Replica set
    
 A replica set is a group of `mongod` nodes that host the same data set.
