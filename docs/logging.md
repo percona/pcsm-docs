@@ -42,8 +42,8 @@ By default, logs are printed to the console in a color-coded, human-readable for
 ??? example "Sample output"
 
     ```text
-    2024-10-26 14:30:01.000 INF s=http Starting HTTP server at http://localhost:2242
-    2024-10-26 14:30:05.123 DBG s=repl:watch op=insert ns=test.coll1 op_ts=1729953005,1
+    2025-10-26 14:30:01.000 INF s=http Starting HTTP server at http://localhost:2242
+    2025-10-26 14:30:05.123 DBG s=repl:watch op=insert ns=test.coll1 op_ts=1729953005,1
     ```
 
 You can disable the colorization with the `--no-color` flag. This is useful when redirecting log output to a file.
@@ -59,8 +59,8 @@ For automated processing and integration with log aggregation tools (like the EL
 ??? example "Sample output"
 
     ```json
-    {"level":"info","s":"http","time":"2024-10-01 14:30:01.000","message":"Starting HTTP server at http://localhost:2242"}
-    {"level":"debug","s":"repl:watch","op":"insert","ns":"test.coll1","op_ts":[1729953005,1],"time":"2024-10-26 14:30:05.123"}
+    {"level":"info","s":"http","time":"2025-10-01 14:30:01.000","message":"Starting HTTP server at http://localhost:2242"}
+    {"level":"debug","s":"repl:watch","op":"insert","ns":"test.coll1","op_ts":[1729953005,1],"time":"2025-10-26 14:30:05.123"}
     ```
 
 ### JSON field reference
