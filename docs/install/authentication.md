@@ -1,6 +1,6 @@
 # Configure authentication in MongoDB
 
-{{plm.full_name}} uses the authentication and authorization subsystem of MongoDB. This means that to authenticate {{plm.full_name}}, you need to:
+{{pcsm.full_name}} uses the authentication and authorization subsystem of MongoDB. This means that to authenticate {{pcsm.full_name}}, you need to:
 
 * [Create users in source and target cluster](#create-users)
 * [Set a valid MongoDB connection string URI for source and target cluster](#set-mongodb-connection-string-uri)
@@ -32,35 +32,35 @@ You need to create users in both source and target clusters. You will use these 
 
 ## Set MongoDB connection string URI
 
-{{plm.full_name}} authenticates in source and target clusters using the MongoDB Connection string URI. It has the following format:
+{{pcsm.full_name}} authenticates in source and target clusters using the MongoDB Connection string URI. It has the following format:
 
 ```
 mongodb://user:pwd@host1:port1,host2:port2,host3:port3/[authdb]?[options]
 ```
 
-To connect PLM to source and target MongoDB clusters, specify the MongoDB Connection string URI for the `PLM_SOURCE_URI` and `PLM_TARGET_URI` environment variables in its environment file. 
+To connect PCSM to source and target MongoDB clusters, specify the MongoDB Connection string URI for the `PCSM_SOURCE_URI` and `PCSM_TARGET_URI` environment variables in its environment file. 
 
-When you [install PLM from repositories](repos.md), the environment file is created for you. You can find it at the following path:
+When you [install PCSM from repositories](repos.md), the environment file is created for you. You can find it at the following path:
 
-* for Debian and Ubuntu: `/etc/default/plm`
-* for RHEL and derivatives: `/etc/sysconfig/plm`
+* for Debian and Ubuntu: `/etc/default/pcsm`
+* for RHEL and derivatives: `/etc/sysconfig/pcsm`
 
 ### Example environment file 
 
 ```{.text .no-copy}
-PLM_SOURCE_URI="mongodb://source:mys3cretpAssword@mysource1:27017,mysource2:27017,mysource3:27017/"
-PLM_TARGET_URI="mongodb://target:tops3cr3t@mytarget1:27017,mytarget2:27017,mytarget3:27017/"
+PCSM_SOURCE_URI="mongodb://source:mys3cretpAssword@mysource1:27017,mysource2:27017,mysource3:27017/"
+PCSM_TARGET_URI="mongodb://target:tops3cr3t@mytarget1:27017,mytarget2:27017,mytarget3:27017/"
 ```
 
 ### Passwords with special characters
 
-If the password includes special characters like `#`, `@`, `/` and so on, you must convert these characters using the [percent-encoding mechanism](https://datatracker.ietf.org/doc/html/rfc3986#section-2.1) when passing them to Percona Link for MongoDB. For example, the password `secret#pwd` should be passed as `secret%23pwd`.
+If the password includes special characters like `#`, `@`, `/` and so on, you must convert these characters using the [percent-encoding mechanism](https://datatracker.ietf.org/doc/html/rfc3986#section-2.1) when passing them to Percona ClusterSync for MongoDB. For example, the password `secret#pwd` should be passed as `secret%23pwd`.
 
 ### MongoDB connection string options
 
 You can pass additional connection options to the MongoDB connection string. The string of options begins with the question mark (`?`).
 
-{{plm.full_name}} accepts the following authentication and TLS-related options:
+{{pcsm.full_name}} accepts the following authentication and TLS-related options:
 
 | Option | Description |
 |--------|-------------|
@@ -81,4 +81,4 @@ You can pass additional connection options to the MongoDB connection string. The
 
 ## Next steps 
 
-[Start PLM :material-arrow-right: ](start-plm.md){.md-button}
+[Start PCSM :material-arrow-right: ](start-pcsm.md){.md-button}

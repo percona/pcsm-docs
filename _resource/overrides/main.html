@@ -7,7 +7,7 @@ by adding marketing-requested elements
 {% extends "base.html" %}
 
 {% block announce %}
-<p> The version 0.6.0 of Percona Link for MongoDB is the technical preview. We encourage you to test Percona Link for MongoDB and <a href= "https://forums.percona.com/c/mongodb/mongodb-general-discussion/33">give your feedback</a>.
+<p> The version 0.6.0 of Percona ClusterSync for MongoDB is the technical preview. We encourage you to test Percona ClusterSync for MongoDB and <a href= "https://forums.percona.com/c/mongodb/mongodb-general-discussion/33">give your feedback</a>.
   This will help us improve the product in the future.
 
 {% endblock %}
@@ -63,6 +63,9 @@ by adding marketing-requested elements
               {% endif %}
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" {{ hidden }}>
                 <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    {% include "partials/rating.html" %}
+                  </div>
                   <div class="md-sidebar__inner">
                     {% include "partials/edit.html" %}
                   </div>
