@@ -73,10 +73,12 @@ extra_css:
   - css/mongodb.css
   - css/landing.css
   - css/nocopy.css
+  - css/rating.css
 
 extra_javascript:
   - js/promptremover.js
   - js/consent.js
+  - js/rating.js
 
 markdown_extensions:
   abbr: {}
@@ -123,6 +125,10 @@ plugins:
   git-revision-date-localized: 
     enable_creation_date: true
     enabled: !ENV [ENABLED_GIT_REVISION_DATE, True]
+  git-committers:
+    enabled: !ENV [CI, false]
+    repository: percona/plm-docs
+    branch: "main"
   tags: {}
   glightbox: {}
   open-in-new-tab: {}
