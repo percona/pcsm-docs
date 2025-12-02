@@ -8,6 +8,6 @@ date:
    v0_6_0: '2025-09-04'
    v0_5_0: '2025-06-04'
 
-pcsm:
-  full_name: 'Percona ClusterSync for MongoDB'
-  short: 'PCSM'
+plm:
+  full_name: 'Percona Link for MongoDB'
+  short: 'PLM'

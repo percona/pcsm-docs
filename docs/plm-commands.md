@@ -1,39 +1,39 @@
-# {{pcsm.full_name}} commands
+# {{plm.full_name}} commands
 
 ## Overview
 
-Percona ClusterSync for MongoDB is a replication tool for MongoDB clusters. It provides commands to manage and monitor the replication process between source and target MongoDB clusters.
+Percona Link for MongoDB is a replication tool for MongoDB clusters. It provides commands to manage and monitor the replication process between source and target MongoDB clusters.
 
 ## Commands
 
 ### version
 
-Display the current version of Percona ClusterSync for MongoDB.
+Display the current version of Percona Link for MongoDB.
 
-```bash
-pcsm version
+```{.bash data-prompt="$"$}
+$ plm version
 ```
 
 ### status
 
 Get the status of the replication process.
 
-```bash
-pcsm status
+```{.bash data-prompt="$"$}
+$ plm status
 ```
 
 ### start
 
 Starts cluster replication.
 
-```bash
-pcsm start
+```{.bash data-prompt="$"$}
+$ plm start
 ```
 
 To start a filtered replication, pass the namespaces (databases and collections) that you want to include/exclude from replication. 
 
-```bash
-pcsm start \
+```{.bash data-prompt="$"}
+$ plm start \
 --include-namespaces="db1.collection1,db2.collection2" \
 --exclude-namespaces="db3.collection3"
 ```
@@ -51,34 +51,34 @@ Available flags:
 
 ### reset
 
-Resets the `PCSM` state and deletes the metadata collections from target deployment. After the command execution, you must restart the `PCSM` service and start the data replication from scratch. Read more about the flow in [Troubleshooting guide](troubleshooting.md) 
+Resets the `PLM` state and deletes the metadata collections from target deployment. After the command execution, you must restart the `PLM` service and start the data replication from scratch. Read more about the flow in [Troubleshooting guide](troubleshooting.md) 
 
-```bash
-pcsm reset --target
+```{.bash data-prompt="$"$}
+$ plm reset --target
 ```
 
 ### finalize
 
 Finalize cluster replication.
 
-```bash
-pcsm finalize
+```{.bash data-prompt="$"$}
+$ plm finalize
 ```
 
 ### pause
 
 Pause cluster replication.
 
-```bash
-pcsm pause
+```{.bash data-prompt="$"$}
+$ plm pause
 ```
 
 ### resume
 
 Resume cluster replication.
 
-```bash
-pcsm resume
+```{.bash data-prompt="$"$}
+$ plm resume
 ```
 
 Available flags:

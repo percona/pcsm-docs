@@ -1,6 +1,6 @@
-# Install {{pcsm.full_name}} from Percona repositories
+# Install {{plm.full_name}} from Percona repositories
 
-To install the software from Percona repositories means to subscribe to them. Percona provides the [`percona-release` :octicons-link-external-16:](https://www.percona.com/doc/percona-repo-config/index.html) repository management tool. It automatically enables the required repository so that you can install and update both {{pcsm.full_name}} packages and required dependencies smoothly.
+To install the software from Percona repositories means to subscribe to them. Percona provides the [`percona-release` :octicons-link-external-16:](https://www.percona.com/doc/percona-repo-config/index.html) repository management tool. It automatically enables the required repository so that you can install and update both {{plm.full_name}} packages and required dependencies smoothly.
 
 ## Before you start
 
@@ -10,7 +10,7 @@ Check the following resources:
 * [known limitations](../limitations.md)
 * [supported operating systems :octicons-link-external-16:](https://www.percona.com/services/policies/percona-software-support-lifecycle#mongodb).
 
-Data migration is a resource-intensive task. Therefore, we recommend installing PCSM on the instance closest to the target to reduce the network lag as much as possible.s
+Data migration is a resource-intensive task. Therefore, we recommend installing PLM on the instance closest to the target to reduce the network lag as much as possible.s
 
 ## Procedure
 
@@ -24,14 +24,14 @@ Data migration is a resource-intensive task. Therefore, we recommend installing 
 
     2. Enable the repository    
 
-        ```bash
-        sudo percona-release enable pcsm release
+        ```{.bash data-prompt="$"}
+        $ sudo percona-release enable plm release
         ```
 
     3. Install the package:
 
-        ```bash
-        sudo apt install percona-clustersync-mongodb
+        ```{.bash data-prompt="$"}
+        $ sudo apt install percona-link-mongodb
         ```
 
 === ":material-redhat: On RHEL and derivatives" 
@@ -42,14 +42,14 @@ Data migration is a resource-intensive task. Therefore, we recommend installing 
 
     2. Enable the repository    
 
-        ```bash
-        sudo percona-release enable pcsm release
+        ```{.bash data-prompt="$"}
+        $ sudo percona-release enable plm release
         ```  
 
     3. Install the package:
 
-        ```bash
-        sudo yum install percona-clustersync-mongodb
+        ```{.bash data-prompt="$"}
+        $ sudo yum install percona-link-mongodb
         ``` 
 
 === ":fontawesome-brands-amazon: On Amazon Linux 2023" 
@@ -60,17 +60,17 @@ Data migration is a resource-intensive task. Therefore, we recommend installing 
 
     2. Enable the repository    
 
-        ```bash
-        sudo percona-release enable pcsm release
+        ```{.bash data-prompt="$"}
+        $ sudo percona-release enable plm release
         ```  
 
     3. Install the package:
 
-        ```bash
-        sudo yum install percona-clustersync-mongodb
+        ```{.bash data-prompt="$"}
+        $ sudo yum install percona-link-mongodb
         ``` 
     
-Congratulations! You have successfully installed {{pcsm.full_name}}. Now you must connect it to source and target MongoDB deployments.
+Congratulations! You have successfully installed {{plm.full_name}}. Now you must connect it to source and target MongoDB deployments.
 
 ## Next steps
 

@@ -1,10 +1,10 @@
 # Troubleshooting guide
 
-This guide helps you recover {{pcsm.full_name}} after an unexpected interruption, whether it occurs during initial data clone or real-time replication.
+This guide helps you recover {{plm.full_name}} after an unexpected interruption, whether it occurs during initial data clone or real-time replication.
 
-## Recover PCSM during initial data clone
+## Recover PLM during initial data clone
 
-{{pcsm.full_name}} can interrupt because of various reasons. For example, it is restarted, abnormally exits or loses connection to the source or destination cluster for an extended time. In any of these cases you must restart the initial data clone.
+{{plm.full_name}} can interrupt because of various reasons. For example, it is restarted, abnormally exits or loses connection to the source or destination cluster for an extended time. In any of these cases you must restart the initial data clone.
 
 ### Symptoms
 
@@ -14,70 +14,70 @@ After subsequently starting the service, you may see such messages:
 
     ```{.text .no-copy}
     2025-06-02 21:25:38.927 INF Found Recovery Data. Recovering... s=recovery
-    Error: new server: recover Percona ClusterSync for MongoDB: recover: cannot resume: replication is not started or not resuming from failure
-    2025-06-02 21:25:38.929 FTL error="new server: recover Percona ClusterSync for MongoDB: recover: cannot resume: replication is not started or not resuming from failure"
+    Error: new server: recover Percona Link for MongoDB: recover: cannot resume: replication is not started or not resuming from failure
+    2025-06-02 21:25:38.929 FTL error="new server: recover Percona Link for MongoDB: recover: cannot resume: replication is not started or not resuming from failure"
     ```
 
 ### Recovery steps 
 
-To recover PCSM, do the following:
+To recover PLM, do the following:
 {.power-number}
 
-1. Stop the `pcsm` service:
+1. Stop the `plm` service:
 
-    ```bash
-    sudo systemctl stop pcsm
+    ```{.bash data-prompt="$"}
+    $ sudo systemctl stop plm
     ```
 
-2. Reset the PCSM state with the following command and pass the connection string URL to the target deployment:
+2. Reset the PLM state with the following command and pass the connection string URL to the target deployment:
  
-    ```bash
-    pcsm reset --target <target-mongodb-uri>
+    ```{.bash data-prompt="$"}
+    $ plm reset --target <target-mongodb-uri>
     ```
 
     The command does the following:
 
     * Connects to the target MongoDB deployment
     * Deletes the metadata collections 
-    * Restores the `pcsm` service from the `failed` state
+    * Restores the `plm` service from the `failed` state
 
-3. Restart `pcsm`
+3. Restart `plm`
 
-    ```bash
-    sudo systemctl start pcsm
+    ```{.bash data-prompt="$"}
+    $ sudo systemctl start plm
     ```
 
 4. Start data replication from scratch:
 
-    ```bash
-    pcsm start
+    ```{.bash data-prompt="$"}
+    $ plm start
     ```
 
-## Recover PCSM during real-time replication
+## Recover PLM during real-time replication
 
-PCSM can successfully complete the initial data clone and then interrupt unexpectedly, during the real-time replication. The recovery steps differ depending on how PCSM stopped.
+PLM can successfully complete the initial data clone and then interrupt unexpectedly, during the real-time replication. The recovery steps differ depending on how PLM stopped.
 
 ### Unexpected shutdown
 
-If PCSM exits abnormally or is stopped unexpectedly, restart the `pcsm` service. This is typically sufficient as PCSM resumes replication automatically from the last saved checkpoint.
+If PLM exits abnormally or is stopped unexpectedly, restart the `plm` service. This is typically sufficient as PLM resumes replication automatically from the last saved checkpoint.
 
 ??? example "Example logs"
 
     ```{.text .no-copy}
-    2025-06-02 21:32:04.592 INF Starting Cluster Replication s=pcsm
+    2025-06-02 21:32:04.592 INF Starting Cluster Replication s=plm
     2025-06-02 21:32:04.592 DBG Change Replication is resuming s=repl
     2025-06-02 21:32:04.592 INF Change Replication resumed op_ts=[1748887947,1] s=repl
     2025-06-02 21:32:04.594 DBG Checkpoint saved s=checkpointing
     ```
 
-### Replication fails while PCSM is running
+### Replication fails while PLM is running
 
-The `pcsm` process is active but the replication may fail due to a temporary connection issue or other reasons. After you resolve the reason of failure (restore the connection), follow these steps to recover PCSM:
+The `plm` process is active but the replication may fail due to a temporary connection issue or other reasons. After you resolve the reason of failure (restore the connection), follow these steps to recover PLM:
 
 1. Check current replication status:
 
-    ```bash
-    pcsm status
+    ```{.bash data-prompt="$"}
+    $ plm status
     ```
 
     ??? example "Sample output"
@@ -102,14 +102,14 @@ The `pcsm` process is active but the replication may fail due to a temporary con
 
 2. Resume the replication from the last successful checkpoint:
     
-    ```bash
-    pcsm resume --from-failure
+    ```{.bash data-prompt="$"}
+    $ plm resume --from-failure
     ```
 
 3. Confirm that the replication has resumed:
    
-    ```bash
-    pcsm status
+    ```{.bash data-prompt="$"}
+    plm status
     ```
 
     ??? example "Sample output after successful resume"
@@ -134,4 +134,4 @@ The `pcsm` process is active but the replication may fail due to a temporary con
 
 !!! note
 
-    If replication still fails after using the `pcsm resume --from-failure`, even after you restored the connectivity, the target cluster availability or any other underlying issue, you'll need to start over. Refer to the [Recover PCSM during initial data clone](#recover-pcsm-during-initial-data-clone) section and reset the PCSM state to begin replication from scratch.
+    If replication still fails after using the `plm resume --from-failure`, even after you restored the connectivity, the target cluster availability or any other underlying issue, you'll need to start over. Refer to the [Recover PLM during initial data clone](#recover-plm-during-initial-data-clone) section and reset the PLM state to begin replication from scratch.

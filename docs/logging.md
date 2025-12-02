@@ -1,10 +1,10 @@
-# Logging in Percona ClusterSync for MongoDB
+# Logging in Percona Link for MongoDB
 
-Percona ClusterSync for MongoDB (PCSM) provides a flexible logging system to help you monitor its operations, diagnose issues, and integrate with log management systems. You can control the log verbosity, format, and appearance using command-line flags.
+Percona Link for MongoDB (PLM) provides a flexible logging system to help you monitor its operations, diagnose issues, and integrate with log management systems. You can control the log verbosity, format, and appearance using command-line flags.
 
 ## Configuration
 
-You configure logging when the `pcsm` process starts. The following flags are available:
+You configure logging when the `plm` process starts. The following flags are available:
 
 | Flag          | Description                                       | Default |
 |---------------|---------------------------------------------------|---------|
@@ -25,15 +25,15 @@ The `--log-level` flag controls the minimum level of messages that will be recor
 
 **Example:** 
 
-To see detailed debugging messages, start `pcsm` with:
+To see detailed debugging messages, start `plm` with:
 
 ```bash
-pcsm --source <source-uri> --target <target-uri> --log-level=debug
+plm --source <source-uri> --target <target-uri> --log-level=debug
 ```
 
 ### Log format
 
-PCSM can output logs in two formats: human-readable text (default) and structured JSON.
+PLM can output logs in two formats: human-readable text (default) and structured JSON.
 
 #### Text format (default)
 
@@ -42,14 +42,14 @@ By default, logs are printed to the console in a color-coded, human-readable for
 ??? example "Sample output"
 
     ```text
-    2025-10-26 14:30:01.000 INF s=http Starting HTTP server at http://localhost:2242
-    2025-10-26 14:30:05.123 DBG s=repl:watch op=insert ns=test.coll1 op_ts=1729953005,1
+    2024-10-26 14:30:01.000 INF s=http Starting HTTP server at http://localhost:2242
+    2024-10-26 14:30:05.123 DBG s=repl:watch op=insert ns=test.coll1 op_ts=1729953005,1
     ```
 
 You can disable the colorization with the `--no-color` flag. This is useful when redirecting log output to a file.
 
 ```sh
-pcsm --source <source-uri> --target <target-uri> --no-color > pcsm.log
+plm --source <source-uri> --target <target-uri> --no-color > plm.log
 ```
 
 #### JSON format
@@ -59,8 +59,8 @@ For automated processing and integration with log aggregation tools (like the EL
 ??? example "Sample output"
 
     ```json
-    {"level":"info","s":"http","time":"2025-10-01 14:30:01.000","message":"Starting HTTP server at http://localhost:2242"}
-    {"level":"debug","s":"repl:watch","op":"insert","ns":"test.coll1","op_ts":[1729953005,1],"time":"2025-10-26 14:30:05.123"}
+    {"level":"info","s":"http","time":"2024-10-01 14:30:01.000","message":"Starting HTTP server at http://localhost:2242"}
+    {"level":"debug","s":"repl:watch","op":"insert","ns":"test.coll1","op_ts":[1729953005,1],"time":"2024-10-26 14:30:05.123"}
     ```
 
 ### JSON field reference
@@ -80,3 +80,4 @@ When `--log-json` is enabled, the following fields may appear in the log entries
 | `op_ts`	       | array	 | The MongoDB operation timestamp as [timestamp, increment].                 |
 | `count`	       | integer | A count of items, such as documents in a batch.                            |
 | `size_bytes`	 | integer | The size of data in bytes.                                                 |
+
