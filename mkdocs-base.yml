@@ -4,10 +4,10 @@ site_name: Percona Link for MongoDB
 site_description: documentation
 site_author: Percona LLC
 copyright: >
-  <a href="https://www.percona.com/about">Percona LLC</a> and/or its affiliates © 2024 
+  <a href="https://www.percona.com/about">Percona LLC</a> and/or its affiliates © 2025 
   — <a href="#" onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')">Cookie Preferences</a>
-repo_name: percona-lab/plm-docs
-repo_url: https://github.com/percona-lab/plm-docs
+repo_name: percona/pcsm-docs
+repo_url: https://github.com/percona/pcsm-docs
 edit_uri: edit/main/docs/
 
 use_directory_urls: false
