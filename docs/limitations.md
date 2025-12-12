@@ -4,13 +4,18 @@ author: Radoslaw Szulgo
 ---
 # Known issues and limitations
 
-This page lists known limitations for using Percona Link for MongoDB
+This page lists known limitations for using {{pcsm.full_name}}.
 
 ## Versions and topology
 
-* Sharded clusters are not supported
 * MongoDB versions that reached End-of-Life are not supported
-* PLM connects only to the primary node in the replica set. You cannot force connection to secondary members using the [directConnection :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/connection-string/#connection-string-formats) option. This option is ignored.
+* {{pcsm.short}} connects only to the primary node in the replica set. You cannot force connection to secondary members using the [directConnection :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/connection-string/#connection-string-formats) option. This option is ignored.
+
+## Sharded clusters
+
+The following limitations apply specifically to sharded cluster replication:
+
+* **Chunk distribution**: {{pcsm.short}} does not preserve chunk distribution information from the source cluster. The target cluster manages chunk distribution according to its own sharding configuration. See [Sharding support](sharding.md#limitations) for more information.
 
 ## Data types
 
