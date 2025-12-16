@@ -29,9 +29,9 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     ### Workflow steps
 
-    1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Start and connect {{pcsm.short}} to your source and target using these user credentials. See [Configure authentication in MongoDB](install/authentication.md) for details.
+    1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Start and connect {{pcsm.short}} to your source and target using these user credentials and the `mongos` hostname and port. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
-    2. **Start the migration**: Call the `start` command. {{pcsm.short}} starts copying the data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
+    2. **Start the replication**: Call the `start` command. {{pcsm.short}} starts copying the data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
 
     3. **Real-time replication**: After the initial data sync, {{pcsm.short}} monitors changes in the source and replicates them to the target at runtime. You don't have to stop your source deployment—it operates as usual, accepting client requests. {{pcsm.short}} uses [change streams :octicons-link-external-16:](https://www.mongodb.com/docs/manual/changeStreams/) to track the changes to your data and replicate them to the target.
 
@@ -59,7 +59,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Configure connection strings using `mongos` hostname and port for both source and target clusters. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
-    2. **Start the migration**: Call the `start` command. You don't have to disable the balancer on the target. Before starting the initial sync, {{pcsm.short}} checks data on the source cluster and reports it on the destination cluster. This way the target cluster knows what collections are sharded. Then {{pcsm.short}} starts copying all data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
+    2. **Start the replication**: Call the `start` command. You don't have to disable the balancer on the target. Before starting the data copying, {{pcsm.short}} retrieves the information about the shard keys for collections on the source cluster and creates these collections on the target. Then {{pcsm.short}} starts copying all data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
 
     3. **Real-time replication**: During the replication stage, {{pcsm.short}} captures change stream events from the source cluster through `mongos` and applies them to the target cluster, ensuring real-time synchronization of data changes. The target cluster's balancer handles chunk distribution. For details about sharding-specific behavior, see [Sharding behavior](sharding.md#sharding-specific-behavior).
 
@@ -86,17 +86,17 @@ Specify what namespaces—databases and collections—to include and/or exclude 
 
 {{pcsm.short}} manages indexes throughout the replication process to ensure data consistency and query performance on the target cluster.
 
-### During replication
+### Replication stage 
 
-During the replication stage, {{pcsm.short}} copies indexes from the source to the target cluster:
+During the replication stage, {{pcsm.short}} copies indexes from the source to the target cluster as follows:
 
-* **Unique indexes**: Unique indexes are copied as non-unique indexes during replication. This allows {{pcsm.short}} to handle potential duplicate data that may exist during the migration process.
+* **Unique indexes handling**: Unique indexes are copied as non-unique indexes during replication. This allows {{pcsm.short}} to handle potential duplicate data that may exist during the migration process.
 
 * **Index creation during sync**: If an index is created on the source cluster while the clusters are in sync, {{pcsm.short}} automatically creates the same index on the target cluster.
 
-* **Failed index creation**: If an index cannot be copied during replication, {{pcsm.short}} proceeds with replication and records the failure. The index creation will be retried during the finalization stage.
+* **Failed index creation**: If {{pcsm.short}}  cannot create an index during replication, it proceeds with replication and records the failure. The index creation will be retried during the finalization stage.
 
-### During finalization
+### Finalization stage
 
 On the finalization stage, {{pcsm.short}} completes index management:
 

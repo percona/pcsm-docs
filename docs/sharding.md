@@ -12,6 +12,8 @@ The workflow for sharded clusters is similar to replica sets. See [How {{pcsm.fu
 
 Since {{pcsm.short}} connects through `mongos`, the cluster topology doesn't matter. This means the source and target clusters can have different numbers of shards.
 
+Also, {{pcsm.short}} replicates data and not metadata. This means chunk distribution as well as the primary shard name for a collection may differ on source and target clusters.
+
 ## Prerequisites
 
 * {{pcsm.full_name}} version 0.7.0 or later
