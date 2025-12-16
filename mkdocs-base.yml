@@ -156,6 +156,7 @@ nav:
      - How PLM works: intro.md
      - compare.md
      - deployment.md
+     - sharding.md
   - Get started:
       - Quickstart: installation.md
       - System requirements: system-requirements.md
