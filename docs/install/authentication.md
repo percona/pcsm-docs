@@ -34,7 +34,7 @@ You need to create users in both source and target clusters. You will use these 
 
 {{pcsm.full_name}} authenticates in source and target clusters using the MongoDB Connection string URI. It has the following format:
 
-```
+```text
 mongodb://user:pwd@host1:port1,host2:port2,host3:port3/[authdb]?[options]
 ```
 
