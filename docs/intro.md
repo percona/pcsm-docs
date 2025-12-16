@@ -82,6 +82,34 @@ You can replicate the whole dataset or only a specific subset of data, which is 
 
 Specify what namespaces—databases and collections—to include and/or exclude from the replication when you start it. See [Start the filtered replication](install/usage.md#start-the-filtered-replication) for details.
 
+## Index handling
+
+{{pcsm.short}} manages indexes throughout the replication process to ensure data consistency and query performance on the target cluster.
+
+### During replication
+
+During the replication stage, {{pcsm.short}} copies indexes from the source to the target cluster:
+
+* **Unique indexes**: Unique indexes are copied as non-unique indexes during replication. This allows {{pcsm.short}} to handle potential duplicate data that may exist during the migration process.
+
+* **Index creation during sync**: If an index is created on the source cluster while the clusters are in sync, {{pcsm.short}} automatically creates the same index on the target cluster.
+
+* **Failed index creation**: If an index cannot be copied during replication, {{pcsm.short}} proceeds with replication and records the failure. The index creation will be retried during the finalization stage.
+
+### During finalization
+
+On the finalization stage, {{pcsm.short}} completes index management:
+
+* **Index finalization**: {{pcsm.short}} finalizes index creation on the target cluster.
+
+* **Unique index conversion**: Non-unique indexes that were originally unique on the source are converted back to unique indexes on the target.
+
+* **Retry failed indexes**: {{pcsm.short}} attempts to create indexes that failed to be created during replication.
+
+* **Warning logs**: If {{pcsm.short}} cannot create an index even during finalization, it records a warning in the logs. Check the logs after finalization to identify any indexes that could not be created.
+
+This approach ensures that replication continues even if some indexes cannot be created immediately, while still attempting to create all indexes during finalization to match the source cluster's index configuration.
+
 ## Next steps
 
 Ready to try out {{pcsm.short}}?

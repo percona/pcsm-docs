@@ -16,6 +16,7 @@ This page lists known limitations for using {{pcsm.full_name}}.
 The following limitations apply specifically to sharded cluster replication:
 
 * **Chunk distribution**: {{pcsm.short}} does not preserve chunk distribution information from the source cluster. The target cluster manages chunk distribution according to its own sharding configuration. See [Sharding support](sharding.md#limitations) for more information.
+* During data replication, the following commands are not supported: `movePrimary`, `reshardCollecton`, `unshardCollection`, `refineCollectionShardKey`. Running them results in failed replication and you must start it anew, from the initial data sync stage.
 
 ## Data types
 
@@ -27,7 +28,7 @@ The following limitations apply specifically to sharded cluster replication:
 * Capped collections created or converted as the result of `cloneCollectionAsCapped` and `convertToCapped` commands are not supported. These operations don't change the event and are not captured by the change streams.
 * [Percona Memory Engine :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/inmemory.html) is not supported
 * Persistent Query Settings (added in MongoDB 8) are not supported 
-* documents that have [field names with periods and dollar signs :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/dot-dollar-considerations/) are not supported
+* Documents that have [field names with periods and dollar signs :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/dot-dollar-considerations/) are not supported
 
 ## Other
 
