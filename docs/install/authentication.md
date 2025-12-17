@@ -49,12 +49,16 @@ When you [install PLM from repositories](repos.md), the environment file is crea
 
 === "Replica sets"
 
+    List all replica set members of the source and target clusters in the respective MongoDB connection string URIs to ensure {{pcsm.short}} can reach each of them:
+
     ```{.text .no-copy}
     PLM_SOURCE_URI="mongodb://source:mys3cretpAssword@mysource1:27017,mysource2:27017,mysource3:27017/"
     PLM_TARGET_URI="mongodb://target:tops3cr3t@mytarget1:27017,mytarget2:27017,mytarget3:27017/"
     ```
 
 === "Sharded clusters"
+
+    {{pcsm.short}} communicates with the clusters via `mongos`. Therefore, specify the hostname and port of the `mongos` instances of the source and target clusters in the respective MongoDB connection string URIs. 
 
     ```{.text .no-copy}
     PCSM_SOURCE_URI="mongodb://source-user:password@mongos-source1:27017/admin"

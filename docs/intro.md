@@ -92,17 +92,21 @@ During the replication stage, {{pcsm.short}} copies indexes from the source to t
 
 * **Unique indexes handling**: Unique indexes are copied as non-unique indexes during replication. This allows {{pcsm.short}} to handle potential duplicate data that may exist during the migration process.
 
+* **Hidden and TTL index handling**: {{pcsm.short}} copies hidden indexes as non-hidden. When copying TTL indexes, {{pcsm.short}} temporarily disables TTL expiration and saves the `expireAfterSeconds` property for later restoration. This way {{pcsm.short}} ensures documents won't expire while being copied.
+
 * **Index creation during sync**: If an index is created on the source cluster while the clusters are in sync, {{pcsm.short}} automatically creates the same index on the target cluster.
 
 * **Failed index creation**: If {{pcsm.short}}  cannot create an index during replication, it proceeds with replication and records the failure. The index creation will be retried during the finalization stage.
 
 ### Finalization stage
 
-On the finalization stage, {{pcsm.short}} completes index management:
+On the finalization stage, {{pcsm.short}} finalizes index index management on the target cluster to match their configuration on the source:
 
-* **Index finalization**: {{pcsm.short}} finalizes index creation on the target cluster.
+* **Unique index conversion**: Non-unique indexes that were originally unique on the source are converted back to unique indexes.
 
-* **Unique index conversion**: Non-unique indexes that were originally unique on the source are converted back to unique indexes on the target.
+* **Hidden indexes**: {{pcsm.short}} restores hidden on the target if they were hidden on the source.
+
+* **TTL indexes**: {{pcsm.short}} restores the original `expireAfterSeconds` value for TTL indexes on the target cluster so that documents will expire according to the original configuration.
 
 * **Retry failed indexes**: {{pcsm.short}} attempts to create indexes that failed to be created during replication.
 
