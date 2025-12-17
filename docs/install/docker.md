@@ -192,7 +192,7 @@ Start the {{pcsm.short}} container. You can specify connection strings using env
 
 2. Monitor replication by checking the status:
 
-    ``bash
+    ```bash
     docker exec -it pcsm1 pcsm status
     ```
 
