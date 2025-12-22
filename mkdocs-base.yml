@@ -157,6 +157,7 @@ nav:
      - compare.md
      - deployment.md
      - sharding.md
+     - limitations.md
   - Get started:
       - Quickstart: installation.md
       - System requirements: system-requirements.md
@@ -171,8 +172,7 @@ nav:
     - PLM commands: plm-commands.md
     - PLM HTTP API: api.md
   - Troubleshooting and debugging:
-    - Known limitations: limitations.md
-    - troubleshooting.md
+    - Troubleshooting guide: troubleshooting.md
     - oplog-sizing.md
     - logging.md
   - pmm-setup.md

@@ -36,11 +36,11 @@ For detailed information about authentication and connection string configuratio
 
 ### Initial sync preparation
 
-Before starting the initial sync, {{pcsm.short}} checks data on the source cluster and reports it on the destination cluster. This way the target cluster knows which collections are sharded, allowing it to handle sharding internally.
+Before starting the initial sync, {{pcsm.short}} checks which collections are sharded on the source cluster and creates corresponding sharded collections on the destination cluster. The only sharding configuration preserved from the source cluster is the sharding key; all other sharding details are handled internally by the destination cluster.
 
 ### Balancer operation
 
-Unlike upstream cluster-to-cluster sync solutions, you **do not need to disable the balancer** on either the source or target cluster before starting replication. The target cluster's balancer continues to operate normally and manages chunk distribution according to its own sharding configuration and balancer settings.
+{{pcsm.full_name}} connects to source and target clusters via a `mongos` instance. Therefore, you do not need to disable the balancer on either the source or target cluster before starting replication. The target cluster's balancer continues to operate normally and manages chunk distribution according to its own sharding configuration and balancer settings.
 
 ### Chunk distribution
 
