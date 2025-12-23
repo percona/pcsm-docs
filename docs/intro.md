@@ -35,7 +35,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     3. **Real-time replication**: After the initial data sync, {{pcsm.short}} monitors changes in the source and replicates them to the target at runtime. You don't have to stop your source deployment—it operates as usual, accepting client requests. {{pcsm.short}} uses [change streams :octicons-link-external-16:](https://www.mongodb.com/docs/manual/changeStreams/) to track the changes to your data and replicate them to the target.
 
-    4. **Control replication**: You can `pause` the replication and `resume` it later. When paused, {{pcsm.short}} saves the timestamp when it stops the replication. After you resume {{pcsm.short}}, it copies the changes from the saved timestamp and continues real-time replication. See [Pause the replication](install/usage.md#pause-the-replication) and [Resume the replication](install/usage.md#resume-the-replication) for command details.
+    4. **Control replication**: You can `pause` the replication and `resume` it later. When paused, {{pcsm.short}} saves the timestamp when it stops the replication. After you resume {{pcsm.short}}, it starts watching for the changes from the moment when the replication was paused and continues real-time replication. See [Pause the replication](install/usage.md#pause-the-replication) and [Resume the replication](install/usage.md#resume-the-replication) for command details.
 
     5. **Monitor progress**: Track the migration status in logs and using the `status` command. See [Check the replication status](install/usage.md#check-the-replication-status) for details.
 
@@ -92,9 +92,13 @@ During the replication stage, {{pcsm.short}} copies indexes from the source to t
 
 * **Unique indexes handling**: Unique indexes are copied as non-unique indexes during replication. This allows {{pcsm.short}} to handle potential duplicate data that may exist during the migration process.
 
-* **Hidden and TTL index handling**: {{pcsm.short}} copies hidden indexes as non-hidden. When copying TTL indexes, {{pcsm.short}} temporarily disables TTL expiration and saves the `expireAfterSeconds` property for later restoration. This way {{pcsm.short}} ensures documents won't expire while being copied.
+* **Hidden indexes**: {{pcsm.short}} copies hidden indexes as non-hidden. 
+
+* **TTL index handling**: When copying TTL indexes, {{pcsm.short}} temporarily disables TTL expiration and saves the `expireAfterSeconds` property for later restoration. This way {{pcsm.short}} ensures documents won't expire while being copied.
 
 * **Index creation during sync**: If an index is created on the source cluster while the clusters are in sync, {{pcsm.short}} automatically creates the same index on the target cluster.
+
+* **Incomplete indexes**: If the index build is in progress during the replication stage, {{pcsm.short}} records that and will try to recreate the index during the finalization stage.
 
 * **Failed index creation**: If {{pcsm.short}}  cannot create an index during replication, it proceeds with replication and records the failure. The index creation will be retried during the finalization stage.
 
