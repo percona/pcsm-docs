@@ -6,7 +6,7 @@ You can run {{pcsm.full_name}} as a Docker container. This is useful for such us
 * your MongoDB clusters also run in Docker 
 * you want to isolate {{pcsm.full_name}} in a containerized environment.
 
-Docker images of {{pcsm.full_name}} are hosted publicly on [Docker Hub :octicons-link-external-16:](https://hub.docker.com/r/perconalab/percona-clustersync-mongodb).
+Docker images of {{pcsm.full_name}} are hosted publicly on [Docker Hub :octicons-link-external-16:](https://hub.docker.com/r/percona/percona-clustersync-mongodb).
 
 For more information about using Docker, see the [Docker Docs :octicons-link-external-16:](https://docs.docker.com/).
 
@@ -139,7 +139,7 @@ Start the {{pcsm.short}} container. You can specify connection strings using env
     $ docker run --name pcsm1 --network mymongo -d \
         -e PCSM_SOURCE_URI="mongodb://<source-user>:<source-password>@psmdb-source:27017" \
         -e PCSM_TARGET_URI="mongodb://<target-user>:<target-password>@psmdb-target:27017" \
-        perconalab/percona-clustersync-mongodb:latest
+        percona/percona-clustersync-mongodb:latest
     ```
 
     Replace `<source-user>:<source-password>` and `<target-user>:<target-password>` with the credentials of the users you created for `pcsm` process in the source and target clusters.
@@ -150,7 +150,7 @@ Start the {{pcsm.short}} container. You can specify connection strings using env
 
     ```{.bash data-prompt="$"}
     $ docker run --name pcsm1 --network mymongo -d \
-        perconalab/percona-clustersync-mongodb:latest \
+        percona/percona-clustersync-mongodb:latest \
         --source "mongodb://<source-user>:<source-password>@psmdb-source:27017" \
         --target "mongodb://<target-user>:<target-password>@psmdb-target:27017"
     ```
@@ -166,7 +166,7 @@ Start the {{pcsm.short}} container. You can specify connection strings using env
         -e PCSM_SOURCE_URI="mongodb://source:password@psmdb-source:27017" \
         -e PCSM_TARGET_URI="mongodb://target:password@psmdb-target:27017" \
         -p 2242:2242 \
-        perconalab/percona-clustersync-mongodb:latest \
+        percona/percona-clustersync-mongodb:latest \
         --port 2242 \
         --log-level debug
     ```
@@ -202,6 +202,13 @@ Start the {{pcsm.short}} container. You can specify connection strings using env
     $ docker logs -f pcsm1
     ```
 
+4. Finalize the replication when you no longer need it:
+
+    ```bash
+    docker exec -it pcsm1 pcsm finalize
+    ```
+
+    Note that this is one-time operation. You cannot restart the replication after you finalized it. If you run the `start` command, {{pcsm.short}} will start the replication anew, with the initial sync. 
 
 ## Next steps
 
