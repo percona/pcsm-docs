@@ -100,7 +100,9 @@ During the replication stage, {{pcsm.short}} copies indexes from the source to t
 
 * **Incomplete indexes**: If the index build is in progress during the replication stage, {{pcsm.short}} records that and will try to recreate the index during the finalization stage.
 
-* **Failed index creation**: If {{pcsm.short}}  cannot create an index during replication, it proceeds with replication and records the failure. The index creation will be retried during the finalization stage.
+* **Inconsistent indexes**: {{pcsm.short}} uses the $indexStats aggregation to count index occurrences across shards. If an index exists on fewer shards than the _id_ index, it is considered inconsistent. {{pcsm.short}} skips cloning inconsistent indexes during the replication stage.
+
+* **Failed index creation**: If {{pcsm.short}} cannot create an index during replication, it proceeds with replication and records the failure. The index creation will be retried during the finalization stage.
 
 ### Finalization stage
 
@@ -111,6 +113,8 @@ On the finalization stage, {{pcsm.short}} finalizes index index management on th
 * **Hidden indexes**: {{pcsm.short}} restores hidden on the target if they were hidden on the source.
 
 * **TTL indexes**: {{pcsm.short}} restores the original `expireAfterSeconds` value for TTL indexes on the target cluster so that documents will expire according to the original configuration.
+
+* **Inconsistent indexes**: {{pcsm.short}} skips creating inconsistent indexes, detected during the replication stage. It reports the warning about such an index in the logs. Check the logs for the information about inconsistent indexes and try to manually recreate them on the target. 
 
 * **Retry failed indexes**: {{pcsm.short}} attempts to create indexes that failed to be created during replication.
 
