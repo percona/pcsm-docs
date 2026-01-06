@@ -20,8 +20,7 @@ The PCSM process runs on a dedicated machine, which can be a virtual machine, co
 
 | Pros | Cons |
 |------|------|
-| **Resource isolation**: PCSM has its own dedicated CPU and RAM, ensuring it does not **starve** the source or target databases.
-| **Network latency**: Adds an extra network hop (Source → PCSM → Target), introducing some latency, which is typically negligible in modern, low-latency networks. |
+| **Resource isolation**: PCSM has its own dedicated CPU and RAM, ensuring it does not **starve** the source or target databases.| **Network latency**: Adds an extra network hop (Source → PCSM → Target), introducing some latency, which is typically negligible in modern, low-latency networks. |
 | **Stability**: In the event that PCSM crashes or becomes unresponsive, both the source and target clusters will remain completely unaffected.| **Infrastructure cost**: Requires provisioning and maintaining an additional compute resource for the PCSM service. |
 | **Scalability**: The PCSM host can be vertically scaled (for example, adding memory for large in-memory buffers) without modifying database hardware. |  |
 
@@ -39,5 +38,6 @@ The PCSM process runs directly on a primary node in the target cluster.
 
 | Pros | Cons |
 |------|------|
-| **Efficient writes:**  Write operations are applied locally to the target, reducing write latency. |Vertical scalability also impact the database |
-| **Safer for Production:**: Resource contention (CPU/RAM spikes) occurs on the target cluster, leaving the production source cluster unaffected. |
+| **Efficient writes:**  Write operations are performed directly on the target, which helps to minimize write latency.
+ |Vertical scalability impacts the database. |
+| **Safer for Production:**: Resource contention, such as CPU and RAM spikes, affects the target cluster while leaving the production source cluster unaffected.|
