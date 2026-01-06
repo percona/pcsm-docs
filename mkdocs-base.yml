@@ -160,7 +160,7 @@ nav:
   - get-help.md
   - About Percona Link for MongoDB: 
      - How PLM works: intro.md
-     - architecture.md
+     - Deployment architecture: architecture.md
      - compare.md
      - deployment.md
      - limitations.md
