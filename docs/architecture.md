@@ -26,5 +26,14 @@ The PCSM process runs on a dedicated machine, which can be a virtual machine, co
 | **Scalability**: The PCSM host can be vertically scaled (for example, adding memory for large in-memory buffers) without modifying database hardware. |  |
 
 
+## Target node deployment (Co-located)
 
+The PCSM process runs directly on a primary node in the target cluster.
+
+
+!!! info "Recommended deployment"
+    This deployment architecture is recommended for **one-way migrations** where the target cluster is currently empty and not serving application traffic.
+
+
+![PLM states](_images/pcsm_target_node_deployment.png)
 
