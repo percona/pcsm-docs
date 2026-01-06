@@ -158,7 +158,11 @@ not_in_nav: |
 nav:
   - Home: index.md
   - get-help.md
+<<<<<<< HEAD
   - About Percona ClusterSync for MongoDB: 
+=======
+  - About Percona Link for MongoDB: 
+>>>>>>> Update mkdocs-base.yml
      - How PCSM works: intro.md
      - compare.md
      - deployment.md
