@@ -15,7 +15,7 @@ The PCSM process runs on a dedicated machine, which can be a virtual machine, co
     This deployment architecture is recommended for Production as it is the most robust and safe architecture for critical data synchronization.
 
 
-![PLM states](_images/pcsm_dedicated_host.png)
+![Dedicated host](_images/pcsm_dedicated_host.png)
 
 
 | Pros | Cons |
@@ -26,7 +26,7 @@ The PCSM process runs on a dedicated machine, which can be a virtual machine, co
 | **Scalability**: The PCSM host can be vertically scaled (for example, adding memory for large in-memory buffers) without modifying database hardware. |  |
 
 
-## Target node deployment (Co-located)
+## Target node (Co-located)
 
 The PCSM process runs directly on a primary node in the target cluster.
 
@@ -35,5 +35,9 @@ The PCSM process runs directly on a primary node in the target cluster.
     This deployment architecture is recommended for **one-way migrations** where the target cluster is currently empty and not serving application traffic.
 
 
-![PLM states](_images/pcsm_target_node_deployment.png)
+![Target node](_images/pcsm_target_node_deployment.png)
 
+| Pros | Cons |
+|------|------|
+| **Efficient writes:**  Write operations are applied locally to the target, reducing write latency. |Vertical scalability also impact the database |
+| **Safer for Production:**: Resource contention (CPU/RAM spikes) occurs on the target cluster, leaving the production source cluster unaffected. |
