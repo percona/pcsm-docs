@@ -9,10 +9,6 @@ You can deploy PCSM using one of three different architectures.
 
 ## Dedicated host (intermediary)
 
-+-------------------+        +--------------------+        +-------------------+
-|                   |        |                    |        |                   |
-|  Source MongoDB   | -----> |        PCSM        | -----> |  Target MongoDB   |
-|   Replica Set     |  read  |   Dedicated Host   | write  |     Cluster       |
-|                   |        |                    |        |                   |
-+-------------------+        +--------------------+        +-------------------+
+The PCSM process runs on a dedicated machine, which can be a virtual machine, container, or physical server. This machine is logically placed between the source and target clusters. Since data migration is resource-intensive, its recommended to install PCSM as close to the target cluster as possible to reduce network latency.
 
+![PLM states](_images/pcsm_dedicated_host.png)
