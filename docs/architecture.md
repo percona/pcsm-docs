@@ -57,5 +57,6 @@ The PCSM process executes directly on a primary node in the source cluster.
 
 | Pros | Cons |
 |------|------|
-| **Lowest read latency**: PCSM reads the local changes directly from the filesystem or local loopback network, minimizing read overhead.| **Resource Contention**: PCSM competes with the running source database for CPU, RAM, and Network I/O. During heavy sync phases (initial sync), this can degrade the performance of the production source cluster. |
-| **Simplicity**: No need to provision extra hardware.| **Failure Risk**: If PCSM consumes excessive memory or causes an OS-level fault, it could bring down the source node.|
+| **Lowest read latency**: PCSM directly reads local changes from the filesystem or loopback network, which minimizes read overhead.
+| **Resource contention**: PCSM competes with the running source database for CPU, RAM, and network I/O resources. During heavy synchronization phases, such as the initial sync, this competition can degrade the performance of the production source cluster.|
+| **Simplicity**: There is no need to provision extra hardware.| **Failure Risk**: If PCSM uses too much memory or causes an Operation system level fault, it may crash the source node.|
