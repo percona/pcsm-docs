@@ -50,7 +50,7 @@ The PCSM process executes directly on a primary node in the source cluster.
 ![Source node](_images/pcsm_source_node_deployment.png)
 
 
-!!! warning "Recommended deployment: Use with caution"
+!!! warning "Recommended deployment"
     This deployment architecture is recommended only for low-traffic source clusters or when the source node has significant available capacity.
 
 
