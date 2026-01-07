@@ -41,3 +41,10 @@ The PCSM process runs directly on a primary node in the target cluster.
 | **Efficient writes:**  Write operations are performed directly on the target, which helps to minimize write latency.
  |Vertical scalability impacts the database. |
 | **Safer for Production:**: Resource contention, such as CPU and RAM spikes, affects the target cluster while leaving the production source cluster unaffected.|
+
+
+## Source node deployment (Co-located)
+
+The PCSM process executes directly on a primary node in the source cluster.
+
+
