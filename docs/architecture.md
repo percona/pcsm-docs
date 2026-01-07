@@ -48,3 +48,15 @@ The PCSM process runs directly on a primary node in the target cluster.
 The PCSM process executes directly on a primary node in the source cluster.
 
 
+![Source node](_images/pcsm_source_node_deployment.png)
+
+
+!!! warning "Recommended deployment: Use with caution"
+    This deployment architecture is recommended only for low-traffic source clusters or when the source node has significant available capacity.
+
+
+
+| Pros | Cons |
+|------|------|
+| **Lowest read latency**: PCSM reads the local changes directly from the filesystem or local loopback network, minimizing read overhead.| **Resource Contention**: PCSM competes with the running source database for CPU, RAM, and Network I/O. During heavy sync phases (initial sync), this can degrade the performance of the production source cluster. |
+| **Simplicity**: No need to provision extra hardware.| **Failure Risk**: If PCSM consumes excessive memory or causes an OS-level fault, it could bring down the source node.|
