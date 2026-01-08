@@ -12,7 +12,7 @@ You can deploy PCSM using one of three different architectures.
 The PCSM process runs on a dedicated machine, which can be a virtual machine, container, or physical server. This machine is logically placed between the source and target clusters. Since data migration is resource-intensive, its recommended to install PCSM as close to the target cluster as possible to reduce network latency.
 
 !!! info "Recommended use"
-    This deployment architecture is recommended for Production as it is the most robust and safe architecture for critical data synchronization.
+    This deployment architecture is recommended for production environments as it provides the highest level of isolation and reliability for critical data synchronization.
 
 
 ![Dedicated host](_images/dedicated_host.png)
@@ -39,7 +39,7 @@ The PCSM process runs directly on a primary node in the target cluster.
 | Pros | Cons |
 |------|------|
 | **Efficient writes:**  Write operations are performed directly on the target, which helps to minimize write latency. |Vertical scalability impacts the database. |
-| **Safer for Production:** Resource contention, such as CPU and RAM spikes, affects the target cluster while leaving the production source cluster unaffected.|
+| **Minimizes impact on the production source cluster:** Resource contention, such as CPU and RAM spikes, affects the target cluster while leaving the production source cluster unaffected.|
 
 
 ## Source node deployment (Co-located)
@@ -72,7 +72,7 @@ The PCSM process executes directly on a primary node in the source cluster.
 ## Use cases
 
 
-=== "Dedicated host"
+=== ":material-server: Dedicated host"
     You can use the dedicated host (intermediary) architecture in the following scenarios:
 
     - When migrating production data where stability, isolation, and predictable performance are critical.
@@ -82,7 +82,7 @@ The PCSM process executes directly on a primary node in the source cluster.
     - When neither the source nor the target database nodes can tolerate additional CPU, memory, or I/O load from replication processes.
 
 
-=== "Target node (co-located)"
+=== ":material-database-arrow-right: Target node (co-located)"
     You can use the target node (co-located) deployment in the following scenarios:
 
     - When migrating data into a newly provisioned target cluster that is not serving application traffic yet.
@@ -91,7 +91,7 @@ The PCSM process executes directly on a primary node in the source cluster.
 
     - Appropriate when minimizing write latency on the target cluster is more important than isolating replication workloads.
 
-=== "Source node (co-located)"
+=== ":material-database-arrow-left: Source node (co-located)"
     You can use the source node (co-located) deployment in the following scenarios:
 
     - When the source cluster handles minimal application traffic and has sufficient spare CPU, memory, and I/O capacity to accommodate PCSM without performance degradation.
