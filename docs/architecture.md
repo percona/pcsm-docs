@@ -2,7 +2,7 @@
 
 Percona ClusterSync for MongoDB (PCSM) is a middleware synchronization tool that connects source and target clusters. It reads change streams from the source cluster and applies those changes to the target cluster. 
 
-Since PCSM operates as a standalone binary process, its placement within your infrastructure can significantly impact performance, especially regarding network latency, which can affect replication time. 
+Since PCSM operates as a standalone binary process, its placement within your infrastructure can significantly impact performance, particularly in terms of network latency, which can affect replication times. 
 
 You can deploy PCSM using one of three different architectures.
 
@@ -25,7 +25,7 @@ The PCSM process runs on a dedicated machine, which can be a virtual machine, co
 | **Scalability**: The PCSM host can be vertically scaled (for example, adding memory for large in-memory buffers) without modifying database hardware. |  |
 
 
-## Target node (Co-located)
+## Target node (co-located)
 
 The PCSM process runs directly on a primary node in the target cluster.
 
@@ -42,7 +42,7 @@ The PCSM process runs directly on a primary node in the target cluster.
 | **Minimizes impact on the production source cluster:** Resource contention, such as CPU and RAM spikes, affects the target cluster while leaving the production source cluster unaffected.|
 
 
-## Source node deployment (Co-located)
+## Source node deployment (co-located)
 
 The PCSM process executes directly on a primary node in the source cluster.
 
