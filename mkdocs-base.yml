@@ -185,7 +185,7 @@ nav:
   - pmm-setup.md
   - FAQ: faq.md
   - Release notes:
-      - release-notes.md
+      - Release notes index: release-notes.md
       - 0.6.0: release-notes/0.6.0.md
       - 0.5.0: release-notes/0.5.0.md
   - Reference:
