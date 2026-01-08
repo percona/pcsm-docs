@@ -60,3 +60,12 @@ The PCSM process executes directly on a primary node in the source cluster.
 |------|------|
 | **Lowest read latency**: PCSM directly reads local changes from the filesystem or loopback network, which minimizes read overhead.| **Resource contention**: PCSM competes with the running source database for CPU, RAM, and network I/O resources. During heavy synchronization phases, such as the initial sync, this competition can degrade the performance of the production source cluster.|
 | **Simplicity**: There is no need to provision extra hardware.| **Failure Risk**: If PCSM uses too much memory or causes an Operation system level fault, it may crash the source node.|
+
+
+## Choosing the right deployment architecture
+
+| Deployment model | Recommended for                         | Risk level |
+| ---------------- | --------------------------------------- | ---------- |
+| Dedicated host   | Production workloads and large datasets | Low        |
+| Target node      | One-way migrations to idle targets      | Medium     |
+| Source node      | Low-traffic or non-critical sources     | High       |
