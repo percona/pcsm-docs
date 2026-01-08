@@ -15,7 +15,7 @@ The PCSM process runs on a dedicated machine, which can be a virtual machine, co
     This deployment architecture is recommended for Production as it is the most robust and safe architecture for critical data synchronization.
 
 
-![Dedicated host](_images/pcsm_dedicated_host.png)
+![Dedicated host](_images/dedicated_host.png)
 
 
 | Pros | Cons |
