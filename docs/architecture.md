@@ -38,7 +38,7 @@ The PCSM process runs directly on a primary node in the target cluster.
 
 | Pros | Cons |
 |------|------|
-| **Efficient writes:**  Write operations are performed directly on the target, which helps to minimize write latency. |Vertical scalability impacts the database. |
+| **Efficient writes:**  Write operations are performed directly on the target, which helps to minimize write latency. | **Limited vertical scalability**: Scaling PCSM on this co-located node requires scaling the entire database server (CPU, RAM, and I/O), which can be unnecessary and costly and may increase resource contention with the target database. |
 | **Minimizes impact on the production source cluster:** Resource contention, such as CPU and RAM spikes, affects the target cluster while leaving the production source cluster unaffected.|
 
 
