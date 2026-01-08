@@ -73,11 +73,29 @@ The PCSM process executes directly on a primary node in the source cluster.
 
 
 === "Dedicated host"
-    Use the dedicated host (intermediary) architecture in the following scenarios:
+    You can use the dedicated host (intermediary) architecture in the following scenarios:
 
-    - When migrating live production data where stability, isolation, and predictable performance are critical.
+    - When migrating production data where stability, isolation, and predictable performance are critical.
 
     - Suitable for clusters with large data sizes or sustained high write throughput, where PCSM requires significant CPU and memory resources.
 
     - When neither the source nor the target database nodes can tolerate additional CPU, memory, or I/O load from replication processes.
 
+
+=== "Target node (co-located)"
+    You can use the target node (co-located) deployment in the following scenarios:
+
+    - When migrating data into a newly provisioned target cluster that is not serving application traffic yet.
+
+    - Useful when the target cluster is used for validation, testing, or acceptance before being promoted to production.
+
+    - Appropriate when minimizing write latency on the target cluster is more important than isolating replication workloads.
+
+=== "Source node (co-located)"
+    You can use the source node (co-located) deployment in the following scenarios:
+
+    - When the source cluster handles minimal application traffic and has sufficient spare CPU, memory, and I/O capacity to accommodate PCSM without performance degradation.
+
+    - Suitable for non-production environments where temporary performance impact on the source cluster is acceptable.
+
+    - Useful when provisioning additional compute resources (such as a dedicated PCSM host) is not possible.
