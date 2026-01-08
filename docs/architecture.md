@@ -9,7 +9,7 @@ You can deploy PCSM using one of three different architectures.
 
 ## Dedicated host (intermediary)
 
-The PCSM process runs on a dedicated machine, which can be a virtual machine, container, or physical server. This machine is logically placed between the source and target clusters. Since data migration is resource-intensive, its recommended to install PCSM as close to the target cluster as possible to reduce network latency.
+The PCSM process runs on a dedicated machine, which can be a virtual machine, container, or physical server. This machine is logically placed between the source and target clusters. Since data migration is resource-intensive, it is recommended to install PCSM as close to the target cluster as possible to reduce network latency.
 
 !!! info "Recommended use"
     This deployment architecture is recommended for production environments as it provides the highest level of isolation and reliability for critical data synchronization.
