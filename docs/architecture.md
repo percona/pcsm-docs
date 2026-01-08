@@ -67,3 +67,17 @@ The PCSM process executes directly on a primary node in the source cluster.
 | Dedicated host   | Production workloads and large datasets | Low        |
 | Target node      | One-way migrations to idle targets      | Medium     |
 | Source node      | Low-traffic or non-critical sources     | High       |
+
+
+## Use cases
+
+
+=== "Dedicated host"
+    Use the dedicated host (intermediary) architecture in the following scenarios:
+
+    - When migrating live production data where stability, isolation, and predictable performance are critical.
+
+    - Suitable for clusters with large data sizes or sustained high write throughput, where PCSM requires significant CPU and memory resources.
+
+    - When neither the source nor the target database nodes can tolerate additional CPU, memory, or I/O load from replication processes.
+
