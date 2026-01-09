@@ -12,7 +12,7 @@ If you'd like to submit a PCSM code patch, follow the [Contributing section in P
 
 ## Contributing to documentation
 
-We welcome contributions from all users and the community. By contributing, you agree to the [Percona Community code of conduct] (https://percona.community/contribute/coc/). Thank you for deciding to contribute and help us improve the Percona Server documentation.
+We welcome contributions from all users and the community. By contributing, you agree to the [Percona Community code of conduct](https://percona.community/contribute/coc/). Thank you for deciding to contribute and help us improve the Percona Server documentation.
 
 You can contribute to the documentation in the following ways:
 
