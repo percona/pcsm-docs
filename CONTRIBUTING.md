@@ -22,15 +22,13 @@ Each documentation page includes a Rate this page feature at the bottom that all
 
 To rate a page:
 
-1. Scroll to the bottom of any documentation page.
+1. Use the star rating system to rate the page (1-5 stars).
 
-2. Use the star rating system to rate the page (1-5 stars).
-
-3. Leave a comment describing your feedback.
+2. Leave a comment describing your feedback.
 
 >[!Important]
 If you want the documentation team to fix or improve something, **please leave detailed comments** explaining:
-* What issue did you encounter or what improvement would you like to see
+* What issue did you encounter, or what improvement would you like to see
 * Which section or topic needs clarification or correction
 * Any specific examples or use cases that would help
 * The version or environment you're using (if relevant)
