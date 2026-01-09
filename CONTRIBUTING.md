@@ -43,7 +43,7 @@ The [Percona Community Forum](https://forums.percona.com/) is a public discussio
 To add a topic, navigate to the [Percona Product Documentation category](https://forums.percona.com/c/percona-product-documentation/71) in the Percona Community Forum and select **New Topic**. Complete the form and select **Create Topic** to add the topic to the forum.
 
 
-## Request a change with a Jira issue
+### Request a change with a Jira issue
 
 Create a Jira ticket to report documentation issues or request changes. This method is useful for formal tracking or when you want the documentation team to handle the changes.
 
