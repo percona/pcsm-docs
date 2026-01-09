@@ -64,7 +64,7 @@ Create a Jira ticket to report documentation issues or request changes. This met
 
 5. Click **Create** to submit the ticket.
 
-To go directly to the Create Issue form, use this URL: [https://jira.percona.com/secure/CreateIssue!default.jspa?pid=10100](https://jira.percona.com/secure/CreateIssue!default.jspa?pid=10100)
+To go directly to the Create Issue form, use this URL: [https://jira.percona.com/secure/CreateIssue!default.jspa](https://jira.percona.com/secure/CreateIssue!default.jspa) and then select the **PCSM** project.
 
 ### Edit the documentation yourself
 
