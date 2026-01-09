@@ -27,14 +27,16 @@ To rate a page:
 2. Leave a comment describing your feedback.
 
 >[!Important]
-If you’d like the documentation team to fix or improve something, please leave **clear and detailed comments**. This helps us understand the issue faster and address it more efficiently.
+Help us improve the documentation faster by leaving clear and detailed comments. This helps us understand the issue and address it more efficiently.
+
+Brief comments like “this is confusing” or “needs improvement” are helpful, but sharing a bit more context allows us to take the most appropriate action.
+
+Please include:
 * What issue did you encounter, or what improvement would you like to see
 * Which section or topic needs clarification or correction
 * Any specific examples or use cases that would help
 * The version or environment you're using (if relevant)
 * Steps to reproduce any issues you found
-
-**Detailed comments are essential** - they help us understand your needs and make the documentation better for everyone. Brief comments like "this is confusing" or "needs improvement" are helpful, but specific details about what's confusing or what needs improvement allow us to take the appropriate action.
 
 ### Add a topic in the Percona Community Forum
 The [Percona Community Forum](https://forums.percona.com/) is a public discussion platform where you can ask questions, share feedback, or suggest improvements to the documentation. Use the forum to start a conversation about documentation issues, request clarifications, or discuss potential changes with the community and documentation team.
@@ -62,22 +64,20 @@ Create a Jira ticket to report documentation issues or request changes. This met
 
 5. Click **Create** to submit the ticket.
 
-**Shortcut to the issue creation screen**
-
 To go directly to the Create Issue form, use this URL: [https://jira.percona.com/secure/CreateIssue!default.jspa?pid=10100](https://jira.percona.com/secure/CreateIssue!default.jspa?pid=10100)
 
 ### Edit the documentation yourself
 
-Percona ClusterSync for MongoDB documentation is written in [Markdown] language, so you can 
+Percona ClusterSync for MongoDB documentation is written in [Markdown](https://www.markdownguide.org/) language, so you can 
 [edit it online via GitHub](#edit-documentation-online-via-github). If you wish to have more control over the doc process, jump to how to [edit documentation locally](#edit-documentation-locally). 
 
-Before you start, learn what [git], [MkDocs], and [Docker] are and what [Markdown] is, and how to write it. For your convenience, a cheat sheet is also available to assist you with the syntax. 
+Before you start, learn what git, MkDocs, and Markdown are, and how to write them. For your convenience, a cheat sheet is also available to assist you with the syntax. 
 
 The doc files are in the `docs` directory.
 
 #### Edit documentation online via GitHub
 
-1. Click the <img src="_resource/.icons/edit_page.png" width="20px" height="20px"/> **Edit this page** icon next to the page title. The source `.md` file of the page opens in GitHub editor in your browser. If you haven’t worked with the repository before, GitHub creates a [fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) of it for you.
+1. Click the **Edit this page** icon next to the page title. The source `.md` file of the page opens in GitHub editor in your browser. If you haven’t worked with the repository before, GitHub creates a [fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) of it for you.
 
 2. Edit the page. You can check your changes on the **Preview** tab.
 
