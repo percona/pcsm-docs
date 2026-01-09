@@ -128,6 +128,37 @@ git checkout -b <my_branch>
 
 9. Open a pull request to Percona
 
+### Building the documentation
+
+To verify how your changes look, generate the static site with the documentation. This process is called *building*. You can do it as follows:
+
+[Install MkDocs and build locally](#install-sphinx-and-build-locally)
+
+
+#### Install MkDocs and build locally
+
+1. Install [Python].
+
+2. Install MkDocs and required extensions:
+
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+3. Build the site:
+
+    ```sh
+    mkdocs build
+    ```
+
+4. Open `site/index.html`
+
+Or, to run the built-in web server:
+
+```sh
+mkdocs serve
+```
+
 ## After your pull request is merged
 
 Once your pull request is merged, you are an official Percona Community Contributor. Welcome to the community!
