@@ -62,8 +62,8 @@ Create a Jira ticket to report documentation issues or request changes. This met
 
 5. Click **Create** to submit the ticket.
 
->[!Tip]
 **Shortcut to the issue creation screen**
+
 To go directly to the Create Issue form, use this URL: [https://jira.percona.com/secure/CreateIssue!default.jspa?pid=10100](https://jira.percona.com/secure/CreateIssue!default.jspa?pid=10100)
 
 ### Edit the documentation yourself
@@ -71,7 +71,7 @@ To go directly to the Create Issue form, use this URL: [https://jira.percona.com
 Percona Backup for MongoDB documentation is written in [Markdown] language, so you can 
 [edit it online via GitHub](#edit-documentation-online-via-github). If you wish to have more control over the doc process, jump to how to [edit documentation locally](#edit-documentation-locally). 
 
-Before you start, learn what [git], [MkDocs], and [Docker] are and what [Markdown] is and how to write it. For your convenience, a cheat sheet is also available to assist you with the syntax. 
+Before you start, learn what [git], [MkDocs], and [Docker] are and what [Markdown] is, and how to write it. For your convenience, a cheat sheet is also available to assist you with the syntax. 
 
 The doc files are in the `docs` directory.
 
@@ -83,12 +83,12 @@ The doc files are in the `docs` directory.
 
 3. Commit your changes.
 
-	 - In the *Commit changes* section, describe your changes.
+	 - In the **Commit changes** section, describe your changes.
 	 - Select the **Create a new branch for this commit and start a pull request** option
 	 - Click **Propose changes**.
 
-4. GitHub creates a branch and a commit for your changes. It loads a new page on which you can open a pull request to Percona. The page shows the base branch - the one you offer your changes for, your commit message and a diff - a visual representation of your changes against the original page.  This allows you to make a last-minute review. When you are ready, click the **Create pull request** button.
-5. Someone from our team reviews the pull request and if everything is correct, merges it into the documentation. Then it gets published on the site.
+4. GitHub creates a branch and a commit for your changes. It loads a new page on which you can open a pull request to Percona. The page shows the base branch - the one you offer your changes for, your commit message, and a diff - a visual representation of your changes against the original page.  This allows you to make a last-minute review. When you are ready, click the **Create pull request** button.
+5. Someone from our team reviews the pull request and, if everything is correct, merges it into the documentation. Then it gets published on the site.
 
 #### Edit documentation locally
 
@@ -100,13 +100,13 @@ The steps are the following:
 2. Clone the repository on your machine:
 
 ```sh
-git clone git@github.com:<your_name>/plm-docs.git
+git clone git@github.com:<your_name>/pcsm-docs.git
 ```
 
-3. Change the directory to ``pbm-docs`` and add the remote upstream repository:
+3. Change the directory to ``pcsm-docs`` and add the remote upstream repository:
 
 ```sh
-git remote add upstream git@github.com:percona/plm-docs.git
+git remote add upstream git@github.com:percona/pcsm-docs.git
 ```
 
 4. Pull the latest changes from upstream
