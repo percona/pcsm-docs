@@ -27,13 +27,14 @@ To rate a page:
 2. Leave a comment describing your feedback.
 
 >[!Important]
-If you want the documentation team to fix or improve something, **please leave detailed comments** explaining:
+If you’d like the documentation team to fix or improve something, please leave **clear and detailed comments**. This helps us understand the issue faster and address it more efficiently.
 * What issue did you encounter, or what improvement would you like to see
 * Which section or topic needs clarification or correction
 * Any specific examples or use cases that would help
 * The version or environment you're using (if relevant)
 * Steps to reproduce any issues you found
-**Detailed comments are essential** - they help us understand your needs and make the documentation better for everyone. Brief comments like "this is confusing" or "needs improvement" are helpful, but specific details about what's confusing or what needs improvement allow us to take action.
+
+**Detailed comments are essential** - they help us understand your needs and make the documentation better for everyone. Brief comments like "this is confusing" or "needs improvement" are helpful, but specific details about what's confusing or what needs improvement allow us to take the appropriate action.
 
 ### Add a topic in the Percona Community Forum
 The [Percona Community Forum](https://forums.percona.com/) is a public discussion platform where you can ask questions, share feedback, or suggest improvements to the documentation. Use the forum to start a conversation about documentation issues, request clarifications, or discuss potential changes with the community and documentation team.
