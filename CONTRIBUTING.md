@@ -68,7 +68,7 @@ To go directly to the Create Issue form, use this URL: [https://jira.percona.com
 
 ### Edit the documentation yourself
 
-Percona Backup for MongoDB documentation is written in [Markdown] language, so you can 
+Percona ClusterSync for MongoDB documentation is written in [Markdown] language, so you can 
 [edit it online via GitHub](#edit-documentation-online-via-github). If you wish to have more control over the doc process, jump to how to [edit documentation locally](#edit-documentation-locally). 
 
 Before you start, learn what [git], [MkDocs], and [Docker] are and what [Markdown] is, and how to write it. For your convenience, a cheat sheet is also available to assist you with the syntax. 
