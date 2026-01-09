@@ -1,14 +1,14 @@
 # Contributing Guide
 
-Welcome to Percona Link for MongoDB documentation!
+Welcome to Percona ClusterSync for MongoDB (PCSM) documentation!
 
 We're glad that you would like to become a Percona community member and help keep open source open.  
 
-Percona Link for MongoDB is a tool for replicating data from a source MongoDB cluster to a target MongoDB cluster. It supports cloning data, replicating changes, and managing collections and indexes.
+Percona ClusterSync for MongoDB is a tool for replicating data from a source MongoDB cluster to a target MongoDB cluster. It supports cloning data, replicating changes, and managing collections and indexes.
 
-This repository contains the source file for PLM documentation, and this document explains how you can contribute to it. 
+This repository contains the source file for PCSM documentation, and this document explains how you can contribute to it. 
 
-If you'd like to submit a PLM code patch, follow the [Contributing section in PLM's code repository](https://github.com/percona/percona-link-mongodb/blob/main/README.md#contributing). 
+If you'd like to submit a PCSM code patch, follow the [Contributing section in PLM's code repository](https://github.com/percona/percona-link-mongodb/blob/main/README.md#contributing). 
 
 ## Contributing to documentation
 
@@ -67,7 +67,7 @@ Create a Jira ticket to report documentation issues or request changes. This met
 **Shortcut to the issue creation screen**
 To go directly to the Create Issue form, use this URL: [https://jira.percona.com/secure/CreateIssue!default.jspa?pid=10100](https://jira.percona.com/secure/CreateIssue!default.jspa?pid=10100)
 
-## Edit the documentation yourself
+### Edit the documentation yourself
 
 Percona Backup for MongoDB documentation is written in [Markdown] language, so you can 
 [edit it online via GitHub](#edit-documentation-online-via-github). If you wish to have more control over the doc process, jump to how to [edit documentation locally](#edit-documentation-locally). 
@@ -76,7 +76,7 @@ Before you start, learn what [git], [MkDocs], and [Docker] are and what [Markdow
 
 The doc files are in the `docs` directory.
 
-### Edit documentation online via GitHub
+#### Edit documentation online via GitHub
 
 1. Click the <img src="_resource/.icons/edit_page.png" width="20px" height="20px"/> **Edit this page** icon next to the page title. The source `.md` file of the page opens in GitHub editor in your browser. If you haven’t worked with the repository before, GitHub creates a [fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) of it for you.
 
@@ -91,7 +91,7 @@ The doc files are in the `docs` directory.
 4. GitHub creates a branch and a commit for your changes. It loads a new page on which you can open a pull request to Percona. The page shows the base branch - the one you offer your changes for, your commit message and a diff - a visual representation of your changes against the original page.  This allows you to make a last-minute review. When you are ready, click the **Create pull request** button.
 5. Someone from our team reviews the pull request and if everything is correct, merges it into the documentation. Then it gets published on the site.
 
-### Edit documentation locally
+#### Edit documentation locally
 
 This option is for users who prefer to work from their computer and/or have full control over the documentation process.
 
@@ -128,27 +128,6 @@ git checkout -b <my_branch>
 8. Commit your changes. The [commit message guidelines](https://gist.github.com/robertpainsi/b632364184e70900af4ab688decf6f53) will help you with writing great commit messages
 
 9. Open a pull request to Percona
-
-
-
-### Building the PDF documentation
-
-To create the PDF version of the documentation, use the following command:
-
-* With Docker:
-
-    ```sh
-    docker run --rm -v $(pwd):/docs -e ENABLE_PDF_EXPORT=1 perconalab/pmm-doc-md mkdocs build -f mkdocs-pdf.yml
-    ```
-
-* Without:
-
-    ```sh
-    ENABLE_PDF_EXPORT=1 mkdocs build -f mkdocs-pdf.yml
-    ```
-
-The PDF is in `site/_pdf`.
-
 
 ## After your pull request is merged
 
