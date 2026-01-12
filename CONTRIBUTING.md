@@ -1,18 +1,18 @@
 # Contributing guide
 
-Welcome to Percona Link for MongoDB documentation!
+Welcome to Percona ClusterSync for MongoDB documentation!
 
 We're glad that you would like to become a Percona community member and participate in keeping open source open.  
 
-Percona Link for MongoDB is a tool for replicating data from a source MongoDB cluster to a target MongoDB cluster. It supports cloning data, replicating changes, and managing collections and indexes.
+Percona ClusterSync for MongoDB is a tool for replicating data from a source MongoDB cluster to a target MongoDB cluster. It supports cloning data, replicating changes, and managing collections and indexes.
 
-This repository contains the source file for PLM documentation and this document explains how you can contribute to it. 
+This repository contains the source file for PCSM documentation and this document explains how you can contribute to it. 
 
-If you'd like to submit a PLM code patch, follow the [Contributing section in PLM's code repository](https://github.com/percona/percona-link-mongodb/blob/main/README.md#contributing). 
+If you'd like to submit a PCSM code patch, follow the [Contributing section in PCSM's code repository](https://github.com/percona/percona-clustersync-mongodb/blob/main/README.md#contributing). 
 
 ## Contributing to documentation
 
-Percona Backup for MongoDB documentation is written in [Markdown] language, so you can 
+Percona ClusterSync for MongoDB documentation is written in [Markdown] language, so you can 
 [edit it online via GitHub](#edit-documentation-online-via-github). If you wish to have more control over the doc process, jump to how to [edit documentation locally](#edit-documentation-locally). 
 
 Before you start, learn what [git], [MkDocs] and [Docker] are and what [Markdown] is and how to write it. For your convenience, there's also a cheat sheet to help you with the syntax. 
@@ -21,7 +21,7 @@ The doc files are in the `docs` directory.
 
 ### Edit documentation online via GitHub
 
-1. Click the <img src="_resource/.icons/edit_page.png" width="20px" height="20px"/> **Edit this page** icon next to the page title. The source `.md` file of the page opens in GitHub editor in your browser. If you haven’t worked with the repository before, GitHub creates a [fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) of it for you.
+1. Click the <img src="_resource/.icons/edit_page.png" width="20px" height="20px"/> **Edit this page**. The source `.md` file of the page opens in GitHub editor in your browser. If you haven't worked with the repository before, GitHub creates a [fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) of it for you.
 
 2. Edit the page. You can check your changes on the **Preview** tab.
 
@@ -44,13 +44,13 @@ The steps are the following:
 2. Clone the repository on your machine:
 
 ```sh
-git clone git@github.com:<your_name>/plm-docs.git
+git clone git@github.com:<your_name>/pcsm-docs.git
 ```
 
-3. Change the directory to ``pbm-docs`` and add the remote upstream repository:
+1. Change the directory to `pcsm-docs` and add the remote upstream repository:
 
 ```sh
-git remote add upstream git@github.com:percona/plm-docs.git
+git remote add upstream git@github.com:percona/pcsm-docs.git
 ```
 
 4. Pull the latest changes from upstream
@@ -74,32 +74,9 @@ git checkout -b <my_branch>
 
 ### Building the documentation
 
-To verify how your changes look, generate the static site with the documentation. This process is called *building*. You can do it in these ways:
+To verify how your changes look, generate the static site with the documentation. This process is called *building*. 
 
-- [Use Docker](#use-docker)
-- [Install MkDocs and build locally](#install-sphinx-and-build-locally)
-
-#### Use Docker
-
-1. [Get Docker](https://docs.docker.com/get-docker/)
-2. We use [our Docker image](https://hub.docker.com/repository/docker/perconalab/pmm-doc-md) to build documentation. Run the following command:
-
-```sh
-docker run --rm -v $(pwd):/docs perconalab/pmm-doc-md mkdocs build
-```
-   If Docker can't find the image locally, it first downloads the image, and then runs it to build the documentation.
-
-3. Go to the ``site`` directory and open the ``index.html`` file to see the documentation.
-
-If you want to see the changes as you edit the docs, use this command instead:
-
-```sh
-docker run --rm -v $(pwd):/docs -p 8000:8000 perconalab/pmm-doc-md mkdocs serve --dev-addr=0.0.0.0:8000
-```
-
-Wait until you see `INFO    -  Start detecting changes`, then enter `0.0.0.0:8000` in the browser's address bar. The documentation automatically reloads after you save the changes in source files.
-
-#### Install MkDocs and build locally
+#### Preconditions
 
 1. Install [Python].
 
@@ -109,37 +86,29 @@ Wait until you see `INFO    -  Start detecting changes`, then enter `0.0.0.0:800
     pip install -r requirements.txt
     ```
 
-3. Build the site:
+#### Build the site
+
+1. To build the site, run:
 
     ```sh
     mkdocs build
     ```
 
-4. Open `site/index.html`
+2. Open `site/index.html`
 
-Or, to run the built-in web server:
+#### Live preview
+
+To view your changes as you make them, run the following command:
 
 ```sh
 mkdocs serve
 ```
 
+Paste the <http://127.0.0.1:8000> in your browser and you will see the documentation. The page reloads automatically as you make changes.
+
 #### PDF
 
-To create the PDF version of the documentation, use the following command:
-
-* With Docker:
-
-    ```sh
-    docker run --rm -v $(pwd):/docs -e ENABLE_PDF_EXPORT=1 perconalab/pmm-doc-md mkdocs build -f mkdocs-pdf.yml
-    ```
-
-* Without:
-
-    ```sh
-    ENABLE_PDF_EXPORT=1 mkdocs build -f mkdocs-pdf.yml
-    ```
-
-The PDF is in `site/_pdf`.
+To build the PDF documentation, open the `site/print_page.html` in your browser. Save it as PDF. Depending on the browser, you may need to select the Export to PDF, Print - Save as PDF or just Save and select PDF as the output format.
 
 
 ## After your pull request is merged

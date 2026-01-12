@@ -6,7 +6,7 @@ Check the [system requirements](../system-requirements.md)  and [known limitatio
 
 ## Prerequisites
 
-To build {{plm.full_name}} from source, you need the following:
+To build {{pcsm.full_name}} from source, you need the following:
 
 - Go 1.24 or later. [Install and set up Go tools :octicons-link-external-16:](https://golang.org/doc/install)x
 - make
@@ -14,14 +14,14 @@ To build {{plm.full_name}} from source, you need the following:
 
 ## Build steps
 
-Here's how to build {{plm.full_name}}:
+Here's how to build {{pcsm.full_name}}:
 {.power-number}
 
-1. Clone the repository and change directory to `plm`:
+1. Clone the repository and change directory to `pcsm`:
 
     ```{.bash data-prompt="$"}
-    git clone https://github.com/percona/percona-link-mongodb.git
-    $ cd plm
+    git clone https://github.com/percona/percona-clustersync-mongodb.git
+    $ cd pcsm
     ```
 
 2. Build the project using the Makefile:
@@ -30,15 +30,15 @@ Here's how to build {{plm.full_name}}:
     $ make build
     ```
 
-    Alternatively, you can install {{plm.short}} from the cloned repo using `go install`:
+    Alternatively, you can install {{pcsm.short}} from the cloned repo using `go install`:
 
     ```{.bash data-prompt="$"}
     $ go install .
     ```
 
-    This installs `plm` into your `GOBIN` directory. 
+    This installs `pcsm` into your `GOBIN` directory. 
 
-3. Add `GOBIN` to your `PATH`. This makes `plm` a global command in your terminal.
+3. Add `GOBIN` to your `PATH`. This makes `pcsm` a global command in your terminal.
 
 ## Next steps
 

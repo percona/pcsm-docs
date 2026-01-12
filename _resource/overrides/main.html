@@ -7,7 +7,7 @@ by adding marketing-requested elements
 {% extends "base.html" %}
 
 {% block announce %}
-<p> The version 0.6.0 of Percona Link for MongoDB is the technical preview. We encourage you to test Percona Link for MongoDB and <a href= "https://forums.percona.com/c/mongodb/mongodb-general-discussion/33">give your feedback</a>.
+<p> The version 0.6.0 of Percona ClusterSync for MongoDB is the technical preview. We encourage you to test Percona ClusterSync for MongoDB and <a href= "https://forums.percona.com/c/mongodb/percona-link-for-mongodb-plm/87">give your feedback</a>.
   This will help us improve the product in the future.
 
 {% endblock %}
@@ -27,8 +27,8 @@ by adding marketing-requested elements
                  {% endif %}
                  <meta property="og:type" content="website" />
                  <meta property="og:title" content="{{ title }}" />
-                 <meta property="og:image" content="https://docs.percona.com/percona-backup-mongodb/_images/mongodb.png">
-                 <meta property="og:url" content="https://docs.percona.com/percona-backup-mongodb/">
+                 <meta property="og:image" content="https://docs.percona.com/percona-clustersync-for-mongodb/_images/mongodb.png">
+                 <meta property="og:url" content="https://docs.percona.com/percona-clustersync-for-mongodb/">
                 </head>
                 <body>
                 </body>
@@ -48,7 +48,7 @@ by adding marketing-requested elements
                     <br>
                     {# Commenting out Download PDF button
                     <label class="md-nav__title" for="__drawer">
-    <a href="https://learn.percona.com/download-percona-backup-for-mongodb-manual-2" onclick="_gaq.push(['b._trackEvent', 'Percona Backup for MongoDB', 'Download', 'Download Manual Backup for MongoDB']);" class="md-nav__link md-nav__link--active" style="font-size: .7rem;">
+    <a href="https://learn.percona.com/download-percona-clustersync-for-mongodb-manual" onclick="_gaq.push(['b._trackEvent', 'Percona ClusterSync for MongoDB', 'Download', 'Download Manual ClusterSync for MongoDB']);" class="md-nav__link md-nav__link--active" style="font-size: .7rem;">
       Download PDF
     </a>
   </label> 
@@ -63,6 +63,9 @@ by adding marketing-requested elements
               {% endif %}
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" {{ hidden }}>
                 <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    {% include "partials/rating.html" %}
+                  </div>
                   <div class="md-sidebar__inner">
                     {% include "partials/edit.html" %}
                   </div>

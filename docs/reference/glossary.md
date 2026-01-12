@@ -26,7 +26,7 @@ The process of applying changes that occurred during the cloning period to ensur
 
 ## Cluster replication 
 
-The process of copying user data, collections, views, and indexes from a primary (source) cluster to a secondary (target) cluster. Initiated by POST /start command, it transitions PLM status to running, and completes when the PLM status becomes finalized.
+The process of copying user data, collections, views, and indexes from a primary (source) cluster to a secondary (target) cluster. Initiated by POST /start command, it transitions PCSM status to running, and completes when the PCSM status becomes finalized.
 
 ## Collection
      
@@ -56,7 +56,7 @@ A critical process that converts temporary changes into their original form from
 
 ## Initial sync
 
-Initial sync is the process of copying all data from a source to a target system. In MongoDB, this occurs when a new node joins a replica set, where it copies all databases, collections, and indexes from an existing member. In the context of Percona Link for MongoDB (PLM), initial sync is the first phase of data migration where all existing data is copied from the source cluster to the target cluster. Then PLM applies the changes that occurred to data since the initial sync start.
+Initial sync is the process of copying all data from a source to a target system. In MongoDB, this occurs when a new node joins a replica set, where it copies all databases, collections, and indexes from an existing member. In the context of Percona ClusterSync for MongoDB (PCSM), initial sync is the first phase of data migration where all existing data is copied from the source cluster to the target cluster. Then PCSM applies the changes that occurred to data since the initial sync start.
 
 ## Isolation
 
@@ -65,6 +65,10 @@ The Isolation requirement means that no transaction can interfere with another.
 ## Percona Server for MongoDB 
 
 Percona Server for MongoDB is a drop-in replacement for MongoDB Community Edition with enterprise-grade features.
+
+## Persistent Query Settings
+
+Persistent Query Settings (PQS) in MongoDB are a way to define and retain query behavior (like index hints, rejection filters, or other optimizer inputs) for a given query shape across the entire cluster. Unlike temporary index filters, PQS are cluster-wide and survive restarts.
 
 ## Replica set
    
