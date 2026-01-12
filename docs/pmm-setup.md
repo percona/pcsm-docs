@@ -1,12 +1,12 @@
 # Set up observability with Percona Monitoring and Management
 
-{{plm.full_name}} exports Prometheus metrics enabling you to monitor the replication performance including the number of processed events, data transfer sizes, document counts, and batch processing times. These metrics are available at the `/metrics` endpoint. 
+{{pcsm.full_name}} exports Prometheus metrics enabling you to monitor the replication performance including the number of processed events, data transfer sizes, document counts, and batch processing times. These metrics are available at the `/metrics` endpoint. 
 
 [Available metrics](#available-metrics){.md-button}
 
 You can use any monitoring tool of your choice to collect and analyze these metrics. We recommend and provide instructions for setting up observability with [Percona Monitoring and Management (PMM)](https://docs.percona.com/percona-monitoring-and-management/3/index.html).
 
-{{plm.full_name}} is natively integrated with PMM for automated monitoring of replication performance with data visualization on dashboards. This comprehensive monitoring helps you optimize replication performance and quickly identify any potential issues during the replication process.
+{{pcsm.full_name}} is natively integrated with PMM for automated monitoring of replication performance with data visualization on dashboards. This comprehensive monitoring helps you optimize replication performance and quickly identify any potential issues during the replication process.
 
 PMM is the server-client solution. The PMM Client collects the metrics and sends them to the PMM Server. PMM Server displays these metrics on dashboards in a user-friendly way.
 
@@ -15,11 +15,11 @@ PMM Server and PMM Client are installed separately.
 ## Prerequisites
 
 1. You must have PMM server up and running. You can run PMM Server as a Docker image, install it a virtual appliance, or on an AWS instance. Follow the [Quickstart quide :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/quickstart/quickstart.html) to start PMM Server in a Docker container. For other installation options, see [PMM Documentation :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-server/index.html)
-2. Ensure PMM server and PLM can communicate with each other over the network.
+2. Ensure PMM server and PCSM can communicate with each other over the network.
 
 ## Install PMM Client
 
-1. You must install PMM Client on the same instance where {{plm.full_name}} is running. Refer to the [installation instructions :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/index.html) suitable for your deployment
+1. You must install PMM Client on the same instance where {{pcsm.full_name}} is running. Refer to the [installation instructions :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/index.html) suitable for your deployment
 2. Register the client node in PMM Server. Replace the `admin:admin` with your PMM Server credentials and the `X.X.X.X` with the PMM Server IP address in the following command:
    
     ```{.bash data-prompt="$"}
@@ -38,12 +38,12 @@ PMM Server and PMM Client are installed separately.
         pmm-agent is running.
         ```
 
-## Configure monitoring for PLM
+## Configure monitoring for PCSM
 
-To enable metrics collection, add PLM as an external service to PMM server, Run the following command:
+To enable metrics collection, add PCSM as an external service to PMM server, Run the following command:
 
 ```{.bash data-prompt="$"}
-$ pmm-admin add external --service-name=plm_test --listen-port=2242 --metrics-path=metrics --scheme=http
+$ pmm-admin add external --service-name=pcsm_test --listen-port=2242 --metrics-path=metrics --scheme=http
 ```
 
 ??? example "Expected output"
@@ -51,22 +51,22 @@ $ pmm-admin add external --service-name=plm_test --listen-port=2242 --metrics-pa
     ```{.text .no-copy}
     External Service added.
     Service ID  : 0b3460d9-4173-4ff8-adcd-105883a4ef56
-    Service name: plm_test
+    Service name: pcsm_test
     Group       : external
     ```
 
-Now PMM Client collects the metrics for PLM.
+Now PMM Client collects the metrics for PCSM.
 
 ## Create a dashboard 
 
-To view PLM metrics, configure a dashboard in PMM Server. Here's how:
+To view PCSM metrics, configure a dashboard in PMM Server. Here's how:
 
 1. Log in to PMM Server
 2. From the main menu, select **Dashboards** and click **New**
 3. Select **Import a dashboard**
 4. Copy the following metrics file in the **Import via dashboard JSON model** window and click **Load**
 
-    ??? admonition "PLM Metrics file"
+    ??? admonition "PCSM Metrics file"
 
         ```json
         {
@@ -590,7 +590,7 @@ To view PLM metrics, configure a dashboard in PMM Server. Here's how:
                       "options": {
                         "mode": "exclude",
                         "names": [
-                          "plm"
+                          "pcsm"
                         ],
                         "prefix": "All except:",
                         "readOnly": true
@@ -636,7 +636,7 @@ To view PLM metrics, configure a dashboard in PMM Server. Here's how:
                   },
                   "editorMode": "code",
                   "exemplar": false,
-                  "expr": "rate(round(go_goroutines{node_name=\"plm\"}[1m]))",
+                  "expr": "rate(round(go_goroutines{node_name=\"pcsm\"}[1m]))",
                   "instant": false,
                   "legendFormat": "{{node_name}}",
                   "range": true,
@@ -712,7 +712,7 @@ To view PLM metrics, configure a dashboard in PMM Server. Here's how:
                       "options": {
                         "mode": "exclude",
                         "names": [
-                          "plm"
+                          "pcsm"
                         ],
                         "prefix": "All except:",
                         "readOnly": true
@@ -758,7 +758,7 @@ To view PLM metrics, configure a dashboard in PMM Server. Here's how:
                   },
                   "editorMode": "code",
                   "exemplar": false,
-                  "expr": "rate(round(go_threads{node_name=\"plm\"}[1m]))",
+                  "expr": "rate(round(go_threads{node_name=\"pcsm\"}[1m]))",
                   "instant": false,
                   "legendFormat": "{{node_name}}",
                   "range": true,
@@ -835,7 +835,7 @@ To view PLM metrics, configure a dashboard in PMM Server. Here's how:
                       "options": {
                         "mode": "exclude",
                         "names": [
-                          "plm"
+                          "pcsm"
                         ],
                         "prefix": "All except:",
                         "readOnly": true
@@ -881,7 +881,7 @@ To view PLM metrics, configure a dashboard in PMM Server. Here's how:
                   },
                   "editorMode": "code",
                   "exemplar": false,
-                  "expr": "go_memstats_alloc_bytes{node_name=\"plm\"} / 1024 / 1024",
+                  "expr": "go_memstats_alloc_bytes{node_name=\"pcsm\"} / 1024 / 1024",
                   "instant": false,
                   "legendFormat": "{{node_name}}",
                   "range": true,
@@ -904,7 +904,7 @@ To view PLM metrics, configure a dashboard in PMM Server. Here's how:
           },
           "timepicker": {},
           "timezone": "browser",
-          "title": "Percona Link for MongoDB",
+          "title": "Percona ClusterSync for MongoDB",
           "uid": "aegcuit193shse",
           "version": 8,
           "weekStart": ""
@@ -915,7 +915,7 @@ To view PLM metrics, configure a dashboard in PMM Server. Here's how:
 
 ## Available metrics
 
-You can collect and view the following PLM metrics at the `/metrics` endpoint:
+You can collect and view the following PCSM metrics at the `/metrics` endpoint:
 
 | Metric name | Description |
 |-------------|-------------|

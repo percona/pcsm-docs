@@ -1,6 +1,6 @@
 # MkDocs configuration for builds with material theme
 
-site_name: Percona Link for MongoDB
+site_name: Percona ClusterSync for MongoDB
 site_description: documentation
 site_author: Percona LLC
 copyright: >
@@ -127,7 +127,7 @@ plugins:
     enabled: !ENV [ENABLED_GIT_REVISION_DATE, True]
   git-committers:
     enabled: !ENV [CI, false]
-    repository: percona/plm-docs
+    repository: percona/pcsm-docs
     branch: "main"
   tags: {}
   glightbox: {}
@@ -158,11 +158,12 @@ not_in_nav: |
 nav:
   - Home: index.md
   - get-help.md
-  - About Percona Link for MongoDB: 
-     - How PLM works: intro.md
+  - About Percona ClusterSync for MongoDB: 
+     - How PCSM works: intro.md
      - compare.md
      - deployment.md
      - limitations.md
+     - sharding.md
   - Get started:
       - Quickstart: installation.md
       - System requirements: system-requirements.md
@@ -170,13 +171,13 @@ nav:
         - From repositories: install/repos.md
         - Build from source: install/source.md
       - 2. Configure authentication: install/authentication.md
-      - 3. Start PLM: install/start-plm.md
+      - 3. Start PCSM: install/start-pcsm.md
       - install/parameters.md
-  - Use PLM: 
+  - Use PCSM: 
     - Usage: install/usage.md  
     - pqs.md 
-    - PLM commands: plm-commands.md
-    - PLM HTTP API: api.md
+    - PCSM commands: pcsm-commands.md
+    - PCSM HTTP API: api.md
   - Troubleshooting and debugging:
     - Troubleshooting guide: troubleshooting.md
     - oplog-sizing.md
@@ -184,12 +185,12 @@ nav:
   - pmm-setup.md
   - FAQ: faq.md
   - Release notes:
-      - release-notes.md
+      - Release notes index: release-notes.md
       - 0.6.0: release-notes/0.6.0.md
       - 0.5.0: release-notes/0.5.0.md
   - Reference:
       - Glossary: reference/glossary.md 
-      - reference/contributing.md
+      - Contributing: "https://github.com/percona/pcsm-docs/blob/main/CONTRIBUTING.md"
       - About documentation: about-docs.md 
   - Legal:
       - Copyright and licensing: copyright.md
