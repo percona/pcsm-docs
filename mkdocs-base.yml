@@ -190,7 +190,6 @@ nav:
       - 0.5.0: release-notes/0.5.0.md
   - Reference:
       - Glossary: reference/glossary.md 
-      - Contributing: "https://github.com/percona/pcsm-docs/blob/main/CONTRIBUTING.md"
       - About documentation: about-docs.md 
   - Legal:
       - Copyright and licensing: copyright.md
