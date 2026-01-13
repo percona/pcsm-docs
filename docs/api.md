@@ -146,36 +146,38 @@ The following are response fields:
 | `state` | string | Current replication state |
 | `info` | string | Additional information about the current state|
 | `error`| string | (optional): The error message if the operation failed.
-| `lagTime` | number | Current lag time in logical seconds between source and target clusters. |
-| `eventsProcessed` | number | Total events processed |
-| `lastReplicatedOpTime` | string | The last replicated operation time.|
+| `lagTimeSeconds` | number | Current lag time in logical seconds between source and target clusters. |
+| `eventsRead` | number | Total number of events read from the source |
+| `eventsApplied` | number | Total number of events applied to the target |
+| `lastReplicatedOpTime.ts` | string | The timestamp of the last replicated operation time.  |
+| `lastReplicatedOpTime.isoDate` | date.Time | The human-readable representation of the last replicated operation time.  |
 | `initialSync.completed` | boolean | Initial sync completion status |
 | `initialSync.lagTime` | number | The lag time in logical seconds until the initial sync completed|
 | `initialSync.cloneCompleted` | boolean | Clone process completion status |
-| `initialSync.estimatedCloneSize` | number | Estimated total size to clone (bytes) |
-| `initialSync.clonedSize` | number | Current cloned size (bytes) |
+| `initialSync.estimatedCloneSizeBytes` | number | Estimated total size to clone (bytes) |
+| `initialSync.clonedSizeBytes` | number | Current cloned size (bytes) |
 
 
 Example:
 
 ```json
 {
-    "ok": true,
-    "state": "running",
-    "info": "Initial Sync",
-
-    "lagTime": 22,
-    "eventsProcessed": 5000,
-    "lastReplicatedOpTime": "1740335200.5",
-
-    "initialSync": {
-        "completed": false,
-        "lagTime": 5,
-
-        "cloneCompleted": false,
-        "estimatedCloneSize": 5000000000,
-        "clonedSize": 2500000000
-    }
+  "ok": true,
+  "state": "running",
+  "info": "Replicating Changes",
+  "lagTimeSeconds": 1,
+  "eventsRead": 0,
+  "eventsApplied": 0,
+  "lastReplicatedOpTime": {
+    "ts": "1763649865.1",
+    "isoDate": "2025-11-20T14:44:25Z"
+  },
+  "initialSync": {
+    "estimatedCloneSizeBytes": 24220000,
+    "clonedSizeBytes": 24220000,
+    "completed": true,
+    "cloneCompleted": true
+  }
 }
 ```
 
