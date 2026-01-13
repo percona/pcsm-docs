@@ -170,6 +170,7 @@ nav:
       - 1. Install:
         - From repositories: install/repos.md
         - Build from source: install/source.md
+        - From binary tarballs: install/tarball.md
       - 2. Configure authentication: install/authentication.md
       - 3. Start PCSM: install/start-pcsm.md
       - install/parameters.md

@@ -24,6 +24,12 @@ We recommend installing PCSM via the package manager of your operating system fo
 
     [Build from source :material-arrow-right:](install/source.md){.md-button}
 
+=== ":octicons-download-16: Manual download"
+    
+    If you need to install {{pcsm.short}} offline or prefer a specific version of it, check out the link below for a step-by-step guide and get access to the downloads directory.
+
+    [Install from tarballs :material-arrow-right:](install/tarball.md){.md-button}
+
 ## Next steps
 
 [Use {{pcsm.full_name}} :material-arrow-right:](install/usage.md){.md-button}
