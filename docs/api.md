@@ -1,8 +1,8 @@
-# {{plm.full_name}} HTTP API documentation
+# {{pcsm.full_name}} HTTP API documentation
 
 ## Quick start guide
 
-To get started with {{plm.full_name}} API:
+To get started with {{pcsm.full_name}} API:
 
 1. Ensure the service is running on `http://localhost:2242`
 2. Use the `/start` endpoint to begin replication
@@ -126,7 +126,7 @@ Example:
 
 ### GET /status
 
-The /status endpoint provides the current state of the Percona Link for MongoDB replication process, including its progress, lag, and event processing details.
+The /status endpoint provides the current state of the Percona ClusterSync for MongoDB replication process, including its progress, lag, and event processing details.
 
 #### Request
 
