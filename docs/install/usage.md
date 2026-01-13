@@ -43,6 +43,8 @@ You can replicate the whole dataset or specific namespaces - databases and colle
 
 To include or exclude a specific database and all collections it includes, pass it in the format `mydb.*`.
 
+When both include and exclude filters are used, the exclude filter takes precedence. For instance, if you include all collections in the `mydb` database but exclude `mydb.users`, PCSM will replicate all collections from `mydb` **except** `mydb.users`.
+
 === "Command line"
 
     ```{.bash data-prompt="$"}
