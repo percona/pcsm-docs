@@ -75,9 +75,10 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
 ## Filtered replication
 
-You can replicate the whole dataset or only a specific subset of data, which is a filtered replication. Filtered replication works for both replica sets and sharded clusters. You can use filtered replication for various use cases, such as:
+You can replicate the whole data set or only a specific subset of data, which is a filtered replication. You can use filtered replication for various use cases, such as:
 
-* Spin up a new development environment with a specific subset of data instead of the whole dataset.
+* Spin up a new development environment with a specific subset of data instead of the whole data set. 
+
 * Optimize cloud storage costs for hybrid environments where your target MongoDB deployment runs in the cloud.
 
 Specify what namespaces—databases and collections—to include and/or exclude from the replication when you start it. See [Start the filtered replication](install/usage.md#start-the-filtered-replication) for details.

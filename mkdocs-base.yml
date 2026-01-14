@@ -4,7 +4,7 @@ site_name: Percona ClusterSync for MongoDB
 site_description: documentation
 site_author: Percona LLC
 copyright: >
-  <a href="https://www.percona.com/about">Percona LLC</a> and/or its affiliates © 2025 
+  <a href="https://www.percona.com/about">Percona LLC</a> and/or its affiliates © 2026 
   — <a href="#" onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')">Cookie Preferences</a>
 repo_name: percona/pcsm-docs
 repo_url: https://github.com/percona/pcsm-docs
@@ -189,6 +189,7 @@ nav:
   - FAQ: faq.md
   - Release notes:
       - Release notes index: release-notes.md
+      - 0.7.0: release-notes/0.7.0.md
       - 0.6.0: release-notes/0.6.0.md
       - 0.5.0: release-notes/0.5.0.md
   - Reference:
