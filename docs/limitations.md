@@ -19,7 +19,7 @@ The following limitations apply specifically to sharded cluster replication:
 
    * The primary shard name for a collection. The target cluster may have a different primary shard name.
    * The chunk distribution information. The target cluster manages chunk distribution according to its own sharding configuration. See [Sharding support](sharding.md#limitations) for more information.
-  * The configuration of [zones for sharded data :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/zone-sharding/).
+   * The configuration of [zones for sharded data :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/zone-sharding/).
 
 * During data replication, the following commands are not supported: `movePrimary`, `reshardCollecton`, `unshardCollection`, `refineCollectionShardKey`. Running them results in failed replication and you must start it anew, from the initial data sync stage.
 

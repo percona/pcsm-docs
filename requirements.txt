@@ -16,4 +16,5 @@ mkdocs-meta-descriptions-plugin
 mkdocs-glightbox
 mike
 mkdocs-open-in-new-tab
+mkdocs-git-committers-plugin-2
 Pillow > 10.1.0

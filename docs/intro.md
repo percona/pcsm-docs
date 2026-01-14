@@ -1,6 +1,6 @@
 # How {{pcsm.full_name}} works
 
-{{pcsm.full_name}} is a binary process that replicates data between MongoDB deployments in real time until you manually finalize it. You can also make a one-time data migration from the source to the target with zero downtime.
+{{pcsm.full_name}} is a binary process that replicates data between MongoDB deployments in real time until you manually finalize it. You can also make a one-time data migration from the source to the target with near-zero downtime.
 
 You operate with {{pcsm.full_name}} using the [set of commands](pcsm-commands.md) or [API calls](api.md). Depending on the request it receives, {{pcsm.full_name}} has several states as shown in the following diagram:
 

@@ -21,7 +21,7 @@ Then it uses [change streams :octicons-link-external-16:](https://www.mongodb.co
 === "Command line"
 
     ```{.bash data-prompt="$"}
-    $ plm start
+    $ pcsm start
     ```
 
     ??? example "Expected output"
@@ -47,10 +47,12 @@ You can replicate the whole dataset or specific namespaces - databases and colle
 
 To include or exclude a specific database and all collections it includes, pass it in the format `mydb.*`.
 
+When both include and exclude filters are used, the exclude filter takes precedence. For instance, if you include all collections in the `mydb` database but exclude `mydb.users`, PCSM will replicate all collections from `mydb` **except** `mydb.users`.
+
 === "Command line"
 
     ```{.bash data-prompt="$"}
-    $ plm start \ 
+    $ pcsm start \ 
     --include-namespaces="db1.collection1,db2.collection2" \
     --exclude-namespaces="db3.collection3"
     ```
@@ -81,7 +83,7 @@ You can pause the replication at any moment. {{pcsm.short}} stops the replicatio
 === "Command line"
 
     ```{.bash data-prompt="$"}
-    $ plm pause
+    $ pcsm pause
     ```
 
 === "HTTP API"
@@ -99,7 +101,7 @@ Resume the replication. {{pcsm.short}} changes the state to `running` and copies
 === "Command line"
 
     ```{.bash data-prompt="$"}
-    $ plm resume
+    $ pcsm resume
     ```
 
 === "HTTP API"
@@ -115,7 +117,7 @@ The replication may fail for some reason, like lost connectivity or the like. In
 === "Command line"
 
     ```{.bash data-prompt="$"}
-    $ plm resume --from-failure
+    $ pcsm resume --from-failure
     ```
 
 === "HTTP API"
@@ -136,7 +138,7 @@ Check the current status of the replication process.
 === "Command line"
 
     ```{.bash data-prompt="$"}
-    $ plm status
+    $ pcsm status
     ```
 
 === "HTTP API"
@@ -149,12 +151,12 @@ Check the current status of the replication process.
 
 ## Finalize the replication
 
-When you no longer need to replicate data, finalize the replication. {{pcsm.short}} stops replication, creates the required indexes on the target, and stops. This is a one-time operation. You cannot restart the replication after you finalized it. If you run the `start` command, {{pcsm.short}} will start the replication anew, with the initial sync. 
+When you no longer need / want to replicate data, finalize the replication. {{pcsm.short}} stops replication, creates the required indexes on the target, and stops. This is a one-time operation. You cannot restart the replication after you finalized it. If you run the `start` command, {{pcsm.short}} will start the replication anew, with the initial sync. 
 
 === "Command line"
 
     ```{.bash data-prompt="$"}
-    $ plm finalize
+    $ pcsm finalize
     ```
 
 === "HTTP API"

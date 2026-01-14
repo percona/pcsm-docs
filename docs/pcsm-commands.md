@@ -1,17 +1,17 @@
-# {{plm.full_name}} commands
+# {{pcsm.full_name}} commands
 
 ## Overview
 
-Percona Link for MongoDB is a replication tool for MongoDB clusters. It provides commands to manage and monitor the replication process between source and target MongoDB clusters.
+Percona ClusterSync for MongoDB is a replication tool for MongoDB clusters. It provides commands to manage and monitor the replication process between source and target MongoDB clusters.
 
 ## Commands
 
 ### version
 
-Display the current version of Percona Link for MongoDB.
+Display the current version of Percona ClusterSync for MongoDB.
 
 ```{.bash data-prompt="$"$}
-$ plm version
+$ pcsm version
 ```
 
 ### status
@@ -19,7 +19,7 @@ $ plm version
 Get the status of the replication process.
 
 ```{.bash data-prompt="$"$}
-$ plm status
+$ pcsm status
 ```
 
 ### start
@@ -27,13 +27,13 @@ $ plm status
 Starts cluster replication.
 
 ```{.bash data-prompt="$"$}
-$ plm start
+$ pcsm start
 ```
 
 To start a filtered replication, pass the namespaces (databases and collections) that you want to include/exclude from replication. 
 
 ```{.bash data-prompt="$"}
-$ plm start \
+$ pcsm start \
 --include-namespaces="db1.collection1,db2.collection2" \
 --exclude-namespaces="db3.collection3"
 ```
@@ -46,15 +46,15 @@ Available flags:
 | Name | Description|
 | -----| -----------|
 | `--include-namespaces` | Replicate only the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited|
-| `--exclude-namespaces` | Replicate everything except the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited|
+| `--exclude-namespaces` | Replicate everything except the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited. <br> When both `--include-namespaces` and  `--exclude-namespaces` flags are specified, the exclude filters take precedence. For example, if the `--include-namespaces` includes `db1.*` and `--exclude-namespaces` has `db1.users`, {{pcsm.short}} syncs all collections of `db1` **except** `db1.users`.|
 
 
 ### reset
 
-Resets the `PLM` state and deletes the metadata collections from target deployment. After the command execution, you must restart the `PLM` service and start the data replication from scratch. Read more about the flow in [Troubleshooting guide](troubleshooting.md) 
+Resets the `PCSM` state and deletes the metadata collections from target deployment. After the command execution, you must restart the `PCSM` service and start the data replication from scratch. Read more about the flow in [Troubleshooting guide](troubleshooting.md) 
 
 ```{.bash data-prompt="$"$}
-$ plm reset --target
+$ pcsm reset --target
 ```
 
 ### finalize
@@ -62,7 +62,7 @@ $ plm reset --target
 Finalize cluster replication.
 
 ```{.bash data-prompt="$"$}
-$ plm finalize
+$ pcsm finalize
 ```
 
 ### pause
@@ -70,7 +70,7 @@ $ plm finalize
 Pause cluster replication.
 
 ```{.bash data-prompt="$"$}
-$ plm pause
+$ pcsm pause
 ```
 
 ### resume
@@ -78,7 +78,7 @@ $ plm pause
 Resume cluster replication.
 
 ```{.bash data-prompt="$"$}
-$ plm resume
+$ pcsm resume
 ```
 
 Available flags:
