@@ -158,8 +158,9 @@ not_in_nav: |
 nav:
   - Home: index.md
   - get-help.md
-  - About Percona ClusterSync for MongoDB: 
-     - How PCSM works: intro.md
+  - About Percona Link for MongoDB: 
+     - How PLM works: intro.md
+     - Deployment architecture: architecture.md
      - compare.md
      - deployment.md
      - sharding.md
