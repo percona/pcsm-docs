@@ -1,42 +1,98 @@
 # Contributing guide
 
-Welcome to Percona ClusterSync for MongoDB documentation!
+Welcome to Percona ClusterSync for MongoDB (PCSM) documentation!
 
-We're glad that you would like to become a Percona community member and participate in keeping open source open.  
+We're glad that you would like to become a Percona community member and help keep open source open.  
 
 Percona ClusterSync for MongoDB is a tool for replicating data from a source MongoDB cluster to a target MongoDB cluster. It supports cloning data, replicating changes, and managing collections and indexes.
 
-This repository contains the source file for PCSM documentation and this document explains how you can contribute to it. 
+This repository contains the source file for PCSM documentation, and this document explains how you can contribute to it. 
 
 If you'd like to submit a PCSM code patch, follow the [Contributing section in PCSM's code repository](https://github.com/percona/percona-clustersync-mongodb/blob/main/README.md#contributing). 
 
 ## Contributing to documentation
 
-Percona ClusterSync for MongoDB documentation is written in [Markdown] language, so you can 
+We welcome contributions from all users and the community. By contributing, you agree to the [Percona Community code of conduct](https://percona.community/contribute/coc/). Thank you for deciding to contribute and help us improve the Percona ClusterSync for MongoDB documentation.
+
+You can contribute to the documentation in the following ways:
+
+### Rate and comment on documentation pages
+
+Each documentation page includes a **Rate this page** feature that allows you to assign stars (1-5) and leave comments. This is a quick and easy way to provide feedback about the documentation.
+
+To rate a page:
+
+1. Use the star rating system to rate the page (1-5 stars).
+
+2. Leave a comment describing your feedback.
+
+>[!Important]
+Help us improve the documentation faster by leaving clear and detailed comments. This helps us understand the issue and address it more efficiently.
+
+Brief comments like “this is confusing” or “needs improvement” are helpful, but sharing a bit more context allows us to take the most appropriate action.
+
+Please include:
+* What issue did you encounter, or what improvement would you like to see
+* Which section or topic needs clarification or correction
+* Any specific examples or use cases that would help
+* The version or environment you're using (if relevant)
+* Steps to reproduce any issues you found
+
+### Add a topic in the Percona Community Forum
+The [Percona Community Forum](https://forums.percona.com/) is a public discussion platform where you can ask questions, share feedback, or suggest improvements to the documentation. Use the forum to start a conversation about documentation issues, request clarifications, or discuss potential changes with the community and documentation team.
+
+To add a topic, navigate to the [Percona Product Documentation category](https://forums.percona.com/c/percona-product-documentation/71) in the Percona Community Forum and select **New Topic**. Complete the form and select **Create Topic** to add the topic to the forum.
+
+
+### Request a change with a Jira issue
+
+Create a Jira ticket to report documentation issues or request changes. This method is useful for formal tracking or when you want the documentation team to handle the changes.
+
+1. Open the [Percona Server Jira project](https://jira.percona.com/projects/PCSM/issues) in your browser.
+
+2. Sign in (or create a Percona Jira account if you don't have one).
+
+3. Click the **Create** button.
+
+4. Fill in the required fields:
+
+	* **Summary**: Provide a brief description of the issue.
+
+	* **Description**: Provide more information about the issue. If needed, add a Steps To Reproduce section and information about your environment (version number, your operating system, etc.). Be detailed.
+
+	* **Version**, **Environment**, and other relevant fields as needed.
+
+5. Click **Create** to submit the ticket.
+
+To go directly to the Create Issue form, use this URL: [https://jira.percona.com/secure/CreateIssue!default.jspa](https://jira.percona.com/secure/CreateIssue!default.jspa) and then select the **Percona ClusterSync for MongoDB (PCSM)** project.
+
+### Edit the documentation yourself
+
+Percona ClusterSync for MongoDB documentation is written in [Markdown](https://www.markdownguide.org/) language, so you can 
 [edit it online via GitHub](#edit-documentation-online-via-github). If you wish to have more control over the doc process, jump to how to [edit documentation locally](#edit-documentation-locally). 
 
-Before you start, learn what [git], [MkDocs] and [Docker] are and what [Markdown] is and how to write it. For your convenience, there's also a cheat sheet to help you with the syntax. 
+Before you start, learn what git, MkDocs, and Markdown are, and how to write them. For your convenience, a cheat sheet is also available to assist you with the syntax. 
 
 The doc files are in the `docs` directory.
 
-### Edit documentation online via GitHub
+#### Edit documentation online via GitHub
 
-1. Click the <img src="_resource/.icons/edit_page.png" width="20px" height="20px"/> **Edit this page**. The source `.md` file of the page opens in GitHub editor in your browser. If you haven't worked with the repository before, GitHub creates a [fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) of it for you.
+1. Click the **Edit this page** banner. The source `.md` file of the page opens in GitHub editor in your browser. If you haven’t worked with the repository before, GitHub creates a [fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) of it for you.
 
 2. Edit the page. You can check your changes on the **Preview** tab.
 
 3. Commit your changes.
 
-	 - In the *Commit changes* section, describe your changes.
+	 - In the **Commit changes** section, describe your changes.
 	 - Select the **Create a new branch for this commit and start a pull request** option
 	 - Click **Propose changes**.
 
-4. GitHub creates a branch and a commit for your changes. It loads a new page on which you can open a pull request to Percona. The page shows the base branch - the one you offer your changes for, your commit message and a diff - a visual representation of your changes against the original page.  This allows you to make a last-minute review. When you are ready, click the **Create pull request** button.
-5. Someone from our team reviews the pull request and if everything is correct, merges it into the documentation. Then it gets published on the site.
+4. GitHub creates a branch and a commit for your changes. It loads a new page on which you can open a pull request to Percona. The page shows the base branch - the one you offer your changes for, your commit message, and a diff - a visual representation of your changes against the original page.  This allows you to make a last-minute review. When you are ready, click the **Create pull request** button.
+5. Someone from our team reviews the pull request and, if everything is correct, merges it into the documentation. Then it gets published on the site.
 
-### Edit documentation locally
+#### Edit documentation locally
 
-This option is for users who prefer to work from their computer and / or have the full control over the documentation process.
+This option is for users who prefer to work from their computer and/or have full control over the documentation process.
 
 The steps are the following:
 
@@ -47,7 +103,7 @@ The steps are the following:
 git clone git@github.com:<your_name>/pcsm-docs.git
 ```
 
-1. Change the directory to `pcsm-docs` and add the remote upstream repository:
+3. Change the directory to ``pcsm-docs`` and add the remote upstream repository:
 
 ```sh
 git remote add upstream git@github.com:percona/pcsm-docs.git
@@ -66,19 +122,19 @@ git merge upstream/main
 git checkout -b <my_branch>
 ```
 
-6. Make changes. See the [Repository structure](#repository-structure) to for details what files this repo contains and their purpose.
-7. Check your changes. Some editors (Sublime Text, VSCode and others) have the Markdown preview which you can use to check how the page is rendered. Alternatively, you can [build the documentation](#building-the-documentation) to know exactly how the documentation looks on the web site.
+6. Make changes.
+7. Check your changes. Some editors (Sublime Text, VSCode, and others) have the Markdown preview, which you can use to check how the page is rendered. Alternatively, you can [build the documentation](#building-the-documentation) to know exactly how the documentation looks on the website.
 8. Commit your changes. The [commit message guidelines](https://gist.github.com/robertpainsi/b632364184e70900af4ab688decf6f53) will help you with writing great commit messages
 
 9. Open a pull request to Percona
 
 ### Building the documentation
 
-To verify how your changes look, generate the static site with the documentation. This process is called *building*. 
+To verify how your changes look, generate the static site with the documentation. This process is called *building*. You can do it as follows:
 
-#### Preconditions
+#### Install MkDocs and build locally
 
-1. Install [Python].
+1. Install [Python](https://www.python.org/downloads/).
 
 2. Install MkDocs and required extensions:
 
@@ -104,40 +160,7 @@ To view your changes as you make them, run the following command:
 mkdocs serve
 ```
 
-Paste the <http://127.0.0.1:8000> in your browser and you will see the documentation. The page reloads automatically as you make changes.
-
-#### PDF
-
-To build the PDF documentation, open the `site/print_page.html` in your browser. Save it as PDF. Depending on the browser, you may need to select the Export to PDF, Print - Save as PDF or just Save and select PDF as the output format.
-
-
 ## After your pull request is merged
 
 Once your pull request is merged, you are an official Percona Community Contributor. Welcome to the community!
 
-## Repository structure
-
-The repository includes the following directories and files:
-
-- `mkdocs-base.yml` - the base configuration file. It includes general settings and documentation structure.
-- `mkdocs.yml` - configuration file. Contains the settings for building the docs with Material theme.
-- `mkdocs-pdf.yml` - configuration file. Contains the settings for building the PDF docs.
-- `docs`:
-  - `*.md` - Source markdown files.
-  - `_images` - Images, logos and favicons
-  - `css` - Styles
-  - `js` - Javascript files
-- `_resource`:
-   - `templates`:
-     - ``styles.scss`` - Styling for PDF documents
-   - `theme`:
-      - `main.html` - The layout template for hosting the documentation on Percona website
-   - overrides - The folder with the Material theme template customization for builds
-- `site` - This is where the output HTML files are put after the build
-
-
-[MkDocs]: https://www.mkdocs.org/
-[Markdown]: https://daringfireball.net/projects/markdown/
-[Git]: https://git-scm.com
-[Python]: https://www.python.org/downloads/
-[Docker]: https://docs.docker.com/get-docker/
