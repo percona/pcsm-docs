@@ -162,8 +162,8 @@ nav:
      - How PCSM works: intro.md
      - compare.md
      - deployment.md
-     - limitations.md
      - sharding.md
+     - limitations.md
   - Get started:
       - Quickstart: installation.md
       - System requirements: system-requirements.md
