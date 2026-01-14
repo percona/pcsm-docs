@@ -142,15 +142,19 @@ To verify how your changes look, generate the static site with the documentation
     pip install -r requirements.txt
     ```
 
-3. Build the site:
+#### Build the site
+
+1. To build the site, run:
 
     ```sh
     mkdocs build
     ```
 
-4. Open `site/index.html`
+2. Open `site/index.html`
 
-Or, to run the built-in web server:
+#### Live preview
+
+To view your changes as you make them, run the following command:
 
 ```sh
 mkdocs serve
