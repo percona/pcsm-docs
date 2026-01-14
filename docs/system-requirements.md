@@ -11,7 +11,7 @@
 
 ## Docker requirements
 
-When running {{plm.short}} in Docker:
+When running {{pcsm.short}} in Docker:
 
 * Ensure the Docker container has sufficient resources allocated (at least 1GB RAM and 2 CPU cores)
 * The container must have network connectivity to all MongoDB cluster nodes (source and target)

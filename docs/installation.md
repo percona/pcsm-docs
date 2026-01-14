@@ -17,7 +17,7 @@ We recommend installing PCSM via the package manager of your operating system fo
 
 === ":material-docker: Docker"
 
-    Run {{plm.full_name}} in a Docker container. This is useful when your MongoDB clusters run in Docker or when you want to isolate {{plm.short}} in a containerized environment.
+    Run {{pcsm.full_name}} in a Docker container. This is useful when your MongoDB clusters run in Docker or when you want to isolate {{pcsm.short}} in a containerized environment.
 
     [Run in Docker :material-arrow-right:](install/docker.md){.md-button}
 
