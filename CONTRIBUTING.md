@@ -18,7 +18,7 @@ You can contribute to the documentation in the following ways:
 
 ### Rate and comment on documentation pages
 
-Each documentation page includes a Rate this page feature at the bottom that allows you to assign stars (1-5) and leave comments. This is a quick and easy way to provide feedback about the documentation.
+Each documentation page includes a **Rate this page** feature that allows you to assign stars (1-5) and leave comments. This is a quick and easy way to provide feedback about the documentation.
 
 To rate a page:
 
@@ -64,7 +64,7 @@ Create a Jira ticket to report documentation issues or request changes. This met
 
 5. Click **Create** to submit the ticket.
 
-To go directly to the Create Issue form, use this URL: [https://jira.percona.com/secure/CreateIssue!default.jspa](https://jira.percona.com/secure/CreateIssue!default.jspa) and then select the **PCSM** project.
+To go directly to the Create Issue form, use this URL: [https://jira.percona.com/secure/CreateIssue!default.jspa](https://jira.percona.com/secure/CreateIssue!default.jspa) and then select the **Percona ClusterSync for MongoDB (PCSM)** project.
 
 ### Edit the documentation yourself
 
@@ -77,7 +77,7 @@ The doc files are in the `docs` directory.
 
 #### Edit documentation online via GitHub
 
-1. Click the **Edit this page** icon next to the page title. The source `.md` file of the page opens in GitHub editor in your browser. If you haven’t worked with the repository before, GitHub creates a [fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) of it for you.
+1. Click **Edit this page** next to the page title. The source `.md` file of the page opens in GitHub editor in your browser. If you haven’t worked with the repository before, GitHub creates a [fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) of it for you.
 
 2. Edit the page. You can check your changes on the **Preview** tab.
 
@@ -131,9 +131,6 @@ git checkout -b <my_branch>
 ### Building the documentation
 
 To verify how your changes look, generate the static site with the documentation. This process is called *building*. You can do it as follows:
-
-[Install MkDocs and build locally](#install-sphinx-and-build-locally)
-
 
 #### Install MkDocs and build locally
 
