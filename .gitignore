@@ -17,3 +17,4 @@ __pycache__/
 
 !styles/config/vocabularies/Percona/**
 .DS_Store
+docs/.DS_Store
