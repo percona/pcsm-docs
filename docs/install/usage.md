@@ -145,9 +145,10 @@ Check the current status of the replication process.
     $ curl http://localhost:2242/status
     ```
 
-# Finalize the replication
+## Finalize the replication
 
-When you no longer need / want to replicate data, finalize the replication. PCSM stops replication, creates the required indexes on the target, and stops. This is a one-time operation. You cannot restart the replicaton after you finalized it. If you run the `start` command, PCSM will start the replication anew, with the initial sync. 
+When you no longer need / want to replicate data, finalize the replication. PCSM stops replication, creates the required indexes on the target, and stops. This is a one-time operation. You cannot restart the replication after you finalized it. If you run the `start` command, PCSM will start the replication anew, with the initial sync. 
+
 
 === "Command line"
 
