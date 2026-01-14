@@ -1,4 +1,4 @@
-# Contributing Guide
+# Contributing guide
 
 Welcome to Percona ClusterSync for MongoDB (PCSM) documentation!
 
@@ -134,7 +134,7 @@ To verify how your changes look, generate the static site with the documentation
 
 #### Install MkDocs and build locally
 
-1. Install [Python].
+1. Install [Python](https://www.python.org/downloads/).
 
 2. Install MkDocs and required extensions:
 
