@@ -30,7 +30,7 @@ Benefit from {{pcsm.full_name}} in the following use cases:
 
     {{pcsm.short}} simplifies the process of migrating data between clusters, whether you're upgrading to a new MongoDB version, moving to a different vendor, or transitioning from cloud to on-premises.
 
-* **Global data distribution**
+* **Global data distribution**:
 
     Synchronize data across geographically distributed clusters to improve data access speed and reduce latency for users in different regions.
 
@@ -38,6 +38,6 @@ Benefit from {{pcsm.full_name}} in the following use cases:
 
     Keep a test or development cluster in sync with the production cluster to ensure accurate testing and debugging without affecting live data.
 
-* **Hybrid cloud deployments**
+* **Hybrid cloud deployments**:
 
     Synchronize data between on-premises clusters and cloud clusters, enabling hybrid cloud strategies.
