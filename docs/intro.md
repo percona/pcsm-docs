@@ -33,7 +33,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     2. **Start the replication** 
         
-        Call the `start` command. PCSM prepares the target collections and begins the replication process. For each selected collection, PCSM performs the following actions:
+        Call the `start` command. {{pcsm.short}} prepares the target collections and begins the replication process. For each selected collection, PCSM performs the following actions:
         { .power-number}
 
         1. **Drop collection on target**
@@ -50,11 +50,11 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
         4. **Apply sharding (if applicable)**
             
-            If the source collection is sharded, PCSM shards the target collection using the same sharding configuration.
+            If the source collection is sharded, {{pcsm.short}} shards the target collection using the same sharding configuration.
 
         5. **Initial sync**
             
-            PCSM copies the documents from the source collection to the target.
+            {{pcsm.short}} copies the documents from the source collection to the target.
     
             See [Start the replication](install/usage.md#start-the-replication) for command details.
 
