@@ -22,8 +22,11 @@ Yes. {{pcsm.full_name}} is explicitly built to support Atlas to Percona Software
 
 ## Does {{pcsm.full_name}} require a replica set on the source or target?
 
-Yes. Both the source and target must be replica sets. Sharded clusters are not yet supported, but planned.
+Yes. Both the source and target must be replica sets. 
 
+## Does {{pcsm.full_name}} support sharded clusters?
+
+No. Sharded MongoDB clusters are not supported as either source or target at this time. Support for shard-to-shard replication is planned for a future release.
 ## Does {{pcsm.full_name}} support bidirectional sync?
 
 No. {{pcsm.full_name}} currently supports one-way synchronization only (source → target). However, you can re-run Percona {{pcsm.full_name}} with a reversed connection strings to do the other direction sync.
@@ -41,9 +44,9 @@ Yes. {{pcsm.full_name}} allows you to include/exclude filters for specific datab
 {{pcsm.full_name}} is designed with resilience in mind:
 
 - It supports automatic retries on transient errors.
-- It uses checkpointing to resume from the last known sync point after restart.
+- It uses checkpointing to resume from the last known sync point after a restart.
 - Logs include detailed error reporting for troubleshooting.
 
 ## What features are planned for future releases?
 
-Sharded cluster support and high availability are the next features we are working on.   
+High availability, performance improvements, and shard-to-shard replication are the next features we are working on.   
