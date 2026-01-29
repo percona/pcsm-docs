@@ -59,6 +59,8 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
             See [Start the replication](install/usage.md#start-the-replication) for command details.
 
             !!! info "Important"
+                During the replication startup phase:
+
                 - The target replica set does **not** need to be empty. Only the collections selected for replication are dropped and recreated. 
                 - Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
         
