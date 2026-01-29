@@ -35,6 +35,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
         
         Call the `start` command. PCSM prepares the target collections and begins the replication process. For each selected collection, PCSM performs the following actions:
         { .power-number}
+        
         1. **Drop collection on target**
         If the target collection already exists, {{pcsm.short}} drops it to ensure a clean slate for incoming data.
 
