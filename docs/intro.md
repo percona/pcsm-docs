@@ -29,17 +29,34 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     ### Workflow steps
 
-    !!! info "Important"
-        The requirement for an **empty** target applies only to the specific collections selected for synchronization.
-
-        Existing databases or collections on the target cluster that are not part of the sync configuration remain intact and are not affected.
-
-        This behavior also applies to new collection creation events received during replication—only collections within the sync scope are created or modified.
-
     1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Start and connect {{pcsm.short}} to your source and target using these user credentials and the `mongos` hostname and port. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
-    2. **Start the replication**: Call the `start` command. {{pcsm.short}} starts copying the data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
+    2. **Start the replication** 
+        Call the 'start' command. PCSM prepares the target collections and begins the replication process. For each selected collection, PCSM performs the following actions:
+        { .power-number}
+        1. **Drop collection on target**
+        If the target collection already exists, PCSM drops it to ensure a clean slate for incoming data.
 
+        2. **Recreate collection**
+        The collection is recreated on the target with the same options as the source (such as capped settings, collation, validators, and other collection-level options).
+
+        3. **Create indexes**
+        Indexes are created on the target to match those defined on the source collection.
+
+        4. **Apply sharding (if applicable)**
+        If the source collection is sharded, PCSM shards the target collection using the same sharding configuration.
+
+        5. **Initial sync**
+        PCSM copies the documents from the source collection to the target.
+    
+        After the initial sync starts, PCSM applies all changes that occurred since the sync began.
+        See [Start the replication](install/usage.md#start-the-replication) for command details.
+
+        !!! note
+        The target replica set does **not** need to be empty. Only the collections selected for replication are dropped and recreated. Existing databases and collections on the target that are not part of the sync selection remain untouched.
+    
+        Call the `start` command. {{pcsm.short}} starts copying the data from the source to the target. 
+    
     3. **Real-time replication**: After the initial data sync, {{pcsm.short}} monitors changes in the source and replicates them to the target at runtime. You don't have to stop your source deployment—it operates as usual, accepting client requests. {{pcsm.short}} uses [change streams :octicons-link-external-16:](https://www.mongodb.com/docs/manual/changeStreams/) to track the changes to your data and replicate them to the target.
 
     4. **Control replication**: You can `pause` the replication and `resume` it later. When paused, {{pcsm.short}} saves the timestamp when it stops the replication. After you resume {{pcsm.short}}, it starts watching for the changes from the moment when the replication was paused and continues real-time replication. See [Pause the replication](install/usage.md#pause-the-replication) and [Resume the replication](install/usage.md#resume-the-replication) for command details.
