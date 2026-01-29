@@ -38,7 +38,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
         1. **Drop collection on target**
         
-            If the target collection already exists, {{pcsm.short}} drops it to ensure a clean slate for incoming data.
+            If the target collection already exists, {{pcsm.short}} drops it to ensure a clean state for incoming data.
 
         2. **Recreate collection**
         
