@@ -29,6 +29,13 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     ### Workflow steps
 
+    !!! info "Important"
+        The requirement for an “empty” target applies only to the specific collections selected for synchronization.
+
+    Existing databases or collections on the target cluster that are not part of the sync configuration remain intact and are not affected.
+
+    This behavior also applies to new collection creation events received during replication—only collections within the sync scope are created or modified.
+
     1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Start and connect {{pcsm.short}} to your source and target using these user credentials and the `mongos` hostname and port. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
     2. **Start the replication**: Call the `start` command. {{pcsm.short}} starts copying the data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
