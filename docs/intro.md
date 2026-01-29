@@ -38,10 +38,11 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
         1. **Drop collection on target**
         
-        If the target collection already exists, {{pcsm.short}} drops it to ensure a clean slate for incoming data.
+            If the target collection already exists, {{pcsm.short}} drops it to ensure a clean slate for incoming data.
 
         2. **Recreate collection**
-        The collection is recreated on the target with the same options as the source (such as capped settings, collation, validators, and other collection-level options).
+        
+            The collection is recreated on the target with the same options as the source (such as capped settings, collation, validators, and other collection-level options).
 
         3. **Create indexes**
         Indexes are created on the target to match those defined on the source collection.
