@@ -56,7 +56,6 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
             
             PCSM copies the documents from the source collection to the target.
     
-            After the initial sync starts, PCSM applies all changes that occurred since the sync began.
             See [Start the replication](install/usage.md#start-the-replication) for command details.
 
             !!! info "Important"
