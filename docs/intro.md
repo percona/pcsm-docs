@@ -35,8 +35,9 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
         
         Call the `start` command. PCSM prepares the target collections and begins the replication process. For each selected collection, PCSM performs the following actions:
         { .power-number}
-        
+
         1. **Drop collection on target**
+        
         If the target collection already exists, {{pcsm.short}} drops it to ensure a clean slate for incoming data.
 
         2. **Recreate collection**
@@ -51,7 +52,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
         5. **Initial sync**
         PCSM copies the documents from the source collection to the target.
     
-        After the initial sync starts, PCSM applies all changes that occurred since the sync began.
+            After the initial sync starts, PCSM applies all changes that occurred since the sync began.
         See [Start the replication](install/usage.md#start-the-replication) for command details.
 
         !!! note
