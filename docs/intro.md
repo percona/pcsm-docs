@@ -31,7 +31,12 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Start and connect {{pcsm.short}} to your source and target using these user credentials and the `mongos` hostname and port. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
-    2. **Start the replication** 
+    2. **Start the replication**
+        !!! info "Important"
+            During the replication startup phase:
+
+            - The target replica set does **not** need to be empty. Only the collections selected for replication are dropped and recreated. 
+            - Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
         
         Call the `start` command. {{pcsm.short}} prepares the target collections and begins the replication process. For each selected collection, PCSM performs the following actions:
         { .power-number}
@@ -57,13 +62,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
             {{pcsm.short}} copies the documents from the source collection to the target.
     
             See [Start the replication](install/usage.md#start-the-replication) for command details.
-
-            !!! info "Important"
-                During the replication startup phase:
-
-                - The target replica set does **not** need to be empty. Only the collections selected for replication are dropped and recreated. 
-                - Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
-        
+       
     3. **Real-time replication**: After the initial data sync, {{pcsm.short}} monitors changes in the source and replicates them to the target at runtime. You don't have to stop your source deployment—it operates as usual, accepting client requests. {{pcsm.short}} uses [change streams :octicons-link-external-16:](https://www.mongodb.com/docs/manual/changeStreams/) to track the changes to your data and replicate them to the target.
 
     4. **Control replication**: You can `pause` the replication and `resume` it later. When paused, {{pcsm.short}} saves the timestamp when it stops the replication. After you resume {{pcsm.short}}, it starts watching for the changes from the moment when the replication was paused and continues real-time replication. See [Pause the replication](install/usage.md#pause-the-replication) and [Resume the replication](install/usage.md#resume-the-replication) for command details.
