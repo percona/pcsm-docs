@@ -45,19 +45,22 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
             The collection is recreated on the target with the same options as the source (such as capped settings, collation, validators, and other collection-level options).
 
         3. **Create indexes**
-        Indexes are created on the target to match those defined on the source collection.
+            
+            Indexes are created on the target to match those defined on the source collection.
 
         4. **Apply sharding (if applicable)**
-        If the source collection is sharded, PCSM shards the target collection using the same sharding configuration.
+            
+            If the source collection is sharded, PCSM shards the target collection using the same sharding configuration.
 
         5. **Initial sync**
-        PCSM copies the documents from the source collection to the target.
+            
+            PCSM copies the documents from the source collection to the target.
     
             After the initial sync starts, PCSM applies all changes that occurred since the sync began.
         See [Start the replication](install/usage.md#start-the-replication) for command details.
 
         !!! note
-            The target replica set does **not** need to be empty. Only the collections selected for replication are dropped and recreated. Existing databases and collections on the target that are not part of the sync selection remain untouched.
+            The target replica set does **not** need to be empty. Only the collections selected for replication are dropped and recreated. Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
         
     3. **Real-time replication**: After the initial data sync, {{pcsm.short}} monitors changes in the source and replicates them to the target at runtime. You don't have to stop your source deployment—it operates as usual, accepting client requests. {{pcsm.short}} uses [change streams :octicons-link-external-16:](https://www.mongodb.com/docs/manual/changeStreams/) to track the changes to your data and replicate them to the target.
 
