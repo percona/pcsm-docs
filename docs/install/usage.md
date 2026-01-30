@@ -20,6 +20,8 @@ The target Percona Server for MongoDB (PSCM) cluster does not need to be empty b
     - Newly created collections on the source are replicated to the target only if they fall within the defined synchronization scope.
     - Collections outside the scope are ignored.
 
+![PCSM Replication](_images/pcsm_replication.png)
+
 ## Start the replication
 
 Start the replication process between source and target clusters. {{pcsm.short}} starts copying the data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. 
