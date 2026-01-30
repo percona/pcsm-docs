@@ -32,6 +32,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
     1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Start and connect {{pcsm.short}} to your source and target using these user credentials and the `mongos` hostname and port. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
     2. **Start the replication**
+    
         !!! info "Important"
             During the replication startup phase:
 
