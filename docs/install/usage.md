@@ -10,7 +10,7 @@ You can interact with {{pcsm.full_name}} using the command-line interface or via
 
 ## Before you start
 
-The target Percona Server for MongoDB (PSCM) cluster does not need to be empty before synchronization. PCSM operates at the collection level rather than the replica set level.
+PCSM operates at the collection level rather than the replica set level. The target collections on the Percona Server for MongoDB replica set will be overwritten.
 
 - **Scope of Synchronization**: PCSM affects only the collections explicitly selected for synchronization.
     - If a selected collection already exists on the target, PCSM drops that collection before starting the initial sync to ensure data consistency.
