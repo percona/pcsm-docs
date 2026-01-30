@@ -10,7 +10,14 @@ You can interact with {{pcsm.full_name}} using the command-line interface or via
 
 ## Before you start
 
-Your target MongoDB cluster may be empty or contain data. {{pcsm.short}} replicates data from the source to the target but doesn't manage the target's data. If the target already has the same data as the source, {{pcsm.short}} overwrites it. However, if the target contains different data, {{pcsm.short}} doesn't delete it during replication. This leads to inconsistencies between the source and target. To ensure consistency, manually delete any existing data from the target before starting replication.
+The target Percona Server for MongoDB (PSCM) cluster does not need to be empty before synchronization. PCSM operates at the collection level rather than the replica set level.
+
+- **Scope of Synchronization**: PCSM affects only the collections explicitly selected for synchronization.
+    - If a selected collection already exists on the target, PCSM drops that collection before starting the initial sync to ensure data consistency.
+    - Collections on the target that are not included in the replication scope remain untouched and continue to function independently.
+- **Handling New Collections**: During replication, PCSM creates or modifies only collections explicitly selected for synchronization.
+    - Newly created collections on the source are replicated to the target only if they fall within the defined synchronization scope.
+    - Collections outside the scope are ignored.
 
 ## Start the replication
 
