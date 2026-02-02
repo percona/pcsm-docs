@@ -4,8 +4,8 @@ Percona ClusterSync for MongoDB (PCSM) is a middleware synchronization tool that
 
 !!! info "Important"
     - The target replica set does **not** need to be entirely empty. PCSM operates at the **collection level**:
-   - Only the **target collections selected for synchronization** are affected and will be **overwritten**.
-   - Any **other databases or collections** on the target cluster that are **not** part of the sync selection remain **intact**.
+    - Only the **target collections selected for synchronization** are affected and will be **overwritten**.
+    - Any **other databases or collections** on the target cluster that are **not** part of the sync selection remain **intact**.
 
 For comprehansive information on how {{pcsm.full_name}} works, see [Replication workflows](intro.md#replication-workflows#__tabbed_1_1).
 
