@@ -32,11 +32,11 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
     1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Start and connect {{pcsm.short}} to your source and target using these user credentials and the `mongos` hostname and port. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
     2. **Start the replication**
-    
+
         !!! info "Important"
             During the replication startup phase:
 
-            - The target replica set does **not** need to be empty. Only the collections selected for replication are dropped and recreated. 
+            - Only the collections selected for replication are dropped and recreated. 
             - Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
         
         Call the `start` command. {{pcsm.short}} prepares the target collections and begins the replication process. For each selected collection, PCSM performs the following actions:
