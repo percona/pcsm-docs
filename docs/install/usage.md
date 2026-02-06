@@ -8,17 +8,6 @@
 
 You can interact with {{pcsm.full_name}} using the command-line interface or via the HTTP API. Read more about [{{pcsm.short}} HTTP API](../api.md).
 
-## Before you start
-
-PCSM operates at the collection level rather than the replica set level. The target collections on the Percona Server for MongoDB replica set will be overwritten.
-
-- **Scope of Synchronization**: PCSM affects only the collections explicitly selected for synchronization.
-    - If a selected collection already exists on the target, PCSM drops that collection before starting the initial sync to ensure data consistency.
-    - Collections on the target that are not included in the replication scope remain untouched.
-
-- **Handling New Collections**: During replication, PCSM creates or modifies only collections explicitly selected for synchronization.
-    - Newly created collections on the source are replicated to the target only if they fall within the defined synchronization scope.
-    - Collections outside the scope are ignored.
 
 ## Start the replication
 
