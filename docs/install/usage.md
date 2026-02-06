@@ -8,9 +8,6 @@
 
 You can interact with {{pcsm.full_name}} using the command-line interface or via the HTTP API. Read more about [{{pcsm.short}} HTTP API](../api.md).
 
-## Before you start
-
-Your target MongoDB cluster may be empty or contain data. {{pcsm.short}} replicates data from the source to the target but doesn't manage the target's data. If the target already has the same data as the source, {{pcsm.short}} overwrites it. However, if the target contains different data, {{pcsm.short}} doesn't delete it during replication. This leads to inconsistencies between the source and target. To ensure consistency, manually delete any existing data from the target before starting replication.
 
 ## Start the replication
 
