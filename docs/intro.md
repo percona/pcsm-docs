@@ -89,7 +89,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     2. **Apply sharding (if applicable)**
             
-    If the source collection is sharded, {{pcsm.short}} shards the target collection using the same sharding configuration.
+        If the source collection is sharded, {{pcsm.short}} shards the target collection using the same sharding configuration.
 
     3. **Start the replication**: 
 
