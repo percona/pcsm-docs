@@ -25,7 +25,8 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     You run a MongoDB Atlas 8.0 deployed as a replica set. You need to migrate to the latest 8.0 release of Percona Server for MongoDB, which also supports replica sets. You have a strict requirement to migrate with near-zero downtime; therefore, using logical backups with [Percona Backup for MongoDB :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/logical.html) is not an option.
 
-    A solution is to use {{pcsm.full_name}}. MongoDB Atlas is your source. The target collections on the Percona Server for MongoDB replica set will be overwritten. Data migration is a resource-intensive task. Therefore, we recommend installing {{pcsm.short}} on a dedicated host closest to the target to reduce the network lag as much as possible.
+    
+    A solution is to use {{pcsm.full_name}}. MongoDB Atlas is your source and a Percona Server for MongoDB replica set is your target. During startup, {{pcsm.short}} prepares the target by dropping and recreating the selected collections, which overwrites any existing data in them. Because this process can generate substantial network traffic and put additional load on the source and target, run {{pcsm.short}} on a dedicated host located as close to the target as possible to minimize latency.
 
     ### Workflow steps
 
@@ -39,7 +40,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
             - Only the collections selected for replication are dropped and recreated. 
             - Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
         
-        Call the `start` command. {{pcsm.short}} prepares the target collections and begins the replication process. For each selected collection, PCSM performs the following actions:
+        Call the `start` command. {{pcsm.short}} prepares the target collections and begins the replication process. For each selected collection, {{pcsm.short}} performs the following actions:
         { .power-number}
 
         1. **Drop collection on target**
