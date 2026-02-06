@@ -59,7 +59,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
             
             {{pcsm.short}} copies the documents from the source collection to the target.
     
-    See [Start the replication](install/usage.md#start-the-replication) for command details.
+        See [Start the replication](install/usage.md#start-the-replication) for command details.
        
     3. **Real-time replication**: After the initial data sync, {{pcsm.short}} monitors changes in the source and replicates them to the target at runtime. You don't have to stop your source deployment—it operates as usual, accepting client requests. {{pcsm.short}} uses [change streams :octicons-link-external-16:](https://www.mongodb.com/docs/manual/changeStreams/) to track the changes to your data and replicate them to the target.
 
@@ -99,7 +99,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
             - Only the collections selected for replication are dropped and recreated. 
             - Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
     
-    Call the `start` command. You don't have to disable the balancer on the target. Before starting the data copying, {{pcsm.short}} retrieves the information about the shard keys for collections on the source cluster and creates these collections on the target with the same shard key. Then {{pcsm.short}} starts copying all data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
+        Call the `start` command. You don't have to disable the balancer on the target. Before starting the data copying, {{pcsm.short}} retrieves the information about the shard keys for collections on the source cluster and creates these collections on the target with the same shard key. Then {{pcsm.short}} starts copying all data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
 
     4. **Real-time replication**: During the replication stage, {{pcsm.short}} captures change stream events from the source cluster through `mongos` and applies them to the target cluster, ensuring real-time synchronization of data changes. The target cluster's balancer handles chunk distribution. For details about sharding-specific behavior, see [Sharding behavior](sharding.md#sharding-specific-behavior).
 
