@@ -94,7 +94,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
     3. **Start the replication**: 
 
         !!! info "Important"
-            - During the replication startup phase:
+            During the replication startup phase:
 
             - Only the collections selected for replication are dropped and recreated. 
             - Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
