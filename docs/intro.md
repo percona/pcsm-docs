@@ -54,15 +54,13 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
             
             Indexes are created on the target to match those defined on the source collection.
 
-        4. **Apply sharding (if applicable)**
-            
-            If the source collection is sharded, {{pcsm.short}} shards the target collection using the same sharding configuration.
 
-        5. **Initial sync**
+        4. **Initial sync**
             
             {{pcsm.short}} copies the documents from the source collection to the target.
     
-            See [Start the replication](install/usage.md#start-the-replication) for command details.
+
+    See [Start the replication](install/usage.md#start-the-replication) for command details.
        
     3. **Real-time replication**: After the initial data sync, {{pcsm.short}} monitors changes in the source and replicates them to the target at runtime. You don't have to stop your source deployment—it operates as usual, accepting client requests. {{pcsm.short}} uses [change streams :octicons-link-external-16:](https://www.mongodb.com/docs/manual/changeStreams/) to track the changes to your data and replicate them to the target.
 
@@ -90,17 +88,29 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Configure connection strings using `mongos` hostname and port for both source and target clusters. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
-    2. **Start the replication**: Call the `start` command. You don't have to disable the balancer on the target. Before starting the data copying, {{pcsm.short}} retrieves the information about the shard keys for collections on the source cluster and creates these collections on the target with the same shard key. Then {{pcsm.short}} starts copying all data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
+    2. **Apply sharding (if applicable)**
+            
+    If the source collection is sharded, {{pcsm.short}} shards the target collection using the same sharding configuration.
 
-    3. **Real-time replication**: During the replication stage, {{pcsm.short}} captures change stream events from the source cluster through `mongos` and applies them to the target cluster, ensuring real-time synchronization of data changes. The target cluster's balancer handles chunk distribution. For details about sharding-specific behavior, see [Sharding behavior](sharding.md#sharding-specific-behavior).
+    3. **Start the replication**: 
 
-    4. **Control replication**: You can `pause` the replication and `resume` it later, just like with replica sets. When paused, {{pcsm.short}} saves the timestamp when it stops the replication. See [Pause the replication](install/usage.md#pause-the-replication) and [Resume the replication](install/usage.md#resume-the-replication) for command details.
+        !!! info "Important"
+            - During the replication startup phase:
 
-    5. **Monitor progress**: Track the migration status in logs and using the `status` command. See [Check the replication status](install/usage.md#check-the-replication-status) for details.
+            - Only the collections selected for replication are dropped and recreated. 
+            - Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
+    
+        Call the `start` command. You don't have to disable the balancer on the target. Before starting the data copying, {{pcsm.short}} retrieves the information about the shard keys for collections on the source cluster and creates these collections on the target with the same shard key. Then {{pcsm.short}} starts copying all data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
 
-    6. **Finalize**: When the data migration is complete and you no longer need to run clusters in sync, call the `finalize` command to complete the migration. This makes {{pcsm.short}} finalize the replication, create the required indexes on the target, and stop. Note that finalizing is a one-time operation. If you try to start {{pcsm.short}} again, it will start data copy anew. See [Finalize the replication](install/usage.md#finalize-the-replication) for command details.
+    4. **Real-time replication**: During the replication stage, {{pcsm.short}} captures change stream events from the source cluster through `mongos` and applies them to the target cluster, ensuring real-time synchronization of data changes. The target cluster's balancer handles chunk distribution. For details about sharding-specific behavior, see [Sharding behavior](sharding.md#sharding-specific-behavior).
 
-    7. **Cutover**: Switch your clients to connect to the target Percona Server for MongoDB cluster.
+    5. **Control replication**: You can `pause` the replication and `resume` it later, just like with replica sets. When paused, {{pcsm.short}} saves the timestamp when it stops the replication. See [Pause the replication](install/usage.md#pause-the-replication) and [Resume the replication](install/usage.md#resume-the-replication) for command details.
+
+    6. **Monitor progress**: Track the migration status in logs and using the `status` command. See [Check the replication status](install/usage.md#check-the-replication-status) for details.
+
+    7. **Finalize**: When the data migration is complete and you no longer need to run clusters in sync, call the `finalize` command to complete the migration. This makes {{pcsm.short}} finalize the replication, create the required indexes on the target, and stop. Note that finalizing is a one-time operation. If you try to start {{pcsm.short}} again, it will start data copy anew. See [Finalize the replication](install/usage.md#finalize-the-replication) for command details.
+
+    8. **Cutover**: Switch your clients to connect to the target Percona Server for MongoDB cluster.
 
     For detailed information about sharded cluster replication, see [Sharding support in {{pcsm.full_name}}](sharding.md).
 
