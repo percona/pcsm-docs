@@ -28,7 +28,7 @@ Benefit from {{pcsm.full_name}} in the following use cases:
     
 * **Data migration**:
 
-    {{pcsm.short}} simplifies the process of migrating data between clusters, whether you're upgrading to a new MongoDB version, moving to a different vendor, or transitioning from cloud to on-premises.
+    {{pcsm.short}} simplifies the process of migrating data between clusters, moving to a different vendor, or transitioning from cloud to on-premises.
 
 * **Global data distribution**:
 
