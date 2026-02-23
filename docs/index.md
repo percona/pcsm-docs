@@ -22,10 +22,6 @@
 
 Benefit from {{pcsm.full_name}} in the following use cases:
 
-* **Disaster recovery**:
-
-    {{pcsm.short}} enables you to maintain a secondary cluster as a backup. In case of a failure in the primary cluster, the secondary cluster can take over, ensuring minimal downtime.
-    
 * **Data migration**:
 
     {{pcsm.short}} simplifies the process of migrating data between clusters, whether you're upgrading to a new MongoDB version, moving to a different vendor, or transitioning from cloud to on-premises.
