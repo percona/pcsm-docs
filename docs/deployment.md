@@ -7,7 +7,8 @@
 
 ## Version requirements
 
-* You can synchronize Percona Server for MongoDB or MongoDB Community/Enterprise Advanced/Atlas within the same major versions - 6.0 to 6.0, 7.0 to 7.0, 8.0 to 8.0
+* You can synchronize Percona Server for MongoDB or MongoDB Community/Enterprise Advanced/Atlas within the **same major versions only** - 6.0 to 6.0, 7.0 to 7.0, 8.0 to 8.0
+       
 * Minimal supported MongoDB versions are: 6.0.17, 7.0.13, 8.0.0
 
 ## Supported architectures

@@ -14,6 +14,9 @@
 - Source clusters: MongoDB 6.0.17 and later, including Atlas and MongoDB Enterprise editions.
 - Target clusters: Percona Server for MongoDB 6.0.17 and later.
 
+!!! note
+    PCSM supports MongoDB 6.0.17+, 7.0.13+, 8.0.0+ but source and target must be on the same major version during sync.
+
 Check [Supported deployments](deployment.md) to learn more.
 
 ## Can I sync from Atlas to a self-hosted Percona Server for MongoDB?
