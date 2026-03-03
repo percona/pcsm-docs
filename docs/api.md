@@ -29,6 +29,9 @@ Starts the replication process.
 | `cloneNumParallelCollections` | (int) | No | Number of read workers that read collection segments from the source. Shared for all collections.|
 | `cloneNumReadWorkers` | (int) | No | Number of collections to copy in parallel during clone. |
 | `cloneNumInsertWorkers` | (int) | No | Number of write workers that write batches to the target. Shared for all collection. |
+| `pauseOnInitialSync` | bool | No (opt hidden) | Pause after initial sync|
+| `cloneSegmentSize` | string[] | No (opt hidden) | Clone segment size|
+| `cloneReadBatchSize` | string[] | No (opt hidden) | Read cursor batch size|
 
 Example:
 
