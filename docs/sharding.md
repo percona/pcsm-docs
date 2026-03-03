@@ -4,7 +4,7 @@
 
     Sharding support is available starting with {{pcsm.full_name}} 0.7.0 and is currently in technical preview stage. We encourage you to try it out and share your feedback. This will help us improve the feature in future releases.
 
-{{pcsm.full_name}} supports replication between sharded MongoDB clusters, enabling you to migrate or synchronize data from one sharded deployment to another. This capability allows you to migrate sharded clusters with minimal downtime, maintain disaster recovery setups across sharded environments, and synchronize data between sharded clusters for testing or development purposes.
+{{pcsm.full_name}} supports replication between sharded MongoDB clusters, enabling you to migrate or synchronize data from one sharded deployment to another. This capability allows you to migrate sharded clusters with minimal downtime, and synchronize data between sharded clusters for testing or development purposes.
 
 ## Overview
 
