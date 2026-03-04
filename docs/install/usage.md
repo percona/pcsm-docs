@@ -8,6 +8,10 @@
 
 You can interact with {{pcsm.full_name}} using the command-line interface or via the HTTP API. Read more about [{{pcsm.short}} HTTP API](../api.md).
 
+!!! note " !!! note "CLI exit codes and error output"
+    The examples on the page show `{"ok": true}` as the expected output for successful commands. This is correct for successful responses. However, client subcommands now exit with a non-zero code when the server returns an error response (for example, `{"ok": false, "error": "..."}`). Previously, they exited with code `0` and printed the error JSON to **stdout**. Now, the error message is written to **stderr** and the process exits non-zero.
+
+
 ## Before you start
 
 Your target MongoDB cluster may be empty or contain data. {{pcsm.short}} replicates data from the source to the target but doesn't manage the target's data. If the target already has the same data as the source, {{pcsm.short}} overwrites it. However, if the target contains different data, {{pcsm.short}} doesn't delete it during replication. This leads to inconsistencies between the source and target. To ensure consistency, manually delete any existing data from the target before starting replication.
