@@ -39,8 +39,8 @@ Alternatively, you can define the following environment variables:
 | `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `2` |
 | `PCSM_CLONE_NUM_READ_WORKERS` | Number of read workers for cloning | `NumCPU / 4` |
 | `PCSM_CLONE_NUM_INSERT_WORKERS` | Number of insert workers for cloning | `NumCPU * 2` |
-| `PCSM_CLONE_SEGMENT_SIZE` | Clone segment size| |
-| `PCSM_CLONE_READ_BATCH_SIZE` | Read cursor batch size| |
+| `PCSM_CLONE_SEGMENT_SIZE` | Clone segment size| `-` |
+| `PCSM_CLONE_READ_BATCH_SIZE` | Read cursor batch size| `-` |
 | `PCSM_MONGODB_OPERATION_TIMEOUT` | Maximum time to wait before timing out MongoDB client operations such as insert, update, delete. If the timeout is reached, the operation will fail. Previously known as `PCSM_MONGODB_CLI_OPERATION_TIMEOUT`, which is now a deprecated alias. | `5m`|
 | `PCSM_LOG_LEVEL` |Log level used for output (e.g., debug, info, warn, error). Controls the verbosity of logs. | `info` |
 | `PCSM_LOG_JSON` | Output logs in JSON format. When enabled, log coloring is automatically disabled. | `false` |
