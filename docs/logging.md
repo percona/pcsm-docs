@@ -17,7 +17,7 @@ You configure logging when the `pcsm` process starts. The following flags are av
 Alternatively, you can define the following environment variables:
 
 | Variable | Description | Default |
-
+| --- | --- | --- |
 | `PCSM_LOG_LEVEL` |Log level used for output (e.g., debug, info, warn, error). Controls the verbosity of logs. | `info` |
 | `PCSM_LOG_JSON` | Output logs in JSON format. When enabled, log coloring is automatically disabled. | `false` |
 | `PCSM_LOG_NO_COLOR` | Disable ANSI color codes in log output (useful for non-interactive terminals and log aggregation systems). | `false` |
