@@ -56,7 +56,7 @@ By default, logs are printed to the console in a color-coded, human-readable for
     2024-10-26 14:30:05.123 DBG s=repl:watch op=insert ns=test.coll1 op_ts=1729953005,1
     ```
 
-You can disable the colorization with the `--log-no-color` flag (or its alias `--no-color`). This is useful when redirecting log output to a file.
+You can disable the colorization with the `--log-no-color` flag. This is useful when redirecting log output to a file.
 
 If you are running the PCSM server process and want to capture logs while disabling color codes, use:
 
