@@ -11,7 +11,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--mongodb-operation-timeout`: Timeout for MongoDB operations (default: 5m)
 - `--clone-num-parallel-collections`: Number of collections cloned in parallel during clone.
 - `--clone-num-read-workers`: Number of read workers that read collection segments from the source. Shared for all collections.
-- `--clone-num-insert-workers`: Number of write workers that write batches to the target. Shared for all collection.
+- `--clone-num-insert-workers`: Number of write workers that write batches to the target. Shared for all collections.
 - `--clone-segment-size`: Clone segment size
 - `--clone-read-batch-size`: Read cursor batch size
 - `--use-collection-bulk-write`: Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+).
