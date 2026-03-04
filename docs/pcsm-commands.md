@@ -102,7 +102,7 @@ Document level replication tuning parameters are now configurable via CLI flags:
 
 
 ```bash
-mongod --repl-event-queue-size=10000 \
+pcsm --repl-event-queue-size=10000 \
        --repl-worker-queue-size=1000 \
        --repl-bulk-ops-size=128
 ```
