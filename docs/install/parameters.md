@@ -25,8 +25,8 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
         --log-json
     ```
     ```bash
-    # Start mongod with 8 replication workers
-    mongod --repl-num-workers=8 \
+    # Start pcsm with 8 replication workers
+    pcsm --repl-num-workers=8 \
         --repl-event-queue-size=20000 \
         --repl-worker-queue-size=2000 \
         --repl-bulk-ops-size=128
