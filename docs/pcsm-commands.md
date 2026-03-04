@@ -63,9 +63,9 @@ Available flags:
 | -----| -----------|
 | `--include-namespaces` | Replicate only the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited|
 | `--exclude-namespaces` | Replicate everything except the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited. <br> When both `--include-namespaces` and  `--exclude-namespaces` flags are specified, the exclude filters take precedence. For example, if the `--include-namespaces` includes `db1.*` and `--exclude-namespaces` has `db1.users`, {{pcsm.short}} syncs all collections of `db1` **except** `db1.users`.|
-| `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `Auto` |
-| `PCSM_CLONE_NUM_READ_WORKERS` | Number of read workers for cloning | `NumCPU / 4` |
-| `PCSM_CLONE_NUM_INSERT_WORKERS` | Number of insert workers for cloning | `NumCPU * 2` |
+| `--clone-num-parallel-collections` | Number of collections to copy in parallel during clone. | `Auto` |
+| `--clone-num-read-workers` | Number of read workers that read collection segments from the source. Shared for all collections.| `NumCPU / 4` |
+| `--clone-num-insert-workers` | Number of write workers that write batches to the target. Shared for all collection.| `NumCPU * 2` |
 
 
 ### reset
