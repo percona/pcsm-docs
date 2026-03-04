@@ -86,3 +86,23 @@ Available flags:
 | Name | Description|
 | -----| -----------|
 | `--from-failure` | Resume replication from the last failure point |
+
+
+## Document level parallel replication
+
+Document level replication tuning parameters are now configurable via CLI flags:
+
+| Name | Description|
+| -----| -----------|
+| `--repl-num-workers` | Controls how many concurrent replication worker goroutines PCSM uses to apply DML (insert/update/replace/delete) events to the target cluster. |
+| `--repl-change-stream-batch-size` | Sets the maximum number of change stream events PCSM will request and read from MongoDB per batch while streaming changes from the source cluster. |
+| `--repl-event-queue-size` | Controls the size of the internal event queue used by the replication subsystem. |
+| `--repl-worker-queue-size` | Defines the maximum number of replication events that each replication worker thread can queue before processing. |
+| `--repl-bulk-ops-size` | Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication. |
+
+
+```bash
+pcsm --repl-event-queue-size=10000 \
+       --repl-worker-queue-size=1000 \
+       --repl-bulk-ops-size=128
+```
