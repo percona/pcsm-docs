@@ -99,3 +99,10 @@ Document level replication tuning parameters are now configurable via CLI flags:
 | `--repl-event-queue-size` | Controls the size of the internal event queue used by the replication subsystem. |
 | `--repl-worker-queue-size` | Defines the maximum number of replication events that each replication worker thread can queue before processing. |
 | `--repl-bulk-ops-size` | Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication. |
+
+
+```bash
+mongod --repl-event-queue-size=10000 \
+       --repl-worker-queue-size=1000 \
+       --repl-bulk-ops-size=128
+```
