@@ -7,7 +7,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--target`: The MongoDB connection string for the target cluster
 - `--log-level`: The log level (default: "info")
 - `--log-json`: Output log in JSON format with disabled color
-- `--log-no-color`: Disable log ANSI color
+- `--no-color`: Disable log ANSI color
 - `--mongodb-operation-timeout`: Timeout for MongoDB operations (default: 5m)
 - `--clone-num-parallel-collections`: Number of collections cloned in parallel during clone.
 - `--clone-num-read-workers`: Number of read workers that read collection segments from the source. Shared for all collections.
