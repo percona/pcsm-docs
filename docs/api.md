@@ -42,7 +42,7 @@ curl -X POST http://localhost:2242/start -d '{
 }'
 ```
 
-```json
+```bash
 curl -X POST "http://localhost:2242/start" \
   -H "Content-Type: application/json" \
   --data '{
