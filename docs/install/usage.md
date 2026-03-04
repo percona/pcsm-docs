@@ -8,7 +8,7 @@
 
 You can interact with {{pcsm.full_name}} using the command-line interface or via the HTTP API. Read more about [{{pcsm.short}} HTTP API](../api.md).
 
-!!! note " !!! note "CLI exit codes and error output"
+!!! "CLI exit codes and error output"
     The examples on the page show `{"ok": true}` as the expected output for successful commands. This is correct for successful responses. However, client subcommands now exit with a non-zero code when the server returns an error response (for example, `{"ok": false, "error": "..."}`). Previously, they exited with code `0` and printed the error JSON to **stdout**. Now, the error message is written to **stderr** and the process exits non-zero.
 
 
