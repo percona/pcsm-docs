@@ -12,8 +12,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--clone-num-parallel-collections`: Number of collections cloned in parallel during clone.
 - `--clone-num-read-workers`: Number of read workers that read collection segments from the source. Shared for all collections.
 - `--clone-num-insert-workers`: Number of write workers that write batches to the target. Shared for all collections.
-- `--clone-segment-size`: Clone segment size
-- `--clone-read-batch-size`: Read cursor batch size
+
 
 
 Example:
