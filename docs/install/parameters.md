@@ -11,28 +11,9 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--mongodb-operation-timeout`: Timeout for MongoDB operations (default: 5m)
 - `--clone-num-parallel-collections`: Number of collections cloned in parallel during clone.
 - `--clone-num-read-workers`: Number of read workers that read collection segments from the source. Shared for all collections.
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-- `--clone-num-insert-workers`: Number of write workers that write batches to the target. Shared for all collections.
-- `--clone-segment-size`: Clone segment size
-- `--clone-read-batch-size`: Read cursor batch size
-- `--use-collection-bulk-write`: Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+).
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 - `--clone-num-insert-workers`: Number of insert workers that write batches to the target. Shared for all collections.
-
->>>>>>> Stashed changes
-
+- `--use-collection-bulk-write`: Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+).
+- `--clone-num-insert-workers`: Number of insert workers that write batches to the target. Shared for all collections.
 
 Example:
 
@@ -57,13 +38,6 @@ Alternatively, you can define the following environment variables:
 | `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `2` |
 | `PCSM_CLONE_NUM_READ_WORKERS` | Number of read workers for cloning | `NumCPU / 4` |
 | `PCSM_CLONE_NUM_INSERT_WORKERS` | Number of insert workers for cloning | `NumCPU * 2` |
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-| `PCSM_CLONE_SEGMENT_SIZE` | Clone segment size | - |
-| `PCSM_CLONE_READ_BATCH_SIZE` | Read cursor batch size | - |
 | `PCSM_MONGODB_OPERATION_TIMEOUT` | Maximum time to wait before timing out MongoDB client operations such as insert, update, delete. If the timeout is reached, the operation will fail. Previously named `PCSM_MONGODB_CLI_OPERATION_TIMEOUT`; the old name may still be accepted for backward compatibility but is deprecated. | `5m` |
 | `PCSM_LOG_LEVEL` | Log level used for output (e.g., debug, info, warn, error). Controls the verbosity of logs. | `info` |
 =======
