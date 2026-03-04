@@ -52,6 +52,7 @@ curl -X POST "http://localhost:2242/start" \
     "replBulkOpsSize": 5000
   }'
 ```
+
 #### Response
 
 - `ok`: Boolean indicating if the operation was successful.
