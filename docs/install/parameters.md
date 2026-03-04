@@ -37,7 +37,7 @@ Alternatively, you can define the following environment variables:
 | `PCSM_SOURCE_URI` | MongoDB connection string for the source cluster | - |
 | `PCSM_TARGET_URI` | MongoDB connection string for the target cluster | - |
 | `PCSM_PORT` | Server port number | `2242` |
-| `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `Auto` |
+| `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `2` |
 | `PCSM_CLONE_NUM_READ_WORKERS` | Number of read workers for cloning | `NumCPU / 4` |
 | `PCSM_CLONE_NUM_INSERT_WORKERS` | Number of insert workers for cloning | `NumCPU * 2` |
 | `PCSM_CLONE_SEGMENT_SIZE` | Clone segment size| |
