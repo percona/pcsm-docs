@@ -9,6 +9,9 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--log-json`: Output log in JSON format with disabled color
 - `--log-no-color`: Disable log ANSI color
 - `--mongodb-operation-timeout`: Timeout for MongoDB operations (default: 5m)
+
+The following options apply to the **`pcsm start`** command **only**:
+
 - `--clone-num-parallel-collections`: Number of collections cloned in parallel during clone.
 - `--clone-num-read-workers`: Number of read workers that read collection segments from the source. Shared for all collections.
 - `--clone-num-insert-workers`: Number of write workers that write batches to the target. Shared for all collections.
