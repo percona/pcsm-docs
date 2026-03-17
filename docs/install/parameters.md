@@ -6,8 +6,8 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--source`: The MongoDB connection string for the source cluster
 - `--target`: The MongoDB connection string for the target cluster
 - `--log-level`: The log level (default: "info")
-- `--log-json`: Output log in JSON format with disabled color
-- `--log-no-color`: Disable log ANSI color
+- `--log-json`: Output logs in JSON format (disables ANSI color codes)
+- `--log-no-color`: Disable ANSI color codes in log output
 - `--mongodb-operation-timeout`: Timeout for MongoDB operations (default: 5m)
 
 The following options apply to the **`pcsm start`** command **only**:
