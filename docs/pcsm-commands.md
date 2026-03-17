@@ -33,8 +33,8 @@ $ pcsm status
 
 If the PCSM server is running on a non-default port, specify it with `--port` flag:
 
-```bash
-pcsm status --port 3000
+```{.bash data-prompt="$"}
+$ pcsm status --port 3000
 ```
 
 
