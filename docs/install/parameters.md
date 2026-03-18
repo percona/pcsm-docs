@@ -8,11 +8,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--log-level`: The log level (default: "info")
 - `--log-json`: Output log in JSON format with disabled color
 - `--no-color`: Disable log ASCI color
-- `--repl-num-workers`: Controls how many concurrent replication worker goroutines PCSM uses to apply DML (insert/update/replace/delete) events to the target cluster.
-- `--repl-change-stream-batch-size`: Sets the maximum number of change stream events PCSM will request and read from MongoDB per batch while streaming changes from the source cluster.
-- `--repl-event-queue-size`: Controls the size of the internal event queue used by the replication subsystem.
-- `--repl-worker-queue-size`: Defines the maximum number of replication events that each replication worker thread can queue before processing.
-- `--repl-bulk-ops-size`: Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication.
+
 
 ??? example "Example"
 
