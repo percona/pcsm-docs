@@ -7,7 +7,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--target`: The MongoDB connection string for the target cluster
 - `--log-level`: The log level (default: "info")
 - `--log-json`: Output log in JSON format with disabled color
-- `--no-color`: Disable log ASCI color
+- `--no-color`: Disable log ANSI color
 
 
 ??? example "Example"
