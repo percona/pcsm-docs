@@ -2,7 +2,7 @@
 
 !!! note ""
 
-    Starting with version 0.8.0, Percona Link for MongoDB has been rebranded as Percona ClusterSync for MongoDB. Any mentions of Percona Link for MongoDB in earlier release notes now refer to this product.
+    Starting with version 0.7.0, Percona Link for MongoDB has been rebranded as Percona ClusterSync for MongoDB. Any mentions of Percona Link for MongoDB in earlier release notes now refer to this product.
 
 * [Percona ClusterSync for MongoDB 0.8.0 ({{date.v0_8_0}})](release-notes/0.8.0.md)
 
