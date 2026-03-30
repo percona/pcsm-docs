@@ -47,7 +47,6 @@ Available flags:
 | -----| -----------|
 | `--include-namespaces` | Replicate only the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited|
 | `--exclude-namespaces` | Replicate everything except the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited. <br> When both `--include-namespaces` and  `--exclude-namespaces` flags are specified, the exclude filters take precedence. For example, if the `--include-namespaces` includes `db1.*` and `--exclude-namespaces` has `db1.users`, {{pcsm.short}} syncs all collections of `db1` **except** `db1.users`.|
-| `--include-namespaces` | Replicate only the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited|
 | `--repl-worker-flush-interval` | Maximum interval between worker bulk write flushes (for example, 1s, 500ms). Default: 1s.|
 | `--repl-worker-bulk-queue-size` | Number of pending bulks per worker for asynchronous writes. Higher values may improve throughput but increase memory usage.|
 
