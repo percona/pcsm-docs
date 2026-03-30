@@ -28,7 +28,7 @@ Starts the replication process.
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
 | `cloneNumParallelCollections` | int | No | Number of collections to copy in parallel during clone. |
 | `cloneNumReadWorkers` | int | No | Number of read workers that read collection segments from the source. Shared for all collections.|
-| `cloneNumInsertWorkers` | int | No | Number of write workers that write batches to the target. Shared for all collections. |
+| `cloneNumInsertWorkers` | int | No | Number of insert workers that write batches to the target. Shared for all collections. |
 
 Example:
 
