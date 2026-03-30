@@ -37,7 +37,7 @@ curl -X POST http://localhost:2242/start -d '{
     "includeNamespaces": ["dbName.*", "anotherDB.collName1", "anotherDB.collName2"],
     "excludeNamespaces": ["dbName.collName"],
     "replWorkerFlushInterval": "1s",
-    "replWorkerBulkQueueSize": 10
+    "replWorkerBulkQueueSize": 3
 }'
 ```
 
