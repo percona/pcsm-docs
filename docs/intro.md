@@ -13,6 +13,29 @@ You operate with {{pcsm.full_name}} using the [set of commands](pcsm-commands.md
 * **Finalized**: all checks are complete, data replication is stopped
 * **Failed**: {{pcsm.short}} encountered an error
 
+## Per-document operation ordering
+
+### Overview
+
+{{pcsm.short}} follows a per-document ordered replication model.
+
+For a given document, operations such as `insert`, `update`, and `delete` are applied on the target in the same order as they occur on the source. This ensures consistency at the individual document level across clusters.
+
+### Multi-document transactions
+
+- Operations are replicated as individual document-level operations.
+
+- Per-document ordering is preserved.
+
+- Operations from the same transaction may be applied independently across documents on the target.
+
+
+This means that {{pcsm.short}} maintains ordering guarantees at the document level while applying changes in a way that supports high-throughput and scalable replication.
+
+!!! note
+    
+    This behavior is consistent with earlier versions of {{pcsm.short}}, where multi-document transactions were processed using ordered bulk operations rather than native MongoDB transactions.
+
 ## Replication workflows
 
 The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Select the tab below that matches your setup:
