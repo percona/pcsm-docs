@@ -26,8 +26,8 @@ Starts the replication process.
 |-----------|------|----------|-------------|
 | `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
-| `replWorkerFlushInterval` | string[] | No | Maximum time between bulk write flushes to the target. Lower values reduce lag and higher values batch more ops per write.  |
-| `--repl-worker-bulk-queue-size` | integer | No | Number of pending bulks per worker for asynchronous writes. Higher values may improve throughput but increase memory usage. |
+| `replWorkerFlushInterval` | string | No | Maximum time between bulk write flushes to the target. Lower values reduce lag and higher values batch more ops per write.  |
+| `replWorkerBulkQueueSize` | integer | No | Number of pending bulks per worker for asynchronous writes. Higher values may improve throughput but increase memory usage. |
 
 
 Example:
@@ -35,7 +35,9 @@ Example:
 ```json
 curl -X POST http://localhost:2242/start -d '{
     "includeNamespaces": ["dbName.*", "anotherDB.collName1", "anotherDB.collName2"],
-    "excludeNamespaces": ["dbName.collName"]
+    "excludeNamespaces": ["dbName.collName"],
+    "replWorkerFlushInterval": "1s",
+    "replWorkerBulkQueueSize": 10
 }'
 ```
 
