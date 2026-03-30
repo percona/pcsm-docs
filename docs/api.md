@@ -60,7 +60,7 @@ Finalizes the replication process.
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/finalize
 ```
 
@@ -83,7 +83,7 @@ Pauses the replication process.
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/pause
 ```
 
@@ -106,13 +106,13 @@ Resumes the replication process.
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/resume
 ```
 
 Resume from failure:
 
-```json
+```bash
 curl -X POST http://localhost:2242/resume -d '{
   "fromFailure": true
 }'
@@ -137,7 +137,7 @@ The /status endpoint provides the current state of the Percona ClusterSync for M
 
 Example:
 
-```json
+```bash
 curl -X GET http://localhost:2242/status
 ```
 
