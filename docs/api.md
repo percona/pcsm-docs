@@ -32,7 +32,7 @@ Starts the replication process.
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/start -d '{
     "includeNamespaces": ["dbName.*", "anotherDB.collName1", "anotherDB.collName2"],
     "excludeNamespaces": ["dbName.collName"],
