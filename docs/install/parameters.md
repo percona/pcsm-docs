@@ -34,4 +34,4 @@ Alternatively, you can define the following environment variables:
 | `PCSM_CLONE_NUM_INSERT_WORKERS` | Number of insert workers for cloning | `NumCPU * 4` |
 | `PCSM_MONGODB_CLI_OPERATION_TIMEOUT` | Maximum time to wait before timing out MongoDB client operations such as insert, update, delete. If the timeout is reached, the operation will fail.  | `5m` |
 | `PCSM_REPL_WORKER_FLUSH_INTERVAL` | Maximum time between bulk write flushes to the target. Lower values reduce lag and higher values batch more ops per write. | `1s` |
-| `PCSM_REPL_WORKER_BULK_QUEUE_SIZE` | Number of pending bulk batches per worker while a write is in progress. Higher values can improve throughput at the cost of increased memory usage. | `3` |   
+| `PCSM_REPL_WORKER_BULK_QUEUE_SIZE` | Number of pending bulk batches per worker while a write is in progress. Higher values can improve throughput at the cost of increased memory usage. | `3` |
