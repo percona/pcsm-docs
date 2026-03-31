@@ -35,3 +35,5 @@ Alternatively, you can define the following environment variables:
 | `PCSM_MONGODB_CLI_OPERATION_TIMEOUT` | Maximum time to wait before timing out MongoDB client operations such as insert, update, delete. If the timeout is reached, the operation will fail.  | `5m` |
 | `PCSM_REPL_WORKER_FLUSH_INTERVAL` | Maximum time between bulk write flushes to the target. Lower values reduce lag and higher values batch more ops per write. | `1s` |
 | `PCSM_REPL_WORKER_BULK_QUEUE_SIZE` | Number of pending bulk batches per worker while a write is in progress. Higher values can improve throughput at the cost of increased memory usage. | `3` |
+| `PCMS_SOURCE_CLIENT_COMPRESSORS` | Allows you specify which compression algorithms the source client should use when reading events/documents. Useful because throughput can vary dramatically depending on how compressible the source data is.| `"snappy", "zstd", "zlib"` |
+| `PCMS_TARGET_CLIENT_COMPRESSORS` | Allows you to control compression on the target side as well.| `"snappy", "zstd", "zlib"` |
