@@ -19,7 +19,7 @@ You operate with {{pcsm.full_name}} using the [set of commands](pcsm-commands.md
 
 {{pcsm.short}} follows a per-document ordered replication model.
 
-For a given document, operations such as `insert`, `update`, and `delete` are applied on the target in the same order as they occur on the source. This ensures consistency at the individual document level across clusters.
+For a given document, operations such as `insert`, `update`, and `delete` are applied to the target in the same order as they occur on the source. This ensures consistency at the individual document level across clusters.
 
 ### Multi-document transactions
 
