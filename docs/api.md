@@ -26,7 +26,7 @@ Starts the replication process.
 |-----------|------|----------|-------------|
 | `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
-| `replWorkerFlushInterval` | string[] | No | Maximum time between bulk write flushes to the target. Lower values reduce lag and higher values batch more ops per write. |
+| `replWorkerFlushInterval` | string | No | Maximum time between bulk write flushes to the target. Lower values reduce lag and higher values batch more ops per write. |
 | `replWorkerBulkQueueSize` | integer | No | Number of pending bulks per worker for asynchronous writes. Higher values may improve throughput but increase memory usage. |
 
 
