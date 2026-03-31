@@ -24,11 +24,9 @@ For a given document, operations such as `insert`, `update`, and `delete` are ap
 ### Multi-document transactions
 
 When handling multi-document transactions, {{pcsm.short}} applies operations with the following behavior:
-
-* Operations are replicated as individual document-level operations.
-* Per-document ordering is preserved.
-* Operations from the same transaction may be applied independently across documents on the target.
-
+* Operations from a multi-document transaction are replicated as individual document-level operations, not as an atomic unit.
+* Per-document ordering is preserved: operations on the same document are applied in source order.
+* Cross-document transaction atomicity is not guaranteed on the target. During replication, the target may temporarily reflect a partial state of a transaction.
 As a result, {{pcsm.short}} maintains ordering guarantees at the document level while applying changes in a way that supports high-throughput and scalable replication.
 
 !!! note
