@@ -23,7 +23,7 @@ For a given document, operations such as `insert`, `update`, and `delete` are ap
 
 ### Multi-document transactions
 
-When handling multi-document transactions, PCSM applies operations with the following behavior:
+When handling multi-document transactions, {{pcsm.short}} applies operations with the following behavior:
 
 * Operations are replicated as individual document-level operations.
 * Per-document ordering is preserved.
