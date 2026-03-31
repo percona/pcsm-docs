@@ -23,10 +23,13 @@ For a given document, operations such as `insert`, `update`, and `delete` are ap
 
 ### Multi-document transactions
 
+When handling multi-document transactions, PCSM applies operations with the following behavior:
+
 * Operations are replicated as individual document-level operations.
 * Per-document ordering is preserved.
 * Operations from the same transaction may be applied independently across documents on the target.
-This means that {{pcsm.short}} maintains ordering guarantees at the document level while applying changes in a way that supports high-throughput and scalable replication.
+
+As a result, {{pcsm.short}} maintains ordering guarantees at the document level while applying changes in a way that supports high-throughput and scalable replication.
 
 !!! note
     This behavior is consistent with earlier versions of {{pcsm.short}}, where multi-document transactions were processed using ordered bulk operations rather than native MongoDB transactions.
