@@ -26,13 +26,18 @@ Starts the replication process.
 |-----------|------|----------|-------------|
 | `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
+| `replWorkerFlushInterval` | string | No | Maximum time between bulk write flushes to the target. Lower values reduce lag and higher values batch more ops per write. |
+| `replWorkerBulkQueueSize` | integer | No | Number of pending bulks per worker for asynchronous writes. Higher values may improve throughput but increase memory usage. |
+
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/start -d '{
     "includeNamespaces": ["dbName.*", "anotherDB.collName1", "anotherDB.collName2"],
-    "excludeNamespaces": ["dbName.collName"]
+    "excludeNamespaces": ["dbName.collName"],
+    "replWorkerFlushInterval": "1s",
+    "replWorkerBulkQueueSize": 3
 }'
 ```
 
@@ -55,7 +60,7 @@ Finalizes the replication process.
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/finalize
 ```
 
@@ -78,7 +83,7 @@ Pauses the replication process.
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/pause
 ```
 
@@ -101,13 +106,13 @@ Resumes the replication process.
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/resume
 ```
 
 Resume from failure:
 
-```json
+```bash
 curl -X POST http://localhost:2242/resume -d '{
   "fromFailure": true
 }'
@@ -132,7 +137,7 @@ The /status endpoint provides the current state of the Percona ClusterSync for M
 
 Example:
 
-```json
+```bash
 curl -X GET http://localhost:2242/status
 ```
 
