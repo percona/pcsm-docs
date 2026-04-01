@@ -49,8 +49,8 @@ Available flags:
 | `--exclude-namespaces` | Replicate everything except the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited. <br> When both `--include-namespaces` and  `--exclude-namespaces` flags are specified, the exclude filters take precedence. For example, if the `--include-namespaces` includes `db1.*` and `--exclude-namespaces` has `db1.users`, {{pcsm.short}} syncs all collections of `db1` **except** `db1.users`.| -|
 | `--repl-worker-flush-interval` | Maximum time between bulk write flushes to the target. Lower values reduce lag and higher values batch more ops per write (for example, 1s, 500ms).|`1s` |
 | `--repl-worker-bulk-queue-size` | Number of pending bulks per worker for asynchronous writes. Higher values may improve throughput but increase memory usage.| `3`|
-| `--source-client-compressors` | Allows you to specify which compression algorithms the source client should use when reading events/documents. Useful because throughput can vary dramatically depending on how compressible the source data is.| `snappy,zstd,zlib` |
-| `--target-client-compressors` | Allows you to control compression on the target side as well.| `snappy,zstd,zlib` |
+| `--source-client-compressors` | Specifies which compression algorithms the source client should use when reading events/documents as a comma-separated list. Accepted values: `snappy`, `zstd`, `zlib`. Set to an empty string to disable compression. Useful because throughput can vary dramatically depending on how compressible the source data is. | `snappy,zstd,zlib` |
+| `--target-client-compressors` | Specifies which compression algorithms the target client should use when writing events/documents as a comma-separated list. Accepted values: `snappy`, `zstd`, `zlib`. Set to an empty string to disable compression. | `snappy,zstd,zlib` |
 
 
 ### reset
