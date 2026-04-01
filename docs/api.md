@@ -26,6 +26,7 @@ Starts the replication process.
 |-----------|------|----------|-------------|
 | `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
+| `useCollectionBulkWrite` | boolean | No | Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+) |
 
 Example:
 
