@@ -13,7 +13,7 @@ You operate with {{pcsm.full_name}} using the [set of commands](pcsm-commands.md
 * **Finalized**: all checks are complete, data replication is stopped
 * **Failed**: {{pcsm.short}} encountered an error
 
-## Per-document operation ordering
+## Transaction handling
 
 ### Overview
 
@@ -25,7 +25,7 @@ For a given document, operations such as `insert`, `update`, and `delete` are ap
 
 When handling multi-document transactions, {{pcsm.short}} applies operations with the following behavior:
 
-* Operations from a multi-document transaction are replicated as individual document-level operations, not as an atomic unit.
+* Operations from a multi-document transaction are replicated as individual document-level operations rather than a single atomic unit, similar to how change streams emit events for each operation within a transaction.
 * Per-document ordering is preserved: operations on the same document are applied in source order.
 * Cross-document transaction atomicity is not guaranteed on the target. During replication, the target may temporarily reflect a partial state of a transaction.
 
