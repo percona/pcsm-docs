@@ -33,7 +33,7 @@ $ pcsm status
 
 If the PCSM server is running on a non-default port, specify it with `--port` flag:
 
-```{.bash data-prompt="$"}
+```{.bash data-prompt="$"$}
 $ pcsm status --port 3000
 ```
 
@@ -59,12 +59,18 @@ To include or exclude a specific database and all collections it includes, pass 
 Available flags:
 
 
-| Name | Description| Default |
-| -----| -----------|----------|
-| `--include-namespaces` | Replicate only the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited| -|
-| `--exclude-namespaces` | Replicate everything except the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited. <br> When both `--include-namespaces` and  `--exclude-namespaces` flags are specified, the exclude filters take precedence. For example, if the `--include-namespaces` includes `db1.*` and `--exclude-namespaces` has `db1.users`, {{pcsm.short}} syncs all collections of `db1` **except** `db1.users`.| -|
-| `--repl-worker-flush-interval` | Maximum time between bulk write flushes to the target. Lower values reduce lag and higher values batch more ops per write (for example, 1s, 500ms).|`1s` |
-| `--repl-worker-bulk-queue-size` | Number of pending bulks per worker for asynchronous writes. Higher values may improve throughput but increase memory usage.| `3`|
+| Name | Description|
+| -----| -----------|
+| `--include-namespaces` | Replicate only the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited|
+| `--exclude-namespaces` | Replicate everything except the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited. <br> When both `--include-namespaces` and  `--exclude-namespaces` flags are specified, the exclude filters take precedence. For example, if the `--include-namespaces` includes `db1.*` and `--exclude-namespaces` has `db1.users`, {{pcsm.short}} syncs all collections of `db1` **except** `db1.users`.|
+| `--clone-num-parallel-collections` | Number of collections to copy in parallel during clone. |
+| `--clone-num-read-workers` | Number of read workers that read collection segments from the source. Shared for all collections.|
+| `--clone-num-insert-workers` | Number of insert workers that write batches to the target. Shared for all collections.|
+| `--repl-num-workers` | Controls how many concurrent replication worker goroutines PCSM uses to apply DML (insert/update/replace/delete) events to the target cluster.|
+| `--repl-change-stream-batch-size`| Sets the maximum number of change stream events PCSM will request and read from MongoDB per batch while streaming changes from the source cluster.|
+| `--repl-event-queue-size`| Controls the size of the internal event queue used by the replication subsystem.|
+| `--repl-worker-queue-size`| Defines the maximum number of replication events that each replication worker thread can queue before processing|
+| `--repl-bulk-ops-size`| Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication.|
 
 
 ### reset
