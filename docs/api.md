@@ -26,9 +26,7 @@ Starts the replication process.
 |-----------|------|----------|-------------|
 | `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
-| `cloneNumParallelCollections` | int | No | Number of collections to copy in parallel during clone. |
-| `cloneNumReadWorkers` | int | No | Number of read workers that read collection segments from the source. Shared for all collections.|
-| `cloneNumInsertWorkers` | int | No | Number of insert workers that write batches to the target. Shared for all collections. |
+| `useCollectionBulkWrite` | boolean | No | Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+) |
 
 Example:
 

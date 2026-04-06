@@ -63,9 +63,7 @@ Available flags:
 | -----| -----------|
 | `--include-namespaces` | Replicate only the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited|
 | `--exclude-namespaces` | Replicate everything except the specified namespaces. Multiple namespaces are supported as a comma separated list. The number of namespaces to specify is unlimited. <br> When both `--include-namespaces` and  `--exclude-namespaces` flags are specified, the exclude filters take precedence. For example, if the `--include-namespaces` includes `db1.*` and `--exclude-namespaces` has `db1.users`, {{pcsm.short}} syncs all collections of `db1` **except** `db1.users`.|
-| `--clone-num-parallel-collections` | Number of collections to copy in parallel during clone. |
-| `--clone-num-read-workers` | Number of read workers that read collection segments from the source. Shared for all collections.|
-| `--clone-num-insert-workers` | Number of insert workers that write batches to the target. Shared for all collections.|
+| `--use-collection-bulk-write` | Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+)|
 
 
 ### reset
