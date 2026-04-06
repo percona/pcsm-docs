@@ -36,9 +36,9 @@ Alternatively, you can define the following environment variables:
 | `PCSM_PORT` | Server port number | `2242` |
 | `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `2` |
 | `PCSM_CLONE_NUM_READ_WORKERS` | Number of read workers for cloning | `NumCPU / 4` |
-| `PCSM_CLONE_NUM_INSERT_WORKERS` | Number of insert workers for cloning | `NumCPU * 2` |
-| `PCSM_MONGODB_OPERATION_TIMEOUT` |Maximum time to wait before timing out MongoDB client operations such as insert, update, delete. If the timeout is reached, the operation will fail. Previously named `PLM_MONGODB_CLI_OPERATION_TIMEOUT`; the old name may still be accepted for backward compatibility but is deprecated. | `5m`|
-| `PCSM_LOG_LEVEL` |Log level used for output (e.g., debug, info, warn, error). Controls the verbosity of logs. | `info` |
-| `PCSM_LOG_JSON` | Output logs in JSON format. When enabled, log coloring is automatically disabled. | `false` |
-| `PCSM_LOG_NO_COLOR` | Disable ANSI color codes in log output (useful for non-interactive terminals and log aggregation systems). | `false` |
-| `PCSM_USE_COLLECTION_BULK_WRITE` | Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+). | `false` |
+| `PCSM_CLONE_NUM_INSERT_WORKERS` | Number of insert workers for cloning | `NumCPU * 4` |
+| `PCSM_MONGODB_CLI_OPERATION_TIMEOUT` | Maximum time to wait before timing out MongoDB client operations such as insert, update, delete. If the timeout is reached, the operation will fail.  | `5m` |
+| `PCSM_REPL_WORKER_FLUSH_INTERVAL` | Maximum time between bulk write flushes to the target. Lower values reduce lag and higher values batch more ops per write. | `1s` |
+| `PCSM_REPL_WORKER_BULK_QUEUE_SIZE` | Number of pending bulk batches per worker while a write is in progress. Higher values can improve throughput at the cost of increased memory usage. | `3` |
+| `PCSM_SOURCE_CLIENT_COMPRESSORS` | Specifies which compression algorithms the source client should use when reading events/documents as a comma-separated list. Accepted values: `snappy`, `zstd`, `zlib`. Useful because throughput can vary dramatically depending on how compressible the source data is. | `snappy,zstd,zlib` |
+| `PCSM_TARGET_CLIENT_COMPRESSORS` | Specifies which compression algorithms the target client should use when writing events/documents as a comma-separated list. Accepted values: `snappy`, `zstd`, `zlib`. Set to an empty string to disable compression. | `snappy,zstd,zlib` |
