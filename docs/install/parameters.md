@@ -7,9 +7,12 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--target`: The MongoDB connection string for the target cluster
 - `--log-level`: The log level (default: "info")
 - `--log-json`: Output log in JSON format with disabled color
-- `--no-color`: Disable log ASCI color
-- `--source-client-compressors`: Specifies which compression algorithms the source client should use when reading events/documents as a comma-separated list. Accepted values: `snappy`, `zstd`, `zlib`. Useful because throughput can vary dramatically depending on how compressible the source data is.
-- `--target-client-compressors`: Specifies which compression algorithms the target client should use when writing events/documents as a comma-separated list. Accepted values: `snappy`, `zstd`, `zlib`. Set to an empty string to disable compression.
+- `--no-color`: Disable log ANSI color
+- `--mongodb-operation-timeout`: Timeout for MongoDB operations (default: 5m)
+- `--clone-num-parallel-collections`: Number of collections cloned in parallel during clone.
+- `--clone-num-read-workers`: Number of read workers that read collection segments from the source. Shared for all collections.
+- `--clone-num-insert-workers`: Number of insert workers that write batches to the target. Shared for all collections.
+- `--use-collection-bulk-write`: Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+).
 
 Example:
 

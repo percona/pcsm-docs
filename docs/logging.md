@@ -10,7 +10,17 @@ You configure logging when the `pcsm` process starts. The following flags are av
 |---------------|---------------------------------------------------|---------|
 | `--log-level` | Sets the verbosity of the logs.                   | `info`  |
 | `--log-json`  | Outputs logs in a structured JSON format.         | `false` |
-| `--no-color`  | Disables colorized output for text-based logs.    | `false` |
+| `--log-no-color`  | Disables colorized output for text-based logs.    | `false` |
+
+### Environment variables
+
+Alternatively, you can define the following environment variables:
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `PCSM_LOG_LEVEL` |Log level used for output (e.g., debug, info, warn, error). Controls the verbosity of logs. | `info` |
+| `PCSM_LOG_JSON` | Output logs in JSON format. When enabled, log coloring is automatically disabled. | `false` |
+| `PCSM_LOG_NO_COLOR` | Disable ANSI color codes in log output (useful for non-interactive terminals and log aggregation systems). | `false` |
 
 ### Log level
 
@@ -46,10 +56,22 @@ By default, logs are printed to the console in a color-coded, human-readable for
     2024-10-26 14:30:05.123 DBG s=repl:watch op=insert ns=test.coll1 op_ts=1729953005,1
     ```
 
-You can disable the colorization with the `--no-color` flag. This is useful when redirecting log output to a file.
+You can disable the colorization with the `--log-no-color` flag. This is useful when redirecting log output to a file.
 
-```sh
-pcsm --source <source-uri> --target <target-uri> --no-color > pcsm.log
+If you are running the PCSM server process and want to capture logs while disabling color codes, use:
+
+```bash
+pcsm --source <source-uri> --target <target-uri> --log-no-color > pcsm.log
+```
+
+For client subcommands (like start, resume, or finalize), you must redirect `stderr` to ensure the logs are actually saved:
+
+```bash
+# To capture only the logs (stderr)
+pcsm start 2> pcsm.log
+
+# To capture everything (both stdout and stderr)
+pcsm start &> pcsm.log
 ```
 
 #### JSON format

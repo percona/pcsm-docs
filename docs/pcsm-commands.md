@@ -6,6 +6,15 @@ Percona ClusterSync for MongoDB is a replication tool for MongoDB clusters. It p
 
 ## Commands
 
+### Common flags
+
+The following flag is available on all subcommands:
+
+| Name     | Description                                                                                                                                                            |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--port` | Port number of the running PCSM server to connect to (default: `2242`). Use this when the server is listening on a non-default port (e.g., `pcsm status --port 3000`). |
+
+
 ### version
 
 Display the current version of Percona ClusterSync for MongoDB.
@@ -21,6 +30,13 @@ Get the status of the replication process.
 ```{.bash data-prompt="$"$}
 $ pcsm status
 ```
+
+If the PCSM server is running on a non-default port, specify it with `--port` flag:
+
+```{.bash data-prompt="$"}
+$ pcsm status --port 3000
+```
+
 
 ### start
 

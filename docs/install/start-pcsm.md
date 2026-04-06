@@ -23,7 +23,7 @@ Start {{pcsm.full_name}}.
     Run Percona ClusterSync for MongoDB with the following command **if you haven't defined MongoDB connection string URI before**:
 
     ```{.bash data-prompt="$"}
-    $ nohup pcsm --source <source-mongodb-uri> --target <target-mongodb-uri> --no-color > percona-clustersync-mongodb.log 2>&1 &
+    $ nohup pcsm --source <source-mongodb-uri> --target <target-mongodb-uri> --log-no-color > percona-clustersync-mongodb.log 2>&1 &
     ```
 
     Alternatively, you can use environment variables:
@@ -31,7 +31,7 @@ Start {{pcsm.full_name}}.
     ```{.bash data-prompt="$"}
     $ export SOURCE_URI=<source-mongodb-uri>
     $ export TARGET_URI=<target-mongodb-uri>
-    $ nohup pcsm --no-color > percona-clustersync-mongodb.log 2>&1 &
+    $ nohup pcsm --log-no-color > percona-clustersync-mongodb.log 2>&1 &
     ```
 
 See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for all available options.
