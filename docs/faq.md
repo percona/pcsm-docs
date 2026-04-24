@@ -11,17 +11,17 @@
 
 ## Which MongoDB versions are supported?
 
-- Source clusters: MongoDB 6.0.17 and later, including Atlas and MongoDB Enterprise editions.
+- Source clusters: MongoDB 6.0.17 and later, including Atlas, MongoDB Enterprise Server, and Percona Server for MongoDB
 - Target clusters: Percona Server for MongoDB 6.0.17 and later.
 
 !!! note
-    PCSM supports MongoDB 6.0.17+, 7.0.13+, 8.0.0+ but source and target must be on the same major version during sync.
+    PCSM supports MongoDB 6.0.17+, 7.0.13+, 8.0.0+, but the source and target must be on the same major version during sync.
 
 Check [Supported deployments](deployment.md) to learn more.
 
 ## Can I sync from Atlas to a self-hosted Percona Server for MongoDB?
 
-Yes. {{pcsm.full_name}} is explicitly built to support Atlas to Percona Software migrations with minimal effort.
+Yes. {{pcsm.full_name}} is explicitly built to support Atlas to Percona Server for MongoDB migrations with minimal effort.
 
 ## Does {{pcsm.full_name}} require a replica set on the source or target?
 
@@ -29,10 +29,11 @@ Yes. Both the source and target must be replica sets.
 
 ## Does {{pcsm.full_name}} support sharded clusters?
 
-No. Sharded MongoDB clusters are not supported as either source or target at this time. Support for shard-to-shard replication is planned for a future release.
+Yes. Sharded MongoDB clusters are supported as both sources and targets. Note: this feature is currently in technical preview. Support for shard-to-shard replication is planned for a future release.
+
 ## Does {{pcsm.full_name}} support bidirectional sync?
 
-No. {{pcsm.full_name}} currently supports one-way synchronization only (source → target). However, you can re-run Percona {{pcsm.full_name}} with a reversed connection strings to do the other direction sync.
+No. {{pcsm.full_name}} currently supports one-way synchronization only (source → target). However, you can rerun Percona {{pcsm.full_name}} with reversed connection strings to perform the other-direction sync.
 
 ## Is there a way to monitor sync progress?
 
@@ -50,6 +51,12 @@ Yes. {{pcsm.full_name}} allows you to include/exclude filters for specific datab
 - It uses checkpointing to resume from the last known sync point after a restart.
 - Logs include detailed error reporting for troubleshooting.
 
+## What database read and write concerns are used?
+By default, Percona ClusterSync for MongoDB uses the `"majority"` read concern level for reads on the source cluster. For writes to the destination cluster, the tool uses a write concern level of `"majority"` with `j: true`.
+
+
+
+
 ## What features are planned for future releases?
 
-High availability, performance improvements, and shard-to-shard replication are the next features we are working on.   
+ We're currently working on high availability with multiple PCSM instances and shard-to-shard replication.   
