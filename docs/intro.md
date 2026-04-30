@@ -30,6 +30,9 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     ### Workflow steps
 
+    The following is the workflow for {{pcsm.short}}:
+    {.power-number}
+
     1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Start and connect {{pcsm.short}} to your source and target using these user credentials and the `mongos` hostname and port. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
     2. **Start the replication**
@@ -60,7 +63,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
             
             {{pcsm.short}} copies the documents from the source collection to the target.
     
-        See [Start the replication](install/usage.md#start-the-replication) for command details.
+    See [Start the replication](install/usage.md#start-the-replication) for command details.
        
     3. **Real-time replication**: After the initial data sync, {{pcsm.short}} monitors changes in the source and replicates them to the target at runtime. You don't have to stop your source deployment—it operates as usual, accepting client requests. {{pcsm.short}} uses [change streams :octicons-link-external-16:](https://www.mongodb.com/docs/manual/changeStreams/) to track the changes to your data and replicate them to the target.
 
@@ -85,6 +88,9 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
     A solution is to use {{pcsm.full_name}}. Since {{pcsm.short}} connects to `mongos` instances, the number of shards on source and target can differ. Install {{pcsm.short}} on a dedicated host closer to the target cluster to minimize network latency.
 
     ### Workflow steps
+
+    The following is the workflow for {{pcsm.short}} for sharded clusters:
+    {.power-number}
 
     1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Configure connection strings using `mongos` hostname and port for both source and target clusters. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
