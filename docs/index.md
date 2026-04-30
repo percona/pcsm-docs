@@ -22,13 +22,9 @@
 
 Benefit from {{pcsm.full_name}} in the following use cases:
 
-* **Disaster recovery**:
-
-    {{pcsm.short}} enables you to maintain a secondary cluster as a backup. In case of a failure in the primary cluster, the secondary cluster can take over, ensuring minimal downtime.
-    
 * **Data migration**:
 
-    {{pcsm.short}} simplifies the process of migrating data between clusters, whether you're upgrading to a new MongoDB version, moving to a different vendor, or transitioning from cloud to on-premises.
+    {{pcsm.short}} simplifies the process of migrating data between clusters, moving to a different vendor, or transitioning from cloud to on-premises.
 
 * **Global data distribution**:
 
@@ -41,3 +37,7 @@ Benefit from {{pcsm.full_name}} in the following use cases:
 * **Hybrid cloud deployments**:
 
     Synchronize data between on-premises clusters and cloud clusters, enabling hybrid cloud strategies.
+
+* **Disaster mitigation**:
+
+    Keep a warm standby copy of your data in another cloud or region. PCSM is not a replacement for [MongoDB Atlas Global Clusters :octicons-link-external-16:](https://www.mongodb.com/docs/atlas/global-clusters/) or a fully orchestrated disaster recovery (DR) solution.

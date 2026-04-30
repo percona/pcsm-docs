@@ -26,14 +26,33 @@ Starts the replication process.
 |-----------|------|----------|-------------|
 | `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
+| `replNumWorkers` | int | No | Controls how many concurrent replication worker goroutines PCSM uses to apply DML (insert/update/replace/delete) events to the target cluster.|
+| `replChangeStreamBatchSize` | int | No | Sets the maximum number of change stream events PCSM will request and read from MongoDB per batch while streaming changes from the source cluster. |
+| `replEventQueueSize` | int | No | Controls the size of the internal event queue used by the replication subsystem. |
+| `replWorkerQueueSize` | int | No | Defines the maximum number of replication events that each replication worker thread can queue before processing.  |
+| `replBulkOpsSize` | int | No | Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication. |
 
-Example:
 
-```json
+Examples:
+
+```bash
 curl -X POST http://localhost:2242/start -d '{
     "includeNamespaces": ["dbName.*", "anotherDB.collName1", "anotherDB.collName2"],
-    "excludeNamespaces": ["dbName.collName"]
+    "excludeNamespaces": ["dbName.collName"],
+    "replWorkerFlushInterval": "1s",
+    "replWorkerBulkQueueSize": 3
 }'
+```
+
+```bash
+curl -X POST "http://localhost:2242/start" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "replChangeStreamBatchSize": 10000,
+    "replEventQueueSize": 5000,
+    "replWorkerQueueSize": 5000,
+    "replBulkOpsSize": 5000
+  }'
 ```
 
 #### Response
@@ -55,7 +74,7 @@ Finalizes the replication process.
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/finalize
 ```
 
@@ -78,7 +97,7 @@ Pauses the replication process.
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/pause
 ```
 
@@ -101,13 +120,13 @@ Resumes the replication process.
 
 Example:
 
-```json
+```bash
 curl -X POST http://localhost:2242/resume
 ```
 
 Resume from failure:
 
-```json
+```bash
 curl -X POST http://localhost:2242/resume -d '{
   "fromFailure": true
 }'
@@ -132,7 +151,7 @@ The /status endpoint provides the current state of the Percona ClusterSync for M
 
 Example:
 
-```json
+```bash
 curl -X GET http://localhost:2242/status
 ```
 
