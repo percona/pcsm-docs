@@ -44,4 +44,3 @@ The following functionalities are not supported:
 * Database upgrade during the sync, even in the paused state.
 * Reverse synchronization
 * External authentication via Kerberos, AWS and LDAP
-* [GridFS :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/gridfs/)
