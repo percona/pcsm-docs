@@ -48,6 +48,7 @@ Use only the version combinations listed as supported in the table above. Unsupp
     If the target cluster FCV is lower than the source cluster FCV, replication issues may occur and PCSM will not detect the mismatch automatically.
 
     Before starting replication:
+    
     - Verify the FCV on both clusters
     - Ensure the target cluster FCV is equal to or higher than the source cluster FCV
 
