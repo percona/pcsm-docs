@@ -19,25 +19,48 @@ PCSM blocks synchronization in all cases where the source major version is highe
 |----------------|----------------|-----------|-------|
 | 6.0.x | 6.0.x | **Yes** | — |
 | 6.0.x | 7.0.x | **Yes** | — |
-| 6.0.x | 8.0.x | **Planned** | Not available in the current release. Use a two-hop path instead: replicate from 6.0 to 7.0, then from 7.0 to 8.0. |
+| 6.0.x | 8.0.x | **Planned** | Not available in the current release. Use the upgrade path: 6.0 → 7.0 → 8.0 |
 | 7.0.x | 7.0.x | **Yes** | — |
 | 7.0.x | 8.0.x | **Yes** | — |
-| 8.0.x | 7.0.x | **No** | Downgrade replication is not supported. Startup is blocked. |
-| 7.0.x | 6.0.x | **No** | Downgrade replication is not supported. Startup is blocked. |
+| 8.0.x | 7.0.x | **No** | Downgrade replication is not supported.|
+| 7.0.x | 6.0.x | **No** | Downgrade replication is not supported. |
 | Any higher | Any lower | **No** | All downgrade paths are blocked. |
 
-Only run the combinations listed as **Yes** above. PCSM does not validate version combinations against a known-good list, so an unsupported pairing may start without error but will not behave reliably and is not tested. Downgrade paths cannot be overridden.
+Use only the version combinations listed as supported in the table above. Unsupported combinations may start successfully but are not tested or officially supported.
 
 ## Limitations
 
-- Downgrade replication is not supported. {{pcsm.full_name}} blocks startup if the source major version is higher than the target major version.
+- **Major-version validation only**
 
-- PCSM checks major versions only. It does not compare patch versions or validate the combination against a list of known-good pairings, so an unsupported combination can start without error. Only run the combinations listed in the version compatibility matrix.
+    PCSM validates only MongoDB major versions. It does not compare patch versions or validate combinations against a certified compatibility list.
 
-- PCSM does not validate the Feature Compatibility Version (FCV) between source and target clusters. If the target's FCV is lower than the source's (e.g., after a rollback), {{pcsm.full_name}} will not recognize the mismatch. Manually verify FCV alignment before starting replication.
+    For example:
 
-- Cross version replication on sharded clusters is not fully tested. Before using this combination in production, verify behavior in a staging environment that mirrors your production topology.
+       - 7.0.5 → 7.0.12 is allowed
+       - 7.0.5 → 7.0.2 is also allowed
 
-- Version compatibility is only checked at startup. PCSM performs the version check once when the server starts. This check is not repeated when replication is started or resumed.
+    Verify patch-level compatibility before deploying mixed-version environments.
+
+- **Feature Compatibility Version (FCV) is not validated**
+
+    PCSM does not compare the Feature Compatibility Version (FCV) values of the source and target clusters.
+
+    If the target cluster FCV is lower than the source cluster FCV, replication issues may occur and PCSM will not detect the mismatch automatically.
+
+    Before starting replication:
+    - Verify the FCV on both clusters
+    - Ensure the target cluster FCV is equal to or higher than the source cluster FCV
+
+- **Downgrade replication is not supported**
+
+    {{pcsm.full_name}} blocks startup if the source major version is higher than the target major version.
+
+- Cross version replication on sharded clusters 
+
+    Cross version replication on sharded clusters is not fully tested. Before deploying this configuration in production, verify setup in a staging environment that mirrors your production topology.
+
+- **Version compatibility is only checked at startup** 
+
+    PCSM performs the version check once when the server starts. This check is not repeated when replication is started or resumed.
 
 
