@@ -1,4 +1,4 @@
-# Cross version replication
+# Cross-version replication
 
 {{pcsm.full_name}} (PCSM) supports replication only for the MongoDB major-version combinations listed in the compatibility matrix below. In the current release, this includes clusters running the same major version and selected lower-to-higher upgrade paths. This lets you synchronize data during a staged upgrade or maintain replication across clusters that run different versions where support is explicitly provided.
 
@@ -55,10 +55,9 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
 - **Cross-version replication on sharded clusters is not fully tested**
 
-    Cross version replication on sharded clusters is not fully tested. Before deploying this configuration in production, verify setup in a staging environment that mirrors your production topology.
+    Cross-version replication on sharded clusters is not fully tested. Before deploying this configuration in production, verify setup in a staging environment that mirrors your production topology.
 
 - **Version compatibility is checked only at startup** 
 
     PCSM performs the version check once when the server starts. This check is not repeated when replication is started or resumed.
-
 
