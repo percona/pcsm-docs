@@ -48,7 +48,7 @@ Use only the version combinations listed as supported in the table above. Unsupp
     If the target cluster FCV is lower than the source cluster FCV, replication issues may occur and PCSM will not detect the mismatch automatically.
 
     Before starting replication:
-    
+
     - Verify the FCV on both clusters
     - Ensure the target cluster FCV is equal to or higher than the source cluster FCV
 
@@ -56,7 +56,7 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
     {{pcsm.full_name}} blocks startup if the source major version is higher than the target major version.
 
-- Cross version replication on sharded clusters 
+- **Cross version replication on sharded clusters**
 
     Cross version replication on sharded clusters is not fully tested. Before deploying this configuration in production, verify setup in a staging environment that mirrors your production topology.
 
