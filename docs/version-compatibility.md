@@ -41,7 +41,7 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
     Verify patch-level compatibility before deploying mixed-version environments.
 
-- **Feature Compatibility Version (FCV) is not validated**
+- **Feature Compatibility Version (FCV)**
 
     PCSM does not compare the Feature Compatibility Version (FCV) values of the source and target clusters.
 
@@ -52,7 +52,7 @@ Use only the version combinations listed as supported in the table above. Unsupp
     - Verify the FCV on both clusters
     - Ensure the target cluster FCV is equal to or higher than the source cluster FCV
 
-- **Downgrade replication is not supported**
+- **Downgrade replication not supported**
 
     {{pcsm.full_name}} blocks startup if the source major version is higher than the target major version.
 
@@ -60,7 +60,7 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
     Cross version replication on sharded clusters is not fully tested. Before deploying this configuration in production, verify setup in a staging environment that mirrors your production topology.
 
-- **Version compatibility is only checked at startup** 
+- **Version compatibility only checked at startup** 
 
     PCSM performs the version check once when the server starts. This check is not repeated when replication is started or resumed.
 
