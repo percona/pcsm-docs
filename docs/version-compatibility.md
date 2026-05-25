@@ -34,11 +34,6 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
     PCSM validates only MongoDB major versions. It does not compare patch versions or validate combinations against a certified compatibility list.
 
-    For example:
-
-       - 7.0.5 → 7.0.12 is allowed
-       - 7.0.5 → 7.0.2 is also allowed
-
     Verify patch-level compatibility before deploying mixed-version environments.
 
 - **Feature Compatibility Version (FCV) is not validated**
@@ -54,7 +49,7 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
 - **Downgrade replication is not supported**
 
-    {{pcsm.full_name}} blocks startup if the source major version is higher than the target major version.
+    PCSM blocks startup if the source major version is higher than the target major version.
 
 - **Cross-version replication on sharded clusters is not fully tested**
 
