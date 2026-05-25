@@ -1,17 +1,19 @@
 # Cross version replication
 
-{{pcsm.full_name}} (PCSM) supports replication between clusters running the same MongoDB major version, and from clusters running an older major version to clusters running a newer one. This lets you synchronize data during a staged upgrade or maintain replication across clusters that run different versions.
+{{pcsm.full_name}} (PCSM) supports replication only for the MongoDB major-version combinations listed in the compatibility matrix below. In the current release, this includes clusters running the same major version and selected lower-to-higher upgrade paths. This lets you synchronize data during a staged upgrade or maintain replication across clusters that run different versions where support is explicitly provided.
 
 PCSM checks the major version relationship between source and target at startup. If the source major version is higher than the target major version, PCSM blocks startup and exits with an error.
 
 ## Supported scenarios
 
-PCSM allows synchronization when either of the following conditions is met:
+PCSM supports synchronization only for version combinations explicitly marked as supported in the compatibility matrix below.
 
-- The target cluster runs a higher major version than the source cluster (lower-to-higher replication).
+In the current release, supported scenarios are:
+
 - Both clusters run the same major version.
+- The target cluster runs the next supported higher major version shown in the matrix.
 
-PCSM blocks synchronization in all cases where the source major version is higher than the target major version. Downgrade replication is not supported and cannot be overridden.
+PCSM blocks synchronization in all cases where the source major version is higher than the target major version. Non-downgrade combinations that are not listed as supported in the matrix are not supported in the current release.
 
 ## Version compatibility matrix
 
