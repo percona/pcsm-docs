@@ -168,7 +168,7 @@ nav:
   - Get started:
       - Quickstart: installation.md
       - System requirements: system-requirements.md
-      - Cross version compatibility: version-compatibility.md
+      - Cross-version replication: version-compatibility.md
       - 1. Install:
         - From repositories: install/repos.md
         - Run in Docker: install/docker.md
