@@ -31,7 +31,7 @@ Starts the replication process.
 | `replEventQueueSize` | int | No | Controls the size of the internal event queue used by the replication subsystem. |
 | `replWorkerQueueSize` | int | No | Defines the maximum number of replication events that each replication worker thread can queue before processing.  |
 | `replBulkOpsSize` | int | No | Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication. |
-| `cloneSegmentSize` | string | No | Defines the size of each clone segment processed during the initial clone phase. Specify this as a human-readable size string accepted by the server, for example `500MB` or `1GiB`. |
+| `cloneSegmentSize` | string | No | Defines the byte size of each clone segment processed during the initial clone phase. Specify either a plain integer number of bytes (for example, `1048576`) or a human-readable size string accepted by the server, for example `500MB` or `1GiB`. |
 
 
 Examples:
