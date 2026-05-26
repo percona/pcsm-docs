@@ -39,7 +39,7 @@ Alternatively, you can define the following environment variables:
 | `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `2` |
 | `PCSM_CLONE_NUM_READ_WORKERS` | Number of read workers for cloning | `NumCPU / 4` |
 | `PCSM_CLONE_NUM_INSERT_WORKERS` | Number of insert workers for cloning | `NumCPU * 4` |
-| `PCSM_CLONE_SEGMENT_SIZE` | Segment size for clone operations. Accepts plain bytes or a unit suffix (e.g. `500MB`, `1GiB`). When not set, segment size is calculated automatically based on collection size and available read workers. | - |
+| `PCSM_CLONE_SEGMENT_SIZE` | Defines the segment size used during clone operations. Accepts values in bytes or with size suffixes such as 500MB or 1GiB. If not specified, PCSM automatically calculates the segment size based on collection size and available read workers. | Auto |
 | `PCSM_MONGODB_CLI_OPERATION_TIMEOUT` | Maximum time to wait before timing out MongoDB client operations such as insert, update, delete. If the timeout is reached, the operation will fail.  | `5m` | 
 | `PCSM_REPL_NUM_WORKERS` | Controls how many concurrent replication worker goroutines PCSM uses to apply DML (insert/update/replace/delete) events to the target cluster. | `runtime.NumCPU()` |
 | `PCSM_REPL_CHANGE_STREAM_BATCH_SIZE` | Sets the maximum number of change stream events PCSM will request and read from MongoDB per batch while streaming changes from the source cluster. | `10000` |
