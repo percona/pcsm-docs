@@ -26,7 +26,7 @@ jobs:
 
       #Run check
       - name: reviewdog
-        uses: errata-ai/vale-action@v2.1.0
+        uses: vale-cli/vale-action@v2.1.1
         with: 
           vale_flags: "--glob=*.md"
 #          fail_on_error: true
