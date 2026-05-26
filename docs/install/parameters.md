@@ -16,7 +16,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--use-collection-bulk-write`: Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+).
 
 
-??? example "Example"
+??? example "Examples"
 
     ```{.bash data-prompt="$"}
     $ pcsm \
@@ -25,6 +25,40 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
         --port 2242 \
         --log-level debug \
         --log-json
+    ```
+
+    **--clone-segment-size**
+
+    ```{.bash data-prompt="$"}
+    $ pcsm start --clone-segment-size=1G
+    {
+    "ok": true
+    }
+    ```
+
+    Check the logs
+
+    ```
+    2026-05-21 08:34:50.989 INF Starting HTTP server at     http://localhost:2242
+    2026-05-21 08:37:22.475 INF GET /status s=http
+    2026-05-21 08:43:56.309 INF GET /status s=http
+    2026-05-21 08:44:59.346 INF POST /start s=http
+    2026-05-21 08:44:59.347 INF Config: NumWorkers: 12 s=repl
+    2026-05-21 08:44:59.347 INF Config: UseCollectionBulkWrite: false s=repl
+    2026-05-21 08:44:59.347 INF Config: ChangeStreamBatchSize: 10000 s=repl
+    2026-05-21 08:44:59.347 INF Config: EventQueueSize: 5000 s=repl
+    2026-05-21 08:44:59.347 INF Config: WorkerQueueSize: 5000 s=repl
+    2026-05-21 08:44:59.347 INF Config: BulkOpsSize: 5000 s=repl
+    2026-05-21 08:44:59.347 INF Config: WorkerFlushInterval: 1s s=repl
+    2026-05-21 08:44:59.347 INF Config: WorkerBulkQueueSize: 3 s=repl
+    2026-05-21 08:44:59.347 INF Starting Cluster Replication s=pcsm
+    2026-05-21 08:44:59.347 INF Starting Data Clone s=clone
+    2026-05-21 08:44:59.349 INF Namespace "test_db.collection_0" included ns=test_db.collection_0 s=clone
+    2026-05-21 08:44:59.351 INF Estimated Total Size 24 MB s=clone size_bytes=24220000
+    2026-05-21 08:44:59.351 DBG NumParallelCollections: 2 s=clone
+    2026-05-21 08:44:59.351 INF Config: NumReadWorkers: 3 s=copy
+    2026-05-21 08:44:59.351 INF Config: NumInsertWorkers: 24 s=copy
+    2026-05-21 08:44:59.351 INF Config: SegmentSizeBytes: 1000000000 (1.0 GB) s=copy
     ```
 
 ## Environment variables
