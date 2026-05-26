@@ -12,6 +12,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--clone-num-parallel-collections`: Number of collections cloned in parallel during clone.
 - `--clone-num-read-workers`: Number of read workers that read collection segments from the source. Shared for all collections.
 - `--clone-num-insert-workers`: Number of insert workers that write batches to the target. Shared for all collections.
+- `--clone-segment-size`: Segment size for clone operations. Accepts plain bytes or a unit suffix (e.g. `500MB`, `1GiB`). When omitted, the tool automatically calculates segment size based on collection size and available read workers.
 - `--use-collection-bulk-write`: Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+).
 
 
