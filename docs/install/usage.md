@@ -206,7 +206,7 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
 
 ??? example "Finalize completed with one failed index"
 
-    ```bash
+    ```json
     {
       "ok": true,
       "state": "finalized",
