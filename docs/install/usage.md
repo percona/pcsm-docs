@@ -218,20 +218,20 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
         "completed": true,
         "cloneCompleted": true,
         "clonedSizeBytes": 1073741824
-    },
-    "finalization": {
-      "completed": true,
-      "startedAt": "2026-05-07T10:30:00Z",
-      "completedAt": "2026-05-07T10:30:42Z",
-      "unsuccessfulIndexes": [
-        {
-          "namespace": "mydb.users",
-          "indexName": "email_unique_idx",
-          "type": "failed",
-          "reason": "recreate index mydb.users.email_unique_idx: duplicate key error",
-          "keys": {"email": 1}
-        }
-       ]
+      },
+      "finalization": {
+        "completed": true,
+        "startedAt": "2026-05-07T10:30:00Z",
+        "completedAt": "2026-05-07T10:30:42Z",
+        "unsuccessfulIndexes": [
+          {
+            "namespace": "mydb.users",
+            "indexName": "email_unique_idx",
+            "type": "failed",
+            "reason": "recreate index mydb.users.email_unique_idx: duplicate key error",
+            "keys": {"email": 1}
+          }
+        ]
       }
     }
     ```
