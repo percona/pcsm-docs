@@ -186,24 +186,6 @@ After finalization completes, the response is updated with:
 - `completedAt` timestamp
 - `unsuccessfulIndexes` array
 
-#### Unsuccessful indexes
-
-The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. Each entry identifies the index and explains what went wrong:
-
-| **Field** | **Type** | **Description** |
-|---|---|---|
-| `namespace` | string | The MongoDB namespace containing the index, in `database.collection` format. |
-| `indexName` | string | The index name as registered in the data store. |
-| `keys` | object | The key specification — field names mapped to their sort order or index type. |
-| `type` | string | Machine-readable problem category. |
-| `reason` | string | Human-readable explanation of what was observed during this finalize attempt. |
-
-| **Type** | **Reason** |  **What it means** |
-|---|---|---|
-| `failed` | MongoDB error message (not stable) | The index build was attempted and hit a hard error. The index does not exist in a usable state. |
-| `incomplete` | `"Index build did not complete"` | The index build started but did not finish — for example, due to a timeout or interrupted operation. |
-| `inconsistent` | `"Index exists on source but not on target"` | The index exists but its definition or state differs across nodes or storage layers. |
-
 ??? example "Example: Finalize completed with one failed index"
 
     ```{.json .no-copy}
@@ -235,3 +217,26 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
       }
     }
     ```
+
+An empty unsuccessfulIndexes array ([]) confirms all indexes were created cleanly.
+
+
+#### Unsuccessful indexes
+
+The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. Each entry contains:
+
+| **Field** | **Type** | **Description** |
+|---|---|---|
+| `namespace` | string | The MongoDB namespace containing the index, in `database.collection` format. |
+| `indexName` | string | The index name as registered in the data store. |
+| `keys` | object | Key specification: field names mapped to their sort order or index type. |
+| `type` | string | Machine-readable problem category. |
+| `reason` | string | Human-readable explanation of what was observed during this finalize attempt. |
+
+| **Type** | **Reason** |  **What it means** |
+|---|---|---|
+| `failed` | MongoDB error message (not stable) | The index build was attempted and hit a hard error. The index does not exist in a usable state. |
+| `incomplete` | `"Index build did not complete"` | The index build started but did not finish — for example, due to a timeout or interrupted operation. |
+| `inconsistent` | `"Index exists on source but not on target"` | The index exists but its definition or state differs across nodes or storage layers. |
+
+
