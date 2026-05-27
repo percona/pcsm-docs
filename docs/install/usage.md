@@ -206,7 +206,7 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
 
 ??? example "Finalize completed with one failed index"
 
-    ```json
+    ```{.json .no-copy}
     {
       "ok": true,
       "state": "finalized",
