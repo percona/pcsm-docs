@@ -204,7 +204,7 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
 | `incomplete` | `"Index build did not complete"` | The index build started but did not finish — for example, due to a timeout or interrupted operation. |
 | `inconsistent` | `"Index exists on source but not on target"` | The index exists but its definition or state differs across nodes or storage layers. |
 
-??? example "Finalize completed with one failed index"
+??? example "Example: Finalize completed with one failed index"
 
     ```{.json .no-copy}
     {
