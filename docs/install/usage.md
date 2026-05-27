@@ -175,10 +175,14 @@ When you no longer need / want to replicate data, finalize the replication. {{pc
 
 To improve visibility into index finalization outcomes, the `/status` response now includes a **finalization** section. This section provides a structured, machine-readable summary of the finalization process, eliminating the need to parse logs manually.
 
+#### Finalization in progress
+
 During finalization, the response includes:
 
 - `completed: false`
 - `startedAt` timestamp
+
+#### Finalization completed
 
 After finalization completes, the response is updated with:
 
