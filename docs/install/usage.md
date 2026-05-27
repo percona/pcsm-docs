@@ -206,32 +206,32 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
 
 ??? example "Finalize completes with one failed index"
 
-    ```sh
-        {
-    "ok": true,
-    "state": "finalized",
-    "info": "Finalized",
-    "lagTimeSeconds": 0,
-    "eventsRead": 1234,
-    "eventsApplied": 1234,
-    "initialSync": {
+    ```bash
+    {
+      "ok": true,
+      "state": "finalized",
+      "info": "Finalized",
+      "lagTimeSeconds": 0,
+      "eventsRead": 1234,
+      "eventsApplied": 1234,
+      "initialSync": {
         "completed": true,
         "cloneCompleted": true,
         "clonedSizeBytes": 1073741824
     },
     "finalization": {
-        "completed": true,
-        "startedAt": "2026-05-07T10:30:00Z",
-        "completedAt": "2026-05-07T10:30:42Z",
-        "unsuccessfulIndexes": [
+      "completed": true,
+      "startedAt": "2026-05-07T10:30:00Z",
+      "completedAt": "2026-05-07T10:30:42Z",
+      "unsuccessfulIndexes": [
         {
-            "namespace": "mydb.users",
-            "indexName": "email_unique_idx",
-            "type": "failed",
-            "reason": "recreate index mydb.users.email_unique_idx: duplicate key error",
-            "keys": {"email": 1}
+          "namespace": "mydb.users",
+          "indexName": "email_unique_idx",
+          "type": "failed",
+          "reason": "recreate index mydb.users.email_unique_idx: duplicate key error",
+          "keys": {"email": 1}
         }
-        ]
-    }
+       ]
+      }
     }
     ```
