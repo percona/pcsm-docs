@@ -170,3 +170,36 @@ When you no longer need / want to replicate data, finalize the replication. {{pc
     ```{.bash data-prompt="$"}
     $ curl -X POST http://localhost:2242/finalize
     ```
+
+### Check finalization status
+
+To improve visibility into index finalization outcomes, the `/status` response now includes a **finalization** section. This section provides a structured, machine-readable summary of the finalization process, eliminating the need to parse logs manually.
+
+During finalization, the response includes:
+
+- `completed: false`
+- `startedAt` timestamp
+
+After finalization completes, the response is updated with:
+
+- `completed: true`
+- `completedAt` timestamp
+- `unsuccessfulIndexes` array
+
+#### Unsuccessful indexes
+
+The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. Each entry identifies the index and explains what went wrong:
+
+| Field | Type | Description |
+|---|---|---|
+| `namespace` | string | The namespace (database or schema) containing the index. |
+| `indexName` | string | The index name as registered in the data store. |
+| `keySpec` | object | The key specification — field names mapped to their sort order or index type. |
+| `type` | string | Machine-readable problem category. See below. |
+| `reason` | string | Human-readable explanation of what was observed during this finalize attempt. See below for stable values. |
+
+| Type | `reason` value |  What it means |
+|---|---|---|
+| `failed` | MongoDB error message (not stable) | The index build was attempted and hit a hard error. The index does not exist in a usable state. |
+| `incomplete` | `"Index build did not complete"` | The index build started but did not finish — for example, due to a timeout or interrupted operation. |
+| `inconsistent` | `"Index exists on source but not on target"` | The index exists but its definition or state differs across nodes or storage layers. |
