@@ -237,10 +237,12 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
 | `type` | string | Machine-readable problem category. |
 | `reason` | string | Human-readable explanation of what was observed during this finalize attempt. |
 
+The `type` field can contain the following values:
+
 | **Type** | **Reason** |  **What it means** |
 |---|---|---|
 | `failed` | MongoDB error message (not stable) | The index build was attempted and hit a hard error. The index does not exist in a usable state. |
-| `incomplete` | `"Index build did not complete"` | The index build started but did not finish — for example, due to a timeout or interrupted operation. |
+| `incomplete` | `"Index build did not complete"` | The index build started but did not finish.|
 | `inconsistent` | `"Index exists on source but not on target"` | The index exists but its definition or state differs across nodes or storage layers. |
 
 
