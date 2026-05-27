@@ -203,3 +203,35 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
 | `failed` | MongoDB error message (not stable) | The index build was attempted and hit a hard error. The index does not exist in a usable state. |
 | `incomplete` | `"Index build did not complete"` | The index build started but did not finish — for example, due to a timeout or interrupted operation. |
 | `inconsistent` | `"Index exists on source but not on target"` | The index exists but its definition or state differs across nodes or storage layers. |
+
+??? example "Finalize completes with one failed index"
+
+    ```sh
+        {
+    "ok": true,
+    "state": "finalized",
+    "info": "Finalized",
+    "lagTimeSeconds": 0,
+    "eventsRead": 1234,
+    "eventsApplied": 1234,
+    "initialSync": {
+        "completed": true,
+        "cloneCompleted": true,
+        "clonedSizeBytes": 1073741824
+    },
+    "finalization": {
+        "completed": true,
+        "startedAt": "2026-05-07T10:30:00Z",
+        "completedAt": "2026-05-07T10:30:42Z",
+        "unsuccessfulIndexes": [
+        {
+            "namespace": "mydb.users",
+            "indexName": "email_unique_idx",
+            "type": "failed",
+            "reason": "recreate index mydb.users.email_unique_idx: duplicate key error",
+            "keys": {"email": 1}
+        }
+        ]
+    }
+    }
+    ```
