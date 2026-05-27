@@ -190,7 +190,7 @@ After finalization completes, the response is updated with:
 
 The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. Each entry identifies the index and explains what went wrong:
 
-| Field | Type | Description |
+| **Field** | **Type** | **Description** |
 |---|---|---|
 | `namespace` | string | The MongoDB namespace containing the index, in `database.collection` format. |
 | `indexName` | string | The index name as registered in the data store. |
@@ -198,7 +198,7 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
 | `type` | string | Machine-readable problem category. |
 | `reason` | string | Human-readable explanation of what was observed during this finalize attempt. |
 
-| Type | `reason` value |  What it means |
+| **Type** | **Reason** |  **What it means** |
 |---|---|---|
 | `failed` | MongoDB error message (not stable) | The index build was attempted and hit a hard error. The index does not exist in a usable state. |
 | `incomplete` | `"Index build did not complete"` | The index build started but did not finish — for example, due to a timeout or interrupted operation. |
