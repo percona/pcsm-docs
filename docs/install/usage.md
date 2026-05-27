@@ -194,7 +194,7 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
 |---|---|---|
 | `namespace` | string | The namespace (database or schema) containing the index. |
 | `indexName` | string | The index name as registered in the data store. |
-| `keySpec` | object | The key specification — field names mapped to their sort order or index type. |
+| `keys` | object | The key specification — field names mapped to their sort order or index type. |
 | `type` | string | Machine-readable problem category. See below. |
 | `reason` | string | Human-readable explanation of what was observed during this finalize attempt. See below for stable values. |
 
