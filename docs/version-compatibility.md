@@ -13,7 +13,7 @@ In the current release, supported scenarios are:
 - Both clusters run the same major version.
 - The target cluster runs the next supported higher major version shown in the matrix.
 
-PCSM blocks synchronization in all cases where the source major version is higher than the target major version. Non-downgrade combinations that are not listed as supported in the matrix are not supported in the current release.
+PCSM blocks synchronization in all cases where the source major version is higher than the target major version. Combinations that are not listed as supported in the matrix are not supported in the current release.
 
 ## Version compatibility matrix
 
@@ -21,12 +21,12 @@ PCSM blocks synchronization in all cases where the source major version is highe
 |----------------|----------------|-----------|-------|
 | 6.0.x | 6.0.x | **Yes** | — |
 | 6.0.x | 7.0.x | **Yes** | — |
-| 6.0.x | 8.0.x | **Planned** | Not available in the current release. Use the upgrade path: 6.0 → 7.0 → 8.0 |
+| 6.0.x | 8.0.x | **Supported** | - |
 | 7.0.x | 7.0.x | **Yes** | — |
 | 7.0.x | 8.0.x | **Yes** | — |
 | 8.0.x | 7.0.x | **No** | Downgrade replication is not supported. |
 | 7.0.x | 6.0.x | **No** | Downgrade replication is not supported. |
-| Any higher | Any lower | **No** | All downgrade paths are blocked. |
+| Any higher | Any lower | **No** | Downgrade paths are not supported. |
 
 Use only the version combinations listed as supported in the table above. Unsupported combinations may start successfully but are not tested or officially supported.
 
@@ -38,7 +38,7 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
     Verify patch-level compatibility before deploying mixed-version environments.
 
-- **Feature Compatibility Version (FCV) is not validated**
+- **Feature Compatibility Version (FCV) is not automatically checked between your source and target clusters**
 
     PCSM does not compare the Feature Compatibility Version (FCV) values of the source and target clusters.
 
