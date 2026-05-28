@@ -175,6 +175,15 @@ The following are response fields:
 | `initialSync.cloneCompleted` | boolean | Clone process completion status |
 | `initialSync.estimatedCloneSizeBytes` | number | Estimated total size to clone (bytes) |
 | `initialSync.clonedSizeBytes` | number | Current cloned size (bytes) |
+| `finalization.completed` | boolean | Finalization completion status |
+| `finalization.startedAt` | date.Time | RFC3339 timestamp when finalization started |
+| `finalization.completedAt` | date.Time | RFC3339 timestamp when finalization completed |
+| `finalization.unsuccessfulIndexes` | array | List of indexes that were not finalized successfully (omitted when empty) |
+| `finalization.unsuccessfulIndexes[].namespace` | string | MongoDB namespace in `database.collection` format |
+| `finalization.unsuccessfulIndexes[].indexName` | string | Index name |
+| `finalization.unsuccessfulIndexes[].type` | string | Machine-readable failure category (`failed`, `incomplete`, `inconsistent`) |
+| `finalization.unsuccessfulIndexes[].reason` | string | Human-readable reason why finalization failed for this index |
+| `finalization.unsuccessfulIndexes[].keys` | object | Index key specification |
 
 
 Example:
@@ -196,6 +205,22 @@ Example:
     "clonedSizeBytes": 328116,
     "completed": true,
     "cloneCompleted": true
+  },
+  "finalization": {
+    "completed": true,
+    "startedAt": "2026-05-07T10:30:00Z",
+    "completedAt": "2026-05-07T10:30:42Z",
+    "unsuccessfulIndexes": [
+      {
+        "namespace": "mydb.users",
+        "indexName": "email_unique_idx",
+        "type": "failed",
+        "reason": "recreate index mydb.users.email_unique_idx: duplicate key error",
+        "keys": {
+          "email": 1
+        }
+      }
+    ]
   }
 }
 ```
@@ -216,5 +241,4 @@ Common error scenarios:
 - 400 Bad Request: Invalid request parameters
 - 404 Not Found: Endpoint not found
 - 500 Internal Server Error: Server-side issues
-
 
