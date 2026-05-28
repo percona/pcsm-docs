@@ -173,22 +173,11 @@ When you no longer need / want to replicate data, finalize the replication. {{pc
 
 ### Check finalization status
 
-To improve visibility into index finalization outcomes, the `/status` response now includes a **finalization** section. This section provides a structured, machine-readable summary of the finalization process, eliminating the need to parse logs manually.
+You can use the `/status` endpoint to monitor finalization progress and inspect the outcome after it completes.
 
-#### Finalization in progress
+During finalization, `/status` indicates that finalization is in progress. After it completes, `/status` reports the finalization result, including whether any index builds were unsuccessful.
 
-During finalization, the response includes:
-
-- `completed: false`
-- `startedAt` timestamp
-
-#### Finalization completed
-
-After finalization completes, the response is updated with:
-
-- `completed: true`
-- `completedAt` timestamp
-- `unsuccessfulIndexes` array
+For the canonical `/status` response schema and examples, see the [{{pcsm.short}} HTTP API](../api.md).
 
 ??? example "Example: Finalize completed with one failed index"
 
