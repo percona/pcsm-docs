@@ -34,14 +34,10 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
 - **Feature Compatibility Version (FCV) is not automatically checked between your source and target clusters**
 
-    PCSM does not compare the Feature Compatibility Version (FCV) values of the source and target clusters.
+PCSM does not automatically check the Feature Compatibility Version (FCV) between your source and target clusters. Because an incompatible FCV might cause replication failures, it is important to perform this check manually before you begin:
 
-    If the target cluster FCV is lower than the source cluster FCV, replication issues may occur and PCSM will not detect the mismatch automatically.
-
-    Before starting replication:
-
-    - Verify the FCV on both clusters
-    - Ensure the target cluster FCV is equal to or higher than the source cluster FCV
+Confirm the FCV for both your source and target clusters.
+Ensure the target cluster's FCV is equal to or higher than the source cluster's FCV.
 
 - **Downgrade replication is not supported**
 
