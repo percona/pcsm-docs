@@ -177,7 +177,7 @@ You can use the `/status` endpoint to monitor finalization progress and inspect 
 
 During finalization, `/status` indicates that finalization is in progress. After it completes, `/status` reports the finalization result, including whether any index builds were unsuccessful.
 
-For the canonical `/status` response schema and examples, see the [{{pcsm.short}} HTTP API](../api.md).
+For general `/status` endpoint details, see the [{{pcsm.short}} HTTP API](../api.md). The example below shows the finalization-specific fields returned after finalization completes.
 
 ??? example "Example: Finalize completed with one failed index"
 
