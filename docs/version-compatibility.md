@@ -53,9 +53,6 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
     PCSM blocks startup if the source major version is higher than the target major version.
 
-- **Cross-version replication on sharded clusters is not fully tested**
-
-    Cross-version replication on sharded clusters is not fully tested. Before deploying this configuration in production, verify setup in a staging environment that mirrors your production topology.
 
 - **Version compatibility is checked only at startup** 
 
