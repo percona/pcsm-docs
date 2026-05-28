@@ -2,7 +2,7 @@
 
 {{pcsm.full_name}} (PCSM) supports replication only for the MongoDB major-version combinations listed in the compatibility matrix below. In the current release, this includes clusters running the same major version and selected lower-to-higher upgrade paths. This lets you synchronize data during a staged upgrade or maintain replication across clusters that run different versions where support is explicitly provided.
 
-PCSM checks the major version relationship between source and target at startup. If the source major version is higher than the target major version, PCSM blocks startup and exits with an error.
+At startup, PCSM checks whether the source and target major-version combination is listed as supported in the compatibility matrix below. If the combination is not supported, PCSM blocks startup and exits with an error, including all cases where the source major version is higher than the target major version.
 
 ## Supported scenarios
 
