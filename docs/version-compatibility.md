@@ -32,12 +32,6 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
 ## Limitations
 
-- **The version check is major-only**
-
-    PCSM validates only MongoDB major versions. It does not compare patch versions or validate combinations against a certified compatibility list.
-
-    Verify patch-level compatibility before deploying mixed-version environments.
-
 - **Feature Compatibility Version (FCV) is not automatically checked between your source and target clusters**
 
     PCSM does not compare the Feature Compatibility Version (FCV) values of the source and target clusters.
