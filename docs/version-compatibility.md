@@ -21,7 +21,7 @@ PCSM blocks synchronization in all cases where the source major version is highe
 |----------------|----------------|-----------|-------|
 | 6.0.x | 6.0.x | **Yes** | — |
 | 6.0.x | 7.0.x | **Yes** | — |
-| 6.0.x | 8.0.x | **Supported** | - |
+| 6.0.x | 8.0.x | **Yes** | — |
 | 7.0.x | 7.0.x | **Yes** | — |
 | 7.0.x | 8.0.x | **Yes** | — |
 | 8.0.x | 7.0.x | **No** | Downgrade replication is not supported. |
