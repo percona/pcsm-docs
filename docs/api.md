@@ -184,16 +184,16 @@ Example:
   "ok": true,
   "state": "running",
   "info": "Replicating Changes",
-  "lagTimeSeconds": 1,
+  "lagTimeSeconds": 0,
   "eventsRead": 0,
   "eventsApplied": 0,
   "lastReplicatedOpTime": {
-    "ts": "1763649865.1",
-    "isoDate": "2025-11-20T14:44:25Z"
+    "ts": "1779199363.1",
+    "isoDate": "2026-05-19T14:02:43Z"
   },
   "initialSync": {
-    "estimatedCloneSizeBytes": 24220000,
-    "clonedSizeBytes": 24220000,
+    "estimatedCloneSizeBytes": 328116,
+    "clonedSizeBytes": 328116,
     "completed": true,
     "cloneCompleted": true
   }
