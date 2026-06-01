@@ -80,9 +80,9 @@ trivy image --severity HIGH,CRITICAL --ignore-unfixed --sbom-sources oci \
 To scan the embedded SBOM from inside the container image:
 
 ```bash
-docker run --rm -it --entrypoint cat \
-    docker.io/percona/percona-clustersync-mongodb:0.9.0 \
-    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-0.9.0.cdx.json \
+docker run --rm --entrypoint cat \
+    docker.io/percona/percona-clustersync-mongodb:{{release}} \
+    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-{{release}}.cdx.json \
     | trivy sbom --severity HIGH,CRITICAL --ignore-unfixed -
 ```
 
