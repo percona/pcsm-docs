@@ -54,8 +54,25 @@ Yes. {{pcsm.full_name}} allows you to include/exclude filters for specific datab
 ## What database read and write concerns are used?
 By default, Percona ClusterSync for MongoDB uses the `"majority"` read concern level for reads on the source cluster. For writes to the destination cluster, the tool uses a write concern level of `"majority"` with `j: true`.
 
+## Why are indexes larger after migrating data with Percona ClusterSync?
 
+In some cases, indexes on the destination cluster may be significantly larger after migration. This is typically due to differences in physical storage layout, not the data or indexes themselves.
 
+Possible causes include:
+
+- Different WiredTiger compression settings between source and destination (for example `zstd` vs `snappy`)
+- Percona ClusterSync performs inserts, updates, and deletes during synchronization, which can fragment collections and indexes
+- Percona ClusterSync copies documents in `_id` order; if secondary indexes are not correlated with `_id`, index pages may become inefficiently organized, causing additional B-tree page splits and larger indexes
+- Different MongoDB or WiredTiger versions
+- Different prefix compression settings
+
+Potential mitigation strategies include:
+
+- Rebuilding indexes after migration (`reIndex` or drop/recreate indexes)
+- Running `compact`
+- Performing a rolling initial sync after the data migration is complete
+
+Larger index files do not necessarily indicate data inconsistency or corruption, and query performance may remain unchanged.
 
 ## What features are planned for future releases?
 
