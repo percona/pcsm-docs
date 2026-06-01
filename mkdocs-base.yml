@@ -175,6 +175,7 @@ nav:
         - From binary tarballs: install/tarball.md
       - 2. Configure authentication: install/authentication.md
       - 3. Start PCSM: install/start-pcsm.md
+      - Software Bill of Materials (SBOM): sbom.md
       - install/parameters.md
   - Use PCSM: 
     - Usage: install/usage.md  
