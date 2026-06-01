@@ -63,7 +63,7 @@ trivy sbom --severity HIGH,CRITICAL --ignore-unfixed \
 
 ### Docker images
 
-Each PCSM Docker image (DockerHub `percona/percona-clustersync-mongodb` and PerconaLab `perconalab/percona-clustersync-mongodb`) ships with **two** CycloneDX 1.6 SBOMs that describe overlapping scopes:
+Each PCSM Docker image (Docker Hub `percona/percona-clustersync-mongodb` and PerconaLab `perconalab/percona-clustersync-mongodb`) ships with **two** CycloneDX 1.6 SBOMs that describe overlapping scopes:
 
 | SBOM | Scope | How to access |
 |---|---|---|
