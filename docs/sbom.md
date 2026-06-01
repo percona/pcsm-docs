@@ -30,13 +30,13 @@ The examples below use [Trivy :octicons-link-external-16:](https://trivy.dev/){:
 
 ```bash
 # Confirm the SBOM is bundled
-tar tzf percona-clustersync-mongodb-0.9.0-x86_64.tar.gz | grep cdx.json
+tar tzf percona-clustersync-mongodb-{{release}}-x86_64.tar.gz | grep cdx.json
 
 # Extract and scan
-tar xzf percona-clustersync-mongodb-0.9.0-x86_64.tar.gz \
-    -C /tmp percona-clustersync-mongodb-0.9.0/percona-clustersync-mongodb-0.9.0.cdx.json
+tar xzf percona-clustersync-mongodb-{{release}}-x86_64.tar.gz \
+    -C /tmp percona-clustersync-mongodb-{{release}}/percona-clustersync-mongodb-{{release}}.cdx.json
 trivy sbom --severity HIGH,CRITICAL --ignore-unfixed \
-    /tmp/percona-clustersync-mongodb-0.9.0/percona-clustersync-mongodb-0.9.0.cdx.json
+    /tmp/percona-clustersync-mongodb-{{release}}/percona-clustersync-mongodb-{{release}}.cdx.json
 ```
 
 ### RPM package
@@ -47,7 +47,7 @@ rpm -ql percona-clustersync-mongodb | grep cdx.json
 
 # Scan it (replace 9.x with your RHEL/OL version)
 trivy sbom --severity HIGH,CRITICAL --ignore-unfixed --distro redhat/9.x \
-    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-0.9.0.cdx.json
+    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-{{release}}.cdx.json
 ```
 
 ### DEB package
@@ -58,12 +58,12 @@ dpkg -L percona-clustersync-mongodb | grep cdx.json
 
 # Scan it
 trivy sbom --severity HIGH,CRITICAL --ignore-unfixed \
-    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-0.9.0.cdx.json
+    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-{{release}}.cdx.json
 ```
 
 ### Docker images
 
-Each PCSM Docker image (DockerHub `percona/percona-clustersync-mongodb` and PerconaLab `perconalab/percona-clustersync-mongodb`) ships with **two** CycloneDX 1.6 SBOMs that describe overlapping scopes:
+Each PCSM Docker image (Docker Hub `percona/percona-clustersync-mongodb` and PerconaLab `perconalab/percona-clustersync-mongodb`) ships with **two** CycloneDX 1.6 SBOMs that describe overlapping scopes:
 
 | SBOM | Scope | How to access |
 |---|---|---|
@@ -77,7 +77,7 @@ Each PCSM Docker image (DockerHub `percona/percona-clustersync-mongodb` and Perc
 
 ```bash
 trivy image --severity HIGH,CRITICAL --ignore-unfixed --sbom-sources oci \
-    docker.io/percona/percona-clustersync-mongodb:0.9.0
+    docker.io/percona/percona-clustersync-mongodb:{{release}}
 ```
 
 #### Scan the embedded SBOM
@@ -85,9 +85,9 @@ trivy image --severity HIGH,CRITICAL --ignore-unfixed --sbom-sources oci \
 To scan the embedded SBOM from inside the container image:
 
 ```bash
-docker run --rm -it --entrypoint cat \
-    docker.io/percona/percona-clustersync-mongodb:0.9.0 \
-    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-0.9.0.cdx.json \
+docker run --rm --entrypoint cat \
+    docker.io/percona/percona-clustersync-mongodb:{{release}} \
+    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-{{release}}.cdx.json \
     | trivy sbom --severity HIGH,CRITICAL --ignore-unfixed -
 ```
 
@@ -99,7 +99,7 @@ You can use the [ORAS CLI :octicons-link-external-16:](https://oras.land/){:targ
 ```bash
 # Use the per-architecture tag to resolve directly to the image manifest
 oras discover --format tree \
-    docker.io/percona/percona-clustersync-mongodb:0.9.0-amd64
+    docker.io/percona/percona-clustersync-mongodb:{{release}}-amd64
 
 # Pull the SBOM artifact using the digest from the discover output
 oras pull docker.io/percona/percona-clustersync-mongodb@sha256:<referrer-digest>
