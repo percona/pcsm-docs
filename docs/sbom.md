@@ -20,7 +20,7 @@ An SBOM helps you:
 | Binary tarball | `<product>-<version>/<product>-<version>.cdx.json` inside the archive |
 | RPM package | `/usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-<version>.cdx.json` |
 | DEB package | `/usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-<version>.cdx.json` |
-| Docker image | Embedded in the image and available as an attached OCI artifact.see [Docker images](#docker-images).|
+| Docker image | Embedded in the image and available as an attached OCI artifact. See [Docker images](#docker-images). |
 
 ## Verifying and scanning the SBOM
 
