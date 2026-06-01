@@ -47,7 +47,7 @@ rpm -ql percona-clustersync-mongodb | grep cdx.json
 
 # Scan it (replace 9.x with your RHEL/OL version)
 trivy sbom --severity HIGH,CRITICAL --ignore-unfixed --distro redhat/9.x \
-    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-0.9.0.cdx.json
+    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-{{release}}.cdx.json
 ```
 
 ### DEB package
