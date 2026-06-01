@@ -74,7 +74,7 @@ Each PCSM Docker image (Docker Hub `percona/percona-clustersync-mongodb` and Per
 
 ```bash
 trivy image --severity HIGH,CRITICAL --ignore-unfixed --sbom-sources oci \
-    docker.io/percona/percona-clustersync-mongodb:0.9.0
+    docker.io/percona/percona-clustersync-mongodb:{{release}}
 ```
 
 To scan the embedded SBOM from inside the container image:
