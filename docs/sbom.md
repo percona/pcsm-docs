@@ -70,12 +70,17 @@ Each PCSM Docker image (DockerHub `percona/percona-clustersync-mongodb` and Perc
 | **Embedded** | PCSM binary and Go modules only | Inside the image filesystem |
 | **OCI-attached** | Full image — PCSM and UBI9 base OS packages | Registry-side, via the OCI Referrers API |
 
+
+#### Scan via OCI Referrers API (recommended)
+
 `trivy image --sbom-sources oci` fetches the attached SBOM via the OCI Referrers API and scans it, without pulling the image:
 
 ```bash
 trivy image --severity HIGH,CRITICAL --ignore-unfixed --sbom-sources oci \
     docker.io/percona/percona-clustersync-mongodb:0.9.0
 ```
+
+#### Scan the embedded SBOM
 
 To scan the embedded SBOM from inside the container image:
 
