@@ -58,7 +58,7 @@ dpkg -L percona-clustersync-mongodb | grep cdx.json
 
 # Scan it
 trivy sbom --severity HIGH,CRITICAL --ignore-unfixed \
-    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-0.9.0.cdx.json
+    /usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-{{release}}.cdx.json
 ```
 
 ### Docker images
