@@ -56,7 +56,7 @@ By default, Percona ClusterSync for MongoDB uses the `"majority"` read concern l
 
 ## Why are indexes larger after migrating data with Percona ClusterSync?
 
-In some cases, indexes on the destination cluster may become significantly larger after migration. This is usually caused by differences in physical storage layout rather than logical differences in the data or indexes.
+In some cases, indexes on the destination cluster may be significantly larger after migration. This is typically due to differences in physical storage layout, not the data or indexes themselves.
 
 Possible causes include:
 
