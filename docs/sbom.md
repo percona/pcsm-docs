@@ -6,11 +6,12 @@ Starting with version 0.9.0, every Percona ClusterSync for MongoDB (PCSM) releas
 
 ## Why it matters
 
-An SBOM can help you:
+An SBOM helps you:
 
 - Identify the components and dependencies included in a PCSM release.
 - Assess known vulnerabilities using SBOM-compatible security scanners.
-- Support compliance, audit, and software supply chain requirements.
+- Support security reviews, compliance processes, and software supply chain requirements.
+- Verify the contents of deployed software artifacts.
 
 ## Where to find the SBOM
 
@@ -19,11 +20,11 @@ An SBOM can help you:
 | Binary tarball | `<product>-<version>/<product>-<version>.cdx.json` inside the archive |
 | RPM package | `/usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-<version>.cdx.json` |
 | DEB package | `/usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-<version>.cdx.json` |
-| Docker image | Two SBOMs ship together — see [Docker images](#docker-images) below |
+| Docker image | Embedded in the image and available as an attached OCI artifact.see [Docker images](#docker-images).|
 
 ## Verifying and scanning the SBOM
 
-All examples below use [Trivy](https://trivy.dev/). [Grype](https://github.com/anchore/grype), Snyk, and any other CycloneDX-compatible scanner work the same way.
+The examples below use [Trivy :octicons-link-external-16:](https://trivy.dev/){:target="_blank"}. You can also use other CycloneDX-compatible scanners, such as [Grype :octicons-link-external-16:](https://github.com/anchore/grype){:target="_blank"} or Snyk.
 
 ### Binary tarball
 
@@ -62,21 +63,21 @@ trivy sbom --severity HIGH,CRITICAL --ignore-unfixed \
 
 ### Docker images
 
-Each PCSM Docker image (DockerHub `percona/percona-clustersync-mongodb`, PerconaLab `perconalab/percona-clustersync-mongodb`) ships with **two** CycloneDX 1.6 SBOMs that describe overlapping scopes:
+Each PCSM Docker image (DockerHub `percona/percona-clustersync-mongodb` and PerconaLab `perconalab/percona-clustersync-mongodb`) ships with **two** CycloneDX 1.6 SBOMs that describe overlapping scopes:
 
 | SBOM | Scope | How to access |
 |---|---|---|
-| **Embedded** | PCSM binary + Go modules only | Inside the image filesystem |
-| **OCI-attached** | Full image — PCSM + UBI9 base OS packages | Registry-side, via the OCI Referrers API |
+| **Embedded** | PCSM binary and Go modules only | Inside the image filesystem |
+| **OCI-attached** | Full image — PCSM and UBI9 base OS packages | Registry-side, via the OCI Referrers API |
 
-**Easiest path** — `trivy image --sbom-sources oci` fetches the attached SBOM via the OCI Referrers API and scans it, without pulling the image:
+`trivy image --sbom-sources oci` fetches the attached SBOM via the OCI Referrers API and scans it, without pulling the image:
 
 ```bash
 trivy image --severity HIGH,CRITICAL --ignore-unfixed --sbom-sources oci \
     docker.io/percona/percona-clustersync-mongodb:0.9.0
 ```
 
-**Embedded SBOM** — same as in the RPM, just inside the image:
+To scan the embedded SBOM from inside the container image:
 
 ```bash
 docker run --rm -it --entrypoint cat \
@@ -85,13 +86,16 @@ docker run --rm -it --entrypoint cat \
     | trivy sbom --severity HIGH,CRITICAL --ignore-unfixed -
 ```
 
-**Manual inspection** with the [ORAS CLI](https://oras.land/):
+#### Advanced: Inspect OCI-attached SBOMs with ORAS
+
+You can use the [ORAS CLI :octicons-link-external-16:](https://oras.land/){:target="_blank"} to discover and download OCI-attached SBOMs.
+
 
 ```bash
-# Use the per-arch tag - it resolves directly to the image manifest
+# # Use the per-architecture tag to resolve directly to the image manifest
 oras discover --format tree \
     docker.io/percona/percona-clustersync-mongodb:0.9.0-amd64
 
-# Then pull the SBOM referrer (use the digest from the discover output)
+# Pull the SBOM artifact using the digest from the discover output
 oras pull docker.io/percona/percona-clustersync-mongodb@sha256:<referrer-digest>
 ```
