@@ -30,13 +30,13 @@ The examples below use [Trivy :octicons-link-external-16:](https://trivy.dev/){:
 
 ```bash
 # Confirm the SBOM is bundled
-tar tzf percona-clustersync-mongodb-0.9.0-x86_64.tar.gz | grep cdx.json
+tar tzf percona-clustersync-mongodb-{{release}}-x86_64.tar.gz | grep cdx.json
 
 # Extract and scan
-tar xzf percona-clustersync-mongodb-0.9.0-x86_64.tar.gz \
-    -C /tmp percona-clustersync-mongodb-0.9.0/percona-clustersync-mongodb-0.9.0.cdx.json
+tar xzf percona-clustersync-mongodb-{{release}}-x86_64.tar.gz \
+    -C /tmp percona-clustersync-mongodb-{{release}}/percona-clustersync-mongodb-{{release}}.cdx.json
 trivy sbom --severity HIGH,CRITICAL --ignore-unfixed \
-    /tmp/percona-clustersync-mongodb-0.9.0/percona-clustersync-mongodb-0.9.0.cdx.json
+    /tmp/percona-clustersync-mongodb-{{release}}/percona-clustersync-mongodb-{{release}}.cdx.json
 ```
 
 ### RPM package
