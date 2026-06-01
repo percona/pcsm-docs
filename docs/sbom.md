@@ -16,7 +16,7 @@ An SBOM lets you answer three operational questions about a deployed PCSM artifa
 
 | Distribution method | SBOM location |
 |---|---|
-| Binary tarball | `<product>-<version>.cdx.json` at the archive root |
+| Binary tarball | `<product>-<version>/<product>-<version>.cdx.json` inside the archive |
 | RPM package | `/usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-<version>.cdx.json` |
 | DEB package | `/usr/share/doc/percona-clustersync-mongodb/percona-clustersync-mongodb-<version>.cdx.json` |
 | Docker image | Two SBOMs ship together — see [Docker images](#docker-images) below |
