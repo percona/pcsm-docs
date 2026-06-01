@@ -94,7 +94,7 @@ You can use the [ORAS CLI :octicons-link-external-16:](https://oras.land/){:targ
 ```bash
 # Use the per-architecture tag to resolve directly to the image manifest
 oras discover --format tree \
-    docker.io/percona/percona-clustersync-mongodb:0.9.0-amd64
+    docker.io/percona/percona-clustersync-mongodb:{{release}}-amd64
 
 # Pull the SBOM artifact using the digest from the discover output
 oras pull docker.io/percona/percona-clustersync-mongodb@sha256:<referrer-digest>
