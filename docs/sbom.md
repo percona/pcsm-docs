@@ -92,7 +92,7 @@ You can use the [ORAS CLI :octicons-link-external-16:](https://oras.land/){:targ
 
 
 ```bash
-# # Use the per-architecture tag to resolve directly to the image manifest
+# Use the per-architecture tag to resolve directly to the image manifest
 oras discover --format tree \
     docker.io/percona/percona-clustersync-mongodb:0.9.0-amd64
 
