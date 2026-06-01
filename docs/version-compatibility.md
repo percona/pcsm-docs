@@ -26,7 +26,7 @@ PCSM blocks synchronization in all cases where the source major version is highe
 | 7.0.x | 8.0.x | **Yes** | — |
 | 8.0.x | 7.0.x | **No** | Downgrade replication is not supported. |
 | 7.0.x | 6.0.x | **No** | Downgrade replication is not supported. |
-| Any higher | Any lower | **No** | Downgrade paths are not supported. |
+| Any higher version | Any lower version| **No** | Downgrade paths are not supported. |
 
 Use only the version combinations listed as supported in the table above. Unsupported combinations may start successfully but are not tested or officially supported.
 
