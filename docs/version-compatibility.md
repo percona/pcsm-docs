@@ -19,7 +19,7 @@ Other combinations may start but are not tested or officially supported. PCSM on
 
 | Source version | Target version | Supported | Notes |
 |----------------|----------------|-----------|-------|
-| 6.0.x | 6.0.x | **Yes** | — |
+| 6.0.x | 6.0.x | **Yes** | — | The min supported version is 6.0.17
 | 6.0.x | 7.0.x | **Yes** | — |
 | 6.0.x | 8.0.x | **Yes** | — |
 | 7.0.x | 7.0.x | **Yes** | — |
