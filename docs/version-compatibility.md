@@ -43,8 +43,3 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
     PCSM blocks startup if the source major version is higher than the target major version.
 
-
-- **Version compatibility is checked only at startup** 
-
-    PCSM performs the version check once when the server starts. This check is not repeated when replication is started or resumed.
-
