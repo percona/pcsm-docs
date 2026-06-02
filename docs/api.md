@@ -175,6 +175,15 @@ The following are response fields:
 | `initialSync.cloneCompleted` | boolean | Clone process completion status |
 | `initialSync.estimatedCloneSizeBytes` | number | Estimated total size to clone (bytes) |
 | `initialSync.clonedSizeBytes` | number | Current cloned size (bytes) |
+| `finalization.completed` | boolean | Finalization completion status |
+| `finalization.startedAt` | date.Time | RFC3339 timestamp when finalization started |
+| `finalization.completedAt` | date.Time | RFC3339 timestamp when finalization completed |
+| `finalization.unsuccessfulIndexes` | array | List of indexes that were not finalized successfully (omitted when empty) |
+| `finalization.unsuccessfulIndexes[].namespace` | string | MongoDB namespace in `database.collection` format |
+| `finalization.unsuccessfulIndexes[].indexName` | string | Index name |
+| `finalization.unsuccessfulIndexes[].type` | string | Machine-readable failure category (`failed`, `incomplete`, `inconsistent`) |
+| `finalization.unsuccessfulIndexes[].reason` | string | Human-readable reason why finalization failed for this index |
+| `finalization.unsuccessfulIndexes[].keys` | object | Index key specification |
 
 
 Example:
@@ -184,18 +193,34 @@ Example:
   "ok": true,
   "state": "running",
   "info": "Replicating Changes",
-  "lagTimeSeconds": 1,
+  "lagTimeSeconds": 0,
   "eventsRead": 0,
   "eventsApplied": 0,
   "lastReplicatedOpTime": {
-    "ts": "1763649865.1",
-    "isoDate": "2025-11-20T14:44:25Z"
+    "ts": "1779199363.1",
+    "isoDate": "2026-05-19T14:02:43Z"
   },
   "initialSync": {
-    "estimatedCloneSizeBytes": 24220000,
-    "clonedSizeBytes": 24220000,
+    "estimatedCloneSizeBytes": 328116,
+    "clonedSizeBytes": 328116,
     "completed": true,
     "cloneCompleted": true
+  }
+  "finalization": {
+    "completed": true,
+    "startedAt": "2026-05-07T10:30:00Z",
+    "completedAt": "2026-05-07T10:30:42Z",
+    "unsuccessfulIndexes": [
+      {
+        "namespace": "mydb.users",
+        "indexName": "email_unique_idx",
+        "type": "failed",
+        "reason": "recreate index mydb.users.email_unique_idx: duplicate key error",
+        "keys": {
+          "email": 1
+        }
+      }
+    ]
   }
 }
 ```
