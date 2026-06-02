@@ -205,7 +205,7 @@ Example:
     "clonedSizeBytes": 328116,
     "completed": true,
     "cloneCompleted": true
-  }
+  },
   "finalization": {
     "completed": true,
     "startedAt": "2026-05-07T10:30:00Z",
