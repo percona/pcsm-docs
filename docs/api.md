@@ -191,8 +191,8 @@ Example:
 ```json
 {
   "ok": true,
-  "state": "running",
-  "info": "Replicating Changes",
+  "state": "finalized",
+  "info": "Finalized",
   "lagTimeSeconds": 0,
   "eventsRead": 0,
   "eventsApplied": 0,
