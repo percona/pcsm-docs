@@ -13,7 +13,7 @@ In the current release, supported scenarios are:
 - Both clusters run the same major version.
 - The target cluster runs the next supported higher major version shown in the matrix.
 
-PCSM blocks synchronization in all cases where the source major version is higher than the target major version. Combinations that are not listed as supported in the matrix are not supported in the current release.
+Other combinations may start but are not tested or officially supported. PCSM only explicitly rejects downgrades.
 
 ## Version compatibility matrix
 
