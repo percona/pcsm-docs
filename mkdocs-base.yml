@@ -168,7 +168,6 @@ nav:
   - Get started:
       - Quickstart: installation.md
       - System requirements: system-requirements.md
-      - Cross-version replication: version-compatibility.md
       - 1. Install:
         - From repositories: install/repos.md
         - Run in Docker: install/docker.md
@@ -178,7 +177,8 @@ nav:
       - 3. Start PCSM: install/start-pcsm.md
       - install/parameters.md
   - Use PCSM: 
-    - Usage: install/usage.md  
+    - Usage: install/usage.md
+    - Cross-version replication: version-compatibility.md  
     - pqs.md 
     - PCSM commands: pcsm-commands.md
     - PCSM HTTP API: api.md
