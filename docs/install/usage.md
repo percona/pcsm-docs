@@ -210,7 +210,7 @@ For general `/status` endpoint details, see the [{{pcsm.short}} HTTP API](../api
       }
     }
     ```
-    
+
 The `unsuccessfulIndexes` array will not appear if there are no unsuccessful indexes.
 
 #### Unsuccessful indexes
