@@ -179,7 +179,7 @@ During finalization, `/status` indicates that finalization is in progress. After
 
 For general `/status` endpoint details, see the [{{pcsm.short}} HTTP API](../api.md). The example below shows the finalization-specific fields returned after finalization completes.
 
-??? example "Example: Finalize completed with one failed index"
+??? example "Example: Finalization completed with one failed index"
 
     ```{.json .no-copy}
     {
