@@ -215,7 +215,7 @@ The `unsuccessfulIndexes` array will not appear if there are no unsuccessful ind
 
 #### Unsuccessful indexes
 
-The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. Each entry contains:
+The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. During finalization, PCSM retries the creation of `failed` and `incomplete` indexes, while `inconsistent` indexes are skipped. Only indexes that remain unsuccessful after these retry attempts are reported in the `unsuccessfulIndexes` array. Each entry contains:
 
 | **Field** | **Type** | **Description** |
 |---|---|---|
