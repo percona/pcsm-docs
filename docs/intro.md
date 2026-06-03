@@ -113,9 +113,9 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     1. **Set up authentication**: Create users for {{pcsm.short}} in both MongoDB deployments. Configure connection strings using `mongos` hostname and port for both source and target clusters. See [Configure authentication in MongoDB](install/authentication.md) for details.
 
-    2. **Apply sharding (if applicable)**
-            
-        If the source collection is sharded, {{pcsm.short}} shards the target collection using the same sharding configuration.
+    2. **Apply shard key (if applicable)**
+
+        If the source collection is sharded, {{pcsm.short}} creates the corresponding sharded collection on the target using the same shard key; the target cluster manages other sharding details internally.
 
     3. **Start the replication**: 
 
