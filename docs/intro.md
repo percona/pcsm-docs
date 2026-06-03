@@ -63,27 +63,26 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
             - Only the collections selected for replication are dropped and recreated. 
             - Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
         
-Call the `start` command. {{pcsm.short}} prepares the target collections and begins the replication process. For each selected collection, {{pcsm.short}} performs the following actions:
+        Call the `start` command. {{pcsm.short}} prepares the target collections and begins the replication process. For each selected collection, {{pcsm.short}} performs the following actions:
         {.power-number}
 
         1. **Drop collection on target**
-        
+
             If the target collection already exists, {{pcsm.short}} drops it to ensure a clean state for incoming data.
 
         2. **Recreate collection**
-        
+
             The collection is recreated on the target with the same options as the source (such as capped settings, collation, validators, and other collection-level options).
 
         3. **Create indexes**
-            
-            Indexes are created on the target to match those defined on the source collection.
 
+            Indexes are created on the target based on those defined on the source collection. For details (for example, unique index handling), see [Index handling](#index-handling).
 
         4. **Initial sync**
-            
+
             {{pcsm.short}} copies the documents from the source collection to the target.
-    
-    See [Start the replication](install/usage.md#start-the-replication) for command details.
+
+        See [Start the replication](install/usage.md#start-the-replication) for command details.
        
     3. **Real-time replication**: After the initial data sync, {{pcsm.short}} monitors changes in the source and replicates them to the target at runtime. You don't have to stop your source deployment—it operates as usual, accepting client requests. {{pcsm.short}} uses [change streams :octicons-link-external-16:](https://www.mongodb.com/docs/manual/changeStreams/) to track the changes to your data and replicate them to the target.
 
