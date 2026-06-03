@@ -229,6 +229,6 @@ The `type` field can contain the following values:
 
 | **Type** | **Reason** |  **What it means** |
 |---|---|---|
-| `failed` | MongoDB error message (not stable) | The index build was attempted and encountered an error and could not be completed successfully. As a result, the index is not available in a usable state on the target cluster. |
-| `incomplete` | `"Index build did not complete"` | The index build was still in progress on the source cluster during the clone phase. Because the build had not finished, PCSM could not clone a complete and consistent version of the index to the target cluster. As a result, the index is reported as `incomplete` and is not cloned on the target.|
+| `failed` | `MongoDB error message (not stable)` | The index build was attempted and encountered an error and could not be completed successfully. As a result, the index is not available in a usable state on the target cluster. |
+| `incomplete` | `MongoDB error message (not stable)` | The index could not be successfully recreated during the finalization phase. PCSM reports the index as incomplete, and the reason contains the error message returned by MongoDB during the failed recreation attempt.|
 | `inconsistent` | `index is missing on one or more source shards` | Indexes that exist on some shards but are missing on others. |
