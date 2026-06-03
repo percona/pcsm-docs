@@ -221,8 +221,8 @@ The `unsuccessfulIndexes` array lists indexes that could not be finalized succes
 |---|---|---|
 | `namespace` | string | The MongoDB namespace containing the index, in `database.collection` format. |
 | `indexName` | string | The index name as registered in the data store. |
-| `keys` | object | Key specification: field names mapped to their sort order or index type. |
 | `type` | string | Machine-readable problem category. |
+| `keys` | object | Key specification: field names mapped to their sort order or index type. |
 | `reason` | string | Human-readable explanation of what was observed during this finalize attempt. |
 
 The `type` field can contain the following values:
