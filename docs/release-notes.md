@@ -6,6 +6,8 @@
 
 * [Percona ClusterSync for MongoDB 0.9.0 ({{date.v0_9_0}})](release-notes/0.9.0.md)
 
+* [Percona ClusterSync for MongoDB 0.8.1 ({{date.v0_8_1}})](release-notes/0.8.1.md)
+
 * [Percona ClusterSync for MongoDB 0.8.0 ({{date.v0_8_0}})](release-notes/0.8.0.md)
 
 * [Percona ClusterSync for MongoDB 0.7.0 ({{date.v0_7_0}})](release-notes/0.7.0.md)
