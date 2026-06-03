@@ -2,7 +2,7 @@
 # See also mkdocs.yml plugins.with-pdf.cover_subtitle and output_path
 
 year: '2026'
-release: '0.8.1'
+release: '0.9.0'
 
 date:
    v0_9_0: '2026-06-03'
