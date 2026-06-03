@@ -8,6 +8,7 @@
 
 You can interact with {{pcsm.full_name}} using the command-line interface or via the HTTP API. Read more about [{{pcsm.short}} HTTP API](../api.md).
 
+For command-line subcommands, responses are written to `stdout` while logs and errors are written to `stderr`. For details on capturing command output, see [Logging](../logging.md).
 
 ## Start the replication
 
