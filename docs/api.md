@@ -181,10 +181,9 @@ The following are response fields:
 | `finalization.unsuccessfulIndexes` | array | List of indexes that were not finalized successfully (omitted when empty) |
 | `finalization.unsuccessfulIndexes[].namespace` | string | MongoDB namespace in `database.collection` format |
 | `finalization.unsuccessfulIndexes[].indexName` | string | Index name |
+| `finalization.unsuccessfulIndexes[].keys` | object | Index key specification |
 | `finalization.unsuccessfulIndexes[].type` | string | Machine-readable failure category (`failed`, `incomplete`, `inconsistent`) |
 | `finalization.unsuccessfulIndexes[].reason` | string | Human-readable reason why finalization failed for this index |
-| `finalization.unsuccessfulIndexes[].keys` | object | Index key specification |
-
 
 Example:
 
