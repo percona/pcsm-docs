@@ -116,7 +116,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
         If the source collection is sharded, {{pcsm.short}} creates the corresponding sharded collection on the target using the same shard key; the target cluster manages other sharding details internally.
 
-    3. **Start the replication**: 
+    3. **Start the replication**
 
         !!! info "Important"
             During the replication startup phase:
