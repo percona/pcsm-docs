@@ -10,6 +10,9 @@ You can interact with {{pcsm.full_name}} using the command-line interface or via
 
 For command-line subcommands, responses are written to `stdout` while logs and errors are written to `stderr`. For details on capturing command output, see [Logging](../logging.md).
 
+!!! warning "Target collections are overwritten on start"
+    When you run `pcsm start`, {{pcsm.short}} drops and recreates the collections selected for replication on the target, overwriting any existing data in those collections. Databases and collections that are not selected for replication remain untouched.
+
 ## Start the replication
 
 Start the replication process between source and target clusters. {{pcsm.short}} starts copying the data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. 
