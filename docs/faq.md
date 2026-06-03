@@ -13,10 +13,9 @@
 
 - Source clusters: MongoDB 6.0.17 and later, including Atlas, MongoDB Enterprise Server, and Percona Server for MongoDB
 - Target clusters: Percona Server for MongoDB 6.0.17 and later.
+- Starting with 0.9.0 you can also replicate between [uneven versions](./version-compatibility.md#version-compatibility-matrix).
 
-    Starting with 0.9.0 you can also replicate between [uneven versions](./version-compatibility.md#version-compatibility-matrix).
-
-Check [Supported deployments](deployment.md) to learn more.
+    Check [Supported deployments](deployment.md) to learn more.
 
 ## Can I sync from Atlas to a self-hosted Percona Server for MongoDB?
 
