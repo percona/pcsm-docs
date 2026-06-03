@@ -122,7 +122,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
         !!! info "Important"
             During the replication startup phase:
 
-            - Only the collections selected for replication are dropped and recreated. 
+            - Only the collections selected for replication are dropped and recreated.
             - Existing databases and collections on the target that are not part of the sync selection **remain untouched**.
     
         Call the `start` command. You don't have to disable the balancer on the target. Before starting the data copying, {{pcsm.short}} retrieves the information about the shard keys for collections on the source cluster and creates these collections on the target with the same shard key. Then {{pcsm.short}} starts copying all data from the source to the target. First it does the initial sync by cloning the data and then applying all the changes that happened since the clone start. See [Start the replication](install/usage.md#start-the-replication) for command details.
