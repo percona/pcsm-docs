@@ -176,8 +176,8 @@ The following are response fields:
 | `initialSync.estimatedCloneSizeBytes` | number | Estimated total size to clone (bytes) |
 | `initialSync.clonedSizeBytes` | number | Current cloned size (bytes) |
 | `finalization.completed` | boolean | Finalization completion status |
-| `finalization.startedAt` | date.Time | RFC3339 timestamp when finalization started |
-| `finalization.completedAt` | date.Time | RFC3339 timestamp when finalization completed |
+| `finalization.startedAt` | string | RFC3339 timestamp when finalization started (omitted when status restored from a recovered checkpoint) |
+| `finalization.completedAt` | string | RFC3339 timestamp when finalization completed (omitted while finalization in progress) |
 | `finalization.unsuccessfulIndexes` | array | List of indexes that were not finalized successfully (omitted when empty) |
 | `finalization.unsuccessfulIndexes[].namespace` | string | MongoDB namespace in `database.collection` format |
 | `finalization.unsuccessfulIndexes[].indexName` | string | Index name |
