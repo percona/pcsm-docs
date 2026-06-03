@@ -32,4 +32,4 @@ Use only the version combinations listed as supported in the table above. Unsupp
 
 ## Limitations
 
-For a full list of constraints that apply to this feature, see the [limitations](./limitations.md) section.
+For a full list of constraints that apply to this feature, see the [limitations](./limitations.md#cross-version-replication) section.
