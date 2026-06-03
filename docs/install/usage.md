@@ -170,3 +170,65 @@ When you no longer need / want to replicate data, finalize the replication. {{pc
     ```{.bash data-prompt="$"}
     $ curl -X POST http://localhost:2242/finalize
     ```
+
+### Check finalization status
+
+You can use the `/status` endpoint to monitor finalization progress and inspect the outcome after it completes.
+
+During finalization, `/status` indicates that finalization is in progress. After it completes, `/status` reports the finalization result, including whether any index builds were unsuccessful.
+
+For general `/status` endpoint details, see the [{{pcsm.short}} HTTP API](../api.md). The example below shows the finalization-specific fields returned after finalization completes.
+
+??? example "Example: Finalization completed with one failed index"
+
+    ```{.json .no-copy}
+    {
+      "ok": true,
+      "state": "finalized",
+      "info": "Finalized",
+      "lagTimeSeconds": 0,
+      "eventsRead": 1234,
+      "eventsApplied": 1234,
+      "initialSync": {
+        "completed": true,
+        "cloneCompleted": true,
+        "clonedSizeBytes": 1073741824
+      },
+      "finalization": {
+        "completed": true,
+        "startedAt": "2026-05-07T10:30:00Z",
+        "completedAt": "2026-05-07T10:30:42Z",
+        "unsuccessfulIndexes": [
+          {
+            "namespace": "mydb.users",
+            "indexName": "email_unique_idx",
+            "type": "failed",
+            "reason": "recreate index mydb.users.email_unique_idx: duplicate key error",
+            "keys": {"email": 1}
+          }
+        ]
+      }
+    }
+    ```
+
+The `unsuccessfulIndexes` array will not appear if there are no unsuccessful indexes.
+
+#### Unsuccessful indexes
+
+The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. During finalization, PCSM retries the creation of `failed` and `incomplete` indexes, while `inconsistent` indexes are skipped. Only indexes that remain unsuccessful after these retry attempts are reported in the `unsuccessfulIndexes` array. Each entry contains:
+
+| **Field** | **Type** | **Description** |
+|---|---|---|
+| `namespace` | string | The MongoDB namespace containing the index, in `database.collection` format. |
+| `indexName` | string | The index name as registered in the data store. |
+| `type` | string | Machine-readable problem category. |
+| `keys` | object | Key specification: field names mapped to their sort order or index type. |
+| `reason` | string | Human-readable explanation of what was observed during this finalize attempt. |
+
+The `type` field can contain the following values:
+
+| **Type** | **Reason** |  **What it means** |
+|---|---|---|
+| `failed` | `MongoDB error message (not stable)` | The index build was attempted and encountered an error and could not be completed successfully. As a result, the index is not available in a usable state on the target cluster. |
+| `incomplete` | `MongoDB error message (not stable)` | The index could not be successfully recreated during the finalization phase. PCSM reports the index as incomplete, and the reason contains the error message returned by MongoDB during the failed recreation attempt.|
+| `inconsistent` | `index is missing on one or more source shards` | Indexes that exist on some shards but are missing on others. |

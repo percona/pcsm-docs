@@ -11,6 +11,19 @@ This page lists known limitations for using {{pcsm.full_name}}.
 * MongoDB versions that reached End-of-Life are not supported
 * {{pcsm.short}} connects only to the primary node in the replica set. You cannot force connection to secondary members using the [directConnection :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/connection-string/#connection-string-formats) option. This option is ignored.
 
+## Cross-version replication
+
+- **Feature Compatibility Version (FCV) is not automatically checked between your source and target clusters**
+
+    PCSM does not automatically check the Feature Compatibility Version (FCV) between your source and target clusters. Because an incompatible FCV might cause replication failures, it is important to perform this check manually before you begin:
+
+    Confirm the FCV for both your source and target clusters.
+    Ensure the target cluster's FCV is equal to or higher than the source cluster's FCV.
+
+- **Downgrade replication is not supported**
+
+    PCSM blocks startup if the source major version is higher than the target major version.
+
 ## Sharded clusters
 
 The following limitations apply specifically to sharded cluster replication:
@@ -41,6 +54,8 @@ The following functionalities are not supported:
 
 * Multiple source or multiple target clusters 
 * You cannot resume initial synchronization if an issue occurred. You must start it from scratch.
-* Database upgrade during the sync, even in the paused state.
+* Arbitrary database upgrades during a sync are not supported. For supported staged upgrades from lower to higher MongoDB major versions, follow the cross-version replication procedure.
 * Reverse synchronization
 * External authentication via Kerberos, AWS and LDAP
+
+

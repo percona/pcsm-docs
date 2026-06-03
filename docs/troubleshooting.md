@@ -74,6 +74,7 @@ If PCSM exits abnormally or is stopped unexpectedly, restart the `pcsm` service.
 
 The `pcsm` process is active but the replication may fail due to a temporary connection issue or other reasons. After you resolve the reason of failure (restore the connection), follow these steps to recover PCSM:
 
+
 1. Check current replication status:
 
     ```{.bash data-prompt="$"}
