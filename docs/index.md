@@ -37,7 +37,3 @@ Benefit from {{pcsm.full_name}} in the following use cases:
 * **Hybrid cloud deployments**:
 
     Synchronize data between on-premises clusters and cloud clusters, enabling hybrid cloud strategies.
-
-* **Disaster mitigation**:
-
-    Keep a warm standby copy of your data in another cloud or region. PCSM is not a replacement for [MongoDB Atlas Global Clusters :octicons-link-external-16:](https://www.mongodb.com/docs/atlas/global-clusters/) or a fully orchestrated disaster recovery (DR) solution.
