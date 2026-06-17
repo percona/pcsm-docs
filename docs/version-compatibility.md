@@ -24,6 +24,7 @@ Other combinations may start but are not tested or officially supported. PCSM on
 | 6.0.x | 8.0.x | **Yes** | — |
 | 7.0.x | 7.0.x | **Yes** | — |
 | 7.0.x | 8.0.x | **Yes** | — |
+| 8.0.x | 8.0.x | **Yes** | — |
 | 8.0.x | 7.0.x | **No** | Downgrade replication is not supported. |
 | 7.0.x | 6.0.x | **No** | Downgrade replication is not supported. |
 | Any higher version | Any lower version| **No** | Downgrade paths are not supported. |
