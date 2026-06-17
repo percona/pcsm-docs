@@ -11,6 +11,7 @@ site
 styles/
 
 __pycache__/
+.cache/
 
 
 # Allow
