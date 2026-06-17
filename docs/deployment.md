@@ -7,7 +7,8 @@
 
 ## Version requirements
 
-* You can synchronize Percona Server for MongoDB and MongoDB Community, Enterprise Advanced, or Atlas clusters running the **same major version**, such as 6.0 to 6.0, 7.0 to 7.0, or 8.0 to 8.0. PCSM also supports **cross-version replication** from MongoDB 6.0 and 7.0 source clusters to MongoDB 8.0 target clusters.
+* You can synchronize from Percona Server for MongoDB or MongoDB Community, Enterprise Advanced, or Atlas source clusters to a Percona Server for MongoDB target cluster when both run the same major version (e.g., 6.0 to 6.0, 7.0 to 7.0, or 8.0 to 8.0).
+* {{pcsm.short}} also supports selected cross-version replication paths (e.g., 6.0 to 7.0 and 6.0/7.0 to 8.0); see [Cross-version replication](version-compatibility.md) and [limitations](limitations.md#cross-version-replication).
 * Minimal supported MongoDB versions are: 6.0.17, 7.0.13, 8.0.0
 
 ## Supported architectures
