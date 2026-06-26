@@ -60,7 +60,7 @@ Set this option in the source and target MongoDB connection strings that you pas
 
 If the connection string does not include any query parameters:
 
-~~~bash
+~~~text
 mongodb://host:port/?maxPoolSize=500
 ~~~
 
