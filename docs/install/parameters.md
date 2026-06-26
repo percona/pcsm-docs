@@ -54,19 +54,19 @@ Alternatively, you can define the following environment variables:
 
 PCSM supports the MongoDB `maxPoolSize` connection string option, which controls the maximum number of connections the MongoDB Go driver can maintain in its connection pool.
 
-Set this option in the source and target MongoDB connection strings that you pass with the `--source` and `--target` command-line options or through the `PCSM_SOURCE_URI` and `PCSM_TARGET_URI` environment variables.
+Set this option in the source and/or target MongoDB connection strings that you pass with the `--source` and `--target` command-line options or through the `PCSM_SOURCE_URI` and `PCSM_TARGET_URI` environment variables.
 
 ### Syntax
 
 If the connection string does not include any query parameters:
 
-~~~bash
+~~~text
 mongodb://host:port/?maxPoolSize=500
 ~~~
 
 If the connection string already includes query parameters, append `maxPoolSize` with `&`:
 
-~~~bash
+~~~text
 mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
 ~~~
 
@@ -77,7 +77,7 @@ mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
 
     Output
     ```{.text .no-copy}
-    2026-06-24 15:16:40.691 INF Percona ClusterSync for MongoDB v0.9.0 3eb82dd 2026-06-24_09:36_UTC
+    2026-06-24 15:16:40.691 INF Percona ClusterSync for MongoDB v0.10.0 3eb82dd 2026-06-24_09:36_UTC
     2026-06-24 15:16:40.692 INF Config: source client compressors: [snappy zstd zlib] s=connect
     2026-06-24 15:16:40.692 INF Config: source client maxPoolSize: 500 s=connect
     2026-06-24 15:16:40.711 INF Connected to source cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs00:30000
@@ -94,13 +94,13 @@ mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
 If you do not specify `maxPoolSize`, the MongoDB Go driver uses the default value of `100`.
 
 ??? example "Example: maxPoolSize not defined"
-    ```
-    pcsm --source='mongodb://rs00:30000' --target='mongodb://rs10:30100' --log-level='debug'
+    ```{.bash data-prompt="$"}
+    $ pcsm --source='mongodb://rs00:30000' --target='mongodb://rs10:30100' --log-level='debug'
     ```
 
     Output
-    ```
-    2026-06-24 15:15:04.503 INF Percona ClusterSync for MongoDB v0.9.0 3eb82dd 2026-06-24_09:36_UTC
+    ```{.text .no-copy}
+    2026-06-24 15:15:04.503 INF Percona ClusterSync for MongoDB v0.10.0 3eb82dd 2026-06-24_09:36_UTC
     2026-06-24 15:15:04.504 INF Config: source client compressors: [snappy zstd zlib] s=connect
     2026-06-24 15:15:04.504 INF Config: source client maxPoolSize: 100 (driver default) s=connect
     2026-06-24 15:15:04.525 INF Connected to source cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs00:30000
@@ -120,12 +120,11 @@ For the best clone performance, size the connection pool to match or exceed the 
 
 | Cluster | Recommended `maxPoolSize`           |
 | ------- | ----------------------------------- |
-| Source  | At least `clone-num-read-workers`   |
-| Target  | At least `clone-num-insert-workers` |
+| Source  | At least `--clone-num-read-workers`   |
+| Target  | At least `--clone-num-insert-workers` |
 
 When PCSM starts, it logs the effective `maxPoolSize` for both the source and target clients. If the configured pool size is smaller than the corresponding clone worker count, PCSM logs a warning because the available connections may limit throughput.
 
 !!! note
     `maxPoolSize` applies independently to each MongoDB server or `mongos` instance that the client connects to. It does not define a single global connection limit for the entire client.
-
 
