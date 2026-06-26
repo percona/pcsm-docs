@@ -94,11 +94,11 @@ mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
 
 ### How maxPoolSize works
 
-| **Configuration**|**Behavior**|
-|-------------|--------|
+| **Configuration** | **Behavior** |
+| --------------- | -------- |
 | Not set | Driver defaults to **100** connections |
-| `maxPoolSize=N`| Driver caps the pool at **N** connections |
-| `maxPoolSize=0`| Removes the limit, allowing the driver to create as many connections as needed.|
+| `maxPoolSize=N` | Driver caps the pool at **N** connections |
+| `maxPoolSize=0` | Removes the limit, allowing the driver to create as many connections as needed. |
 
 
 ??? example "Example: maxPoolSize not defined"
