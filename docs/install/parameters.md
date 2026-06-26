@@ -58,7 +58,7 @@ Set this option in the source and/or target MongoDB connection strings that you 
 
 ### Syntax
 
-If the connection string does not include any query parameters:
+If the connection string does not already include any query parameters:
 
 ~~~text
 mongodb://host:port/?maxPoolSize=500
