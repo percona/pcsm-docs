@@ -132,4 +132,3 @@ When PCSM starts, it logs the effective `maxPoolSize` for both the source and ta
 
 !!! note
     `maxPoolSize` applies independently to each MongoDB server or `mongos` instance that the client connects to. It does not define a single global connection limit for the entire client.
-
