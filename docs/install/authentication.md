@@ -91,7 +91,6 @@ You can pass additional connection options to the MongoDB connection string. The
 | `tlsAllowInvalidCertificates` | Allows connections to servers with invalid certificates. Not recommended for production use. |
 | `tlsAllowInvalidHostnames` | Allows connections to servers with invalid hostnames. Not recommended for production use. |
 | `tlsInsecure` | Disables certificate validation. Not recommended for production use. |
-| `maxPoolSize` | Controls the maximum number of connections the MongoDB Go driver can maintain in its connection pool. For detailed information about this option, see the section [MongoDB connection strings](parameters.md#mongodb-connection-string).|
 
 ## Next steps 
 
