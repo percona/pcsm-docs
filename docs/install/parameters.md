@@ -77,7 +77,7 @@ mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
 
     Output
     ```{.text .no-copy}
-    2026-06-24 15:16:40.691 INF Percona ClusterSync for MongoDB v0.9.0 3eb82dd 2026-06-24_09:36_UTC
+    2026-06-24 15:16:40.691 INF Percona ClusterSync for MongoDB v0.10.0 3eb82dd 2026-06-24_09:36_UTC
     2026-06-24 15:16:40.692 INF Config: source client compressors: [snappy zstd zlib] s=connect
     2026-06-24 15:16:40.692 INF Config: source client maxPoolSize: 500 s=connect
     2026-06-24 15:16:40.711 INF Connected to source cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs00:30000
