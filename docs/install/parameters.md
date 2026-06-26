@@ -50,6 +50,8 @@ Alternatively, you can define the following environment variables:
 
 ## MongoDB connection string option: `maxPoolSize`
 
+!!! admonition "Version added: [0.10.0](../release-notes/0.10.0.md)"
+
 PCSM supports the MongoDB `maxPoolSize` connection string option, which controls the maximum number of connections the MongoDB Go driver can maintain in its connection pool.
 
 Set this option in the source and target MongoDB connection strings that you pass with the `--source` and `--target` command-line options or through the `PCSM_SOURCE_URI` and `PCSM_TARGET_URI` environment variables.
@@ -59,18 +61,50 @@ Set this option in the source and target MongoDB connection strings that you pas
 If the connection string does not include any query parameters:
 
 ```bash
-mongodb://host:27017/?maxPoolSize=500
+mongodb://host:port/?maxPoolSize=500
 ```
 
-If the connection string already contains query parameters, add `maxPoolSize` using `&`:
+??? example "Example: maxPoolSize=500"
+    ```
+    pcsm --source='mongodb://rs00:30000/?maxPoolSize=500' --target='mongodb://rs10:30100' --log-level='debug'
+    ```
 
-```bash
-mongodb://host:27017/?replicaSet=rs0&maxPoolSize=500
-```
+    Output
+    ```
+    2026-06-24 15:16:40.691 INF Percona ClusterSync for MongoDB v0.9.0 3eb82dd 2026-06-24_09:36_UTC
+    2026-06-24 15:16:40.692 INF Config: source client compressors: [snappy zstd zlib] s=connect
+    2026-06-24 15:16:40.692 INF Config: source client maxPoolSize: 500 s=connect
+    2026-06-24 15:16:40.711 INF Connected to source cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs00:30000
+    2026-06-24 15:16:40.711 INF Config: target client compressors: [snappy zstd zlib] s=connect
+    2026-06-24 15:16:40.711 INF Config: target client maxPoolSize: 100 (driver default) s=connect
+    2026-06-24 15:16:40.724 INF Connected to target cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs10:30100
+    2026-06-24 15:16:40.728 INF Checking Recovery Data for "pcsm" s=recovery
+    2026-06-24 15:16:40.729 INF Recovery Data not found s=recovery
+    2026-06-24 15:16:40.729 INF Starting HTTP server at http://localhost:2242
+    ```
 
 ### Default behavior
 
 If you do not specify `maxPoolSize`, the MongoDB Go driver uses the default value of `100`.
+
+??? example "Example: maxPoolSize not defined"
+    ```
+    pcsm --source='mongodb://rs00:30000' --target='mongodb://rs10:30100' --log-level='debug'
+    ```
+
+    Output
+    ```
+    2026-06-24 15:15:04.503 INF Percona ClusterSync for MongoDB v0.9.0 3eb82dd 2026-06-24_09:36_UTC
+    2026-06-24 15:15:04.504 INF Config: source client compressors: [snappy zstd zlib] s=connect
+    2026-06-24 15:15:04.504 INF Config: source client maxPoolSize: 100 (driver default) s=connect
+    2026-06-24 15:15:04.525 INF Connected to source cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs00:30000
+    2026-06-24 15:15:04.525 INF Config: target client compressors: [snappy zstd zlib] s=connect
+    2026-06-24 15:15:04.525 INF Config: target client maxPoolSize: 100 (driver default) s=connect
+    2026-06-24 15:15:04.533 INF Connected to target cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs10:30100
+    2026-06-24 15:15:04.546 INF Checking Recovery Data for "pcsm" s=recovery
+    2026-06-24 15:15:04.546 INF Recovery Data not found s=recovery
+    2026-06-24 15:15:04.546 INF Starting HTTP server at http://localhost:2242
+    ```
 
 Setting `maxPoolSize=0` removes the limit, allowing the driver to create as many connections as needed.
 
