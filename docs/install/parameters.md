@@ -47,3 +47,43 @@ Alternatively, you can define the following environment variables:
 | `PCSM_REPL_WORKER_QUEUE_SIZE` | Defines the maximum number of replication events that each replication worker thread can queue before processing. | `5000` |
 | `PCSM_REPL_BULK_OPS_SIZE` | Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication. | `5000` |
 
+## MongoDB connection string options
+
+PCSM supports the `maxPoolSize` MongoDB connection string option for configuring the maximum number of connections in the driver's connection pool.
+
+Specify the option in the source and target MongoDB connection strings passed through `--source` and `--target`, or the `PCSM_SOURCE_URI` and `PCSM_TARGET_URI` environment variables.
+
+### Syntax
+
+If the URI contains no query parameters:
+
+```bash
+mongodb://host:27017/?maxPoolSize=500
+```
+
+If the URI already includes query parameters, append `maxPoolSize` with `&`:
+
+```bash
+mongodb://host:27017/?replicaSet=rs0&maxPoolSize=500
+```
+
+### Default behavior
+
+If `maxPoolSize` is omitted, the MongoDB Go driver uses its default value of `100`.
+
+Setting `maxPoolSize=0` removes the limit and allows the driver to create an unlimited number of connections.
+
+### Recommendations
+
+For clone operations, configure the connection pool so that it is at least as large as the corresponding worker count:
+
+* **Source cluster:** `maxPoolSize >= clone-num-read-workers`
+* **Target cluster:** `maxPoolSize >= clone-num-insert-workers`
+
+At startup, PCSM logs the effective `maxPoolSize` for both clients. If the configured pool size is lower than the corresponding clone worker count, PCSM logs a warning because the connection pool may become a bottleneck.
+
+!!! note
+
+```
+`maxPoolSize` applies to each MongoDB server or mongos that the client connects to. It is not a global connection limit for the entire client.
+```
