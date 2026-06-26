@@ -50,7 +50,7 @@ Alternatively, you can define the following environment variables:
 
 ## MongoDB connection string option: `maxPoolSize`
 
-!!! admonition "Version added: [0.10.0](../release-notes/0.10.0.md)"
+!!! admonition "Version added: 0.10.0"
 
 PCSM supports the MongoDB `maxPoolSize` connection string option, which controls the maximum number of connections the MongoDB Go driver can maintain in its connection pool.
 
