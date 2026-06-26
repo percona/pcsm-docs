@@ -50,7 +50,7 @@ Alternatively, you can define the following environment variables:
 
 ## MongoDB connection string
 
-!!! admonition "Version added: [0.10.0](../release-notes/0.10.0.md)"
+!!! admonition "Version added: 0.10.0"
 
 PCSM supports the MongoDB `maxPoolSize` connection string option, which controls the maximum number of connections the MongoDB Go driver can maintain in its connection pool.
 
@@ -60,17 +60,23 @@ Set this option in the source and target MongoDB connection strings that you pas
 
 If the connection string does not include any query parameters:
 
-```bash
+~~~bash
 mongodb://host:port/?maxPoolSize=500
-```
+~~~
+
+If the connection string already includes query parameters, append `maxPoolSize` with `&`:
+
+~~~bash
+mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
+~~~
 
 ??? example "Example: maxPoolSize=500"
-    ```
-    pcsm --source='mongodb://rs00:30000/?maxPoolSize=500' --target='mongodb://rs10:30100' --log-level='debug'
+    ```{.bash data-prompt="$"}
+    $ pcsm --source='mongodb://rs00:30000/?maxPoolSize=500' --target='mongodb://rs10:30100' --log-level='debug'
     ```
 
     Output
-    ```
+    ```{.text .no-copy}
     2026-06-24 15:16:40.691 INF Percona ClusterSync for MongoDB v0.9.0 3eb82dd 2026-06-24_09:36_UTC
     2026-06-24 15:16:40.692 INF Config: source client compressors: [snappy zstd zlib] s=connect
     2026-06-24 15:16:40.692 INF Config: source client maxPoolSize: 500 s=connect
