@@ -73,6 +73,7 @@ mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
 ~~~
 
 ??? example "Example: maxPoolSize=500"
+
     ```{.bash data-prompt="$"}
     $ pcsm --source='mongodb://rs00:30000/?maxPoolSize=500' --target='mongodb://rs10:30100' --log-level='debug'
     ```
