@@ -54,7 +54,7 @@ Alternatively, you can define the following environment variables:
 
 PCSM supports the MongoDB `maxPoolSize` connection string option, which controls the maximum number of connections the MongoDB Go driver can maintain in its connection pool.
 
-Set this option in the source and target MongoDB connection strings that you pass with the `--source` and `--target` command-line options or through the `PCSM_SOURCE_URI` and `PCSM_TARGET_URI` environment variables.
+Set this option in the source and/or target MongoDB connection strings that you pass with the `--source` and `--target` command-line options or through the `PCSM_SOURCE_URI` and `PCSM_TARGET_URI` environment variables.
 
 ### Syntax
 
