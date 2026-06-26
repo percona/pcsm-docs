@@ -58,13 +58,15 @@ Set this option in the source and/or target MongoDB connection strings that you 
 
 ### Syntax
 
-If the connection string does not include any query parameters:
+Append `maxPoolSize` as a query parameter to your connection string:
+
+Without existing query parameters:
 
 ~~~text
 mongodb://host:port/?maxPoolSize=500
 ~~~
 
-If the connection string already includes query parameters, append `maxPoolSize` with `&`:
+With existing query parameters:
 
 ~~~text
 mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
@@ -89,9 +91,14 @@ mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
     2026-06-24 15:16:40.729 INF Starting HTTP server at http://localhost:2242
     ```
 
-### Default behavior
+### How maxPoolSize works
 
-If you do not specify `maxPoolSize`, the MongoDB Go driver uses the default value of `100`.
+| **Configuration**|**Behavior**|
+|-------------|--------|
+| `maxPoolSize` not set | Driver defaults to **100** connections    |
+| `maxPoolSize=N`| Driver caps the pool at **N** connections |
+| `maxPoolSize=0`| Removes the limit, allowing the driver to create as many connections as needed.|
+
 
 ??? example "Example: maxPoolSize not defined"
     ```{.bash data-prompt="$"}
@@ -111,9 +118,7 @@ If you do not specify `maxPoolSize`, the MongoDB Go driver uses the default valu
     2026-06-24 15:15:04.546 INF Recovery Data not found s=recovery
     2026-06-24 15:15:04.546 INF Starting HTTP server at http://localhost:2242
     ```
-
-Setting `maxPoolSize=0` removes the limit, allowing the driver to create as many connections as needed.
-
+    
 ### Recommendations
 
 For the best clone performance, size the connection pool to match or exceed the number of clone workers.
