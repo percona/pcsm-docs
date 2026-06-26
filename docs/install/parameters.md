@@ -60,9 +60,15 @@ Set this option in the source and target MongoDB connection strings that you pas
 
 If the connection string does not include any query parameters:
 
-```bash
+~~~bash
 mongodb://host:port/?maxPoolSize=500
-```
+~~~
+
+If the connection string already includes query parameters, append `maxPoolSize` with `&`:
+
+~~~bash
+mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
+~~~
 
 ??? example "Example: maxPoolSize=500"
     ```{.bash data-prompt="$"}
