@@ -120,8 +120,8 @@ For the best clone performance, size the connection pool to match or exceed the 
 
 | Cluster | Recommended `maxPoolSize`           |
 | ------- | ----------------------------------- |
-| Source  | At least `clone-num-read-workers`   |
-| Target  | At least `clone-num-insert-workers` |
+| Source  | At least `--clone-num-read-workers`   |
+| Target  | At least `--clone-num-insert-workers` |
 
 When PCSM starts, it logs the effective `maxPoolSize` for both the source and target clients. If the configured pool size is smaller than the corresponding clone worker count, PCSM logs a warning because the available connections may limit throughput.
 
