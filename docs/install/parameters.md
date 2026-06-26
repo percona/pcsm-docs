@@ -48,7 +48,7 @@ Alternatively, you can define the following environment variables:
 | `PCSM_REPL_BULK_OPS_SIZE` | Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication. | `5000` |
 
 
-## MongoDB connection string option: `maxPoolSize`
+## MongoDB connection string
 
 !!! admonition "Version added: [0.10.0](../release-notes/0.10.0.md)"
 
