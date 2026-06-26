@@ -83,7 +83,4 @@ For clone operations, configure the connection pool so that it is at least as la
 At startup, PCSM logs the effective `maxPoolSize` for both clients. If the configured pool size is lower than the corresponding clone worker count, PCSM logs a warning because the connection pool may become a bottleneck.
 
 !!! note
-
-```
-`maxPoolSize` applies to each MongoDB server or mongos that the client connects to. It is not a global connection limit for the entire client.
-```
+    `maxPoolSize` applies to each MongoDB server or mongos that the client connects to. It is not a global connection limit for the entire client.
