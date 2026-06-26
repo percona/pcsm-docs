@@ -66,7 +66,7 @@ mongodb://host:port/?maxPoolSize=500
 
 If the connection string already includes query parameters, append `maxPoolSize` with `&`:
 
-~~~bash
+~~~text
 mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
 ~~~
 
