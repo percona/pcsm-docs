@@ -64,7 +64,7 @@ If the connection string does not include any query parameters:
 mongodb://host:port/?maxPoolSize=500
 ~~~
 
-If the connection string already includes query parameters, append `maxPoolSize` with `&`:
+If the connection string already includes other query parameters, append `maxPoolSize` with `&`:
 
 ~~~text
 mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
