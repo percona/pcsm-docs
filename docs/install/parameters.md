@@ -77,8 +77,8 @@ Setting `maxPoolSize=0` removes the limit and allows the driver to create an unl
 
 For clone operations, configure the connection pool so that it is at least as large as the corresponding worker count:
 
-* **Source cluster:** `maxPoolSize >= clone-num-read-workers`
-* **Target cluster:** `maxPoolSize >= clone-num-insert-workers`
+* **Source cluster:** `maxPoolSize` >= configured `--clone-num-read-workers` value
+* **Target cluster:** `maxPoolSize` >= configured `--clone-num-insert-workers` value
 
 At startup, PCSM logs the effective `maxPoolSize` for both clients. If the configured pool size is lower than the corresponding clone worker count, PCSM logs a warning because the connection pool may become a bottleneck.
 
