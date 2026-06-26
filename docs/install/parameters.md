@@ -94,13 +94,13 @@ mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
 If you do not specify `maxPoolSize`, the MongoDB Go driver uses the default value of `100`.
 
 ??? example "Example: maxPoolSize not defined"
-    ```
-    pcsm --source='mongodb://rs00:30000' --target='mongodb://rs10:30100' --log-level='debug'
+    ```{.bash data-prompt="$"}
+    $ pcsm --source='mongodb://rs00:30000' --target='mongodb://rs10:30100' --log-level='debug'
     ```
 
     Output
-    ```
-    2026-06-24 15:15:04.503 INF Percona ClusterSync for MongoDB v0.9.0 3eb82dd 2026-06-24_09:36_UTC
+    ```{.text .no-copy}
+    2026-06-24 15:15:04.503 INF Percona ClusterSync for MongoDB v0.10.0 3eb82dd 2026-06-24_09:36_UTC
     2026-06-24 15:15:04.504 INF Config: source client compressors: [snappy zstd zlib] s=connect
     2026-06-24 15:15:04.504 INF Config: source client maxPoolSize: 100 (driver default) s=connect
     2026-06-24 15:15:04.525 INF Connected to source cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs00:30000
