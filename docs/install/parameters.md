@@ -120,7 +120,7 @@ mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
     2026-06-24 15:15:04.546 INF Recovery Data not found s=recovery
     2026-06-24 15:15:04.546 INF Starting HTTP server at http://localhost:2242
     ```
-    
+
 ### Recommendations
 
 For the best clone performance, size the connection pool to match or exceed the number of clone workers.
