@@ -72,12 +72,12 @@
         // MODAL CONTENT
         script.setAttribute(
             "data-modal-disclaimer",
-            "The **Percona AI Assistant** helps you find simple, clear answers to your Percona questions using [official documentation](https://docs.percona.com/), resolved [forum posts](https://forums.percona.com/) and [blog posts](https://www.percona.com/blog/). Note, do not enter personal or confidential information. Before using Percona AI assistant, read the [Legal Notice](https://docs.percona.com/percona-server-for-mongodb/7.0/legal-notice.html)."
+            "The **Percona AI Assistant** helps you find simple, clear answers to your Percona questions using [official documentation](https://docs.percona.com/), resolved [forum posts](https://forums.percona.com/) and [blog posts](https://www.percona.com/blog/). Note, do not enter personal or confidential information. Before using Percona AI assistant, read the [Legal Notice](https://docs.percona.com/percona-clustersync-for-mongodb/legal-notice.html)."
         );
 
         script.setAttribute(
             "data-modal-example-questions",
-            "How do I get started quickly with Percona Server for MongoDB?, How do I install Percona Server for MongoDB?, How do I use Percona Server for MongoDB binaries?, How do I manage backups?"
+            "How do I get started quickly with Percona ClusterSync for MongoDB?, How do I install Percona ClusterSync for MongoDB?, How do I use Percona ClusterSync for MongoDB?, How do I set up observability with Percona Monitoring and Management?"
         );
 
         script.setAttribute(
