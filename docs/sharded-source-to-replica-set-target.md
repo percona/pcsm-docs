@@ -10,13 +10,21 @@ For information about sharded cluster support, see [Sharding support in Percona 
 
 When replication starts, PCSM detects that the source is sharded and the target is a replica set.
 
-If a source collection is sharded, PCSM skips sharding operations such as shardCollection on the target. These operations apply only to sharded clusters.
+If a source collection is sharded, PCSM skips sharding operations such as `shardCollection` on the target. These operations apply only to sharded clusters.
 
 PCSM then continues with the standard clone and replication workflow. No additional configuration is required.
 
 !!! note
     !!! note
         A collection that is sharded on the source is created as a regular collection on the replica set target. The collection data is copied, but the target collection isn't sharded.
+
+## What carries over
+
+| **On the source** | **On the replica set target** |
+|---|---|
+| Sharded collection | Created as a regular collection. All documents are copied. The shard key isn't applied because it doesn't apply to a replica set. |
+| Unsharded collection | Created and copied as in a replica set to replica set sync. |
+| Chunk distribution and primary shard | Not preserved. PCSM replicates data, not cluster metadata. |
 
 
 
