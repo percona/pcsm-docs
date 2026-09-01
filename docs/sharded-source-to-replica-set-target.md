@@ -18,7 +18,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
     !!! note
         A collection that is sharded on the source is created as a regular collection on the replica set target. The collection data is copied, but the target collection isn't sharded.
 
-## What carries over
+## What is replicated
 
 | **On the source** | **On the replica set target** |
 |---|---|
