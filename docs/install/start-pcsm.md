@@ -36,6 +36,74 @@ Start {{pcsm.full_name}}.
 
 See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for all available options.
 
+## Configure the HTTP listen address
+
+By default, the PCSM HTTP server listens on `localhost`, which keeps the control API and the profiling endpoints reachable only from the local host. Most deployments don't need to change this.
+
+Containerized deployments are the exception. Kubernetes runs HTTP liveness and readiness probes against the pod IP, and Docker forwards published ports to the container IP rather than the container loopback address. A loopback-only listener refuses these connections; failed readiness probes mark the pod unready, while repeated failed liveness probes can restart it.
+
+To make the server reachable through the pod IP, set the listen host to `0.0.0.0` for an IPv4 pod or `::` for an IPv6 pod:
+
+```{.bash data-prompt="$"}
+$ PCSM_LISTEN_HOST=0.0.0.0 pcsm
+```
+
+For an IPv6 pod, use `::` instead:
+
+```{.bash data-prompt="$"}
+$ PCSM_LISTEN_HOST=:: pcsm
+```
+
+Alternatively, use the `--listen-host` option:
+
+```{.bash data-prompt="$"}
+$ pcsm --listen-host 0.0.0.0
+```
+
+For an IPv6 pod:
+
+```{.bash data-prompt="$"}
+$ pcsm --listen-host ::
+```
+
+You can also give an IP address or a DNS name. To listen on the IPv6 loopback address:
+
+```{.bash data-prompt="$"}
+$ pcsm --listen-host ::1
+```
+
+PCSM adds the brackets itself, so this binds to `[::1]:2242`.
+
+### What to pass
+
+Give `--listen-host` a host and nothing else. The `--port` option sets the port, and defaults to `2242`.
+
+A value that already contains a port is rejected, so `localhost:2242`, `127.0.0.1:2242`, and `[::1]:2242` all fail at startup. A DNS name is accepted without being resolved first, which means a name that can't be resolved isn't caught by validation.
+
+Changing the bind host doesn't affect the CLI. Subcommands such as `pcsm status` always connect to `localhost`.
+
+### Check that it worked
+
+From inside the container, confirm the server answers on the pod IP rather than only on loopback. For an IPv4 pod:
+
+```{.bash data-prompt="$"}
+$ curl -s "http://$(hostname -i | awk '{for (i=1;i<=NF;i++) if ($i !~ /:/) {print $i; exit}}'):2242/status"
+```
+
+For an IPv6 pod, enclose the address in brackets:
+
+```{.bash data-prompt="$"}
+$ curl -g -s "http://[$(hostname -i | awk '{for (i=1;i<=NF;i++) if ($i ~ /:/) {print $i; exit}}')]:2242/status"
+```
+
+A response means the bind address took effect. Connection refused means the server is still on loopback, so check that the environment variable or option reached the process.
+
+!!! warning
+    Binding to `0.0.0.0` (IPv4) or `::` (IPv6) exposes the control endpoints `/start`, `/pause`, `/resume`, and `/finalize`, along with the `pprof` profiling endpoints, on every network interface of the host or pod. None of them require authentication, so anything that can route to the pod can start, pause, or finalize replication.
+
+    In Kubernetes, restrict access with a `NetworkPolicy` or an equivalent network control. If all you need is a health check, an exec probe against `localhost` gives you the same result with no network exposure.
+
+See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for all available options, and [PCSM HTTP API](../api.md) for the endpoints themselves.
 
 ## How to see {{pcsm.full_name}} logs
 
