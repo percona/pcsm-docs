@@ -36,6 +36,35 @@ Start {{pcsm.full_name}}.
 
 See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for all available options.
 
+## Configure the HTTP listen address
+
+By default, the PCSM HTTP server listens on localhost. The `--port option `controls the HTTP port.
+
+This default keeps the PCSM control API and profiling endpoints accessible only from the local host.
+
+In Kubernetes, HTTP liveness and readiness probes connect to the pod IP. To make the PCSM HTTP server reachable through the pod IP, set the listen host to `0.0.0.0:`
+
+```text
+$ PCSM_LISTEN_HOST=0.0.0.0 pcsm
+```
+
+Alternatively, use the `--listen-host` option:
+
+$ pcsm --listen-host 0.0.0.0
+
+The default value is localhost. You can also specify an IP address or DNS name. For example, to listen on the IPv6 loopback address:
+
+```text
+$ pcsm --listen-host ::1
+```
+
+Specify only the host with `--listen-host`. Do not include a port. `Use --port` to configure the HTTP port.
+
+!!! warning
+
+    Setting `--listen-host` to `0.0.0.0` makes the PCSM control API and profiling endpoints reachable through the network interfaces of the host or pod. These endpoints don't require authentication.
+
+    In Kubernetes, use a `NetworkPolicy` or other network controls to restrict access. If you don't need to expose the HTTP endpoint on the pod network, you can use an exec-based health probe against `localhost` instead.
 
 ## How to see {{pcsm.full_name}} logs
 

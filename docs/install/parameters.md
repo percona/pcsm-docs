@@ -15,7 +15,6 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--clone-segment-size`: Segment size for clone operations. Accepts plain bytes or a unit suffix (e.g. `500MB`, `1GiB`). When omitted, the tool automatically calculates segment size based on collection size and available read workers.
 - `--use-collection-bulk-write`: Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+).
 
-
 ??? example "Examples"
 
     ```{.bash data-prompt="$"}
