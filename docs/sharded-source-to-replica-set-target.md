@@ -28,10 +28,9 @@ PCSM then continues with the standard clone and replication workflow. No additio
 
 ## Before you start
 
-- Ensure the source and target MongoDB versions meet the [version requirements](.).
-- Configure authentication for both deployments. Refer to [Configure authentication in MongoDB](#).
+- Ensure the source and target MongoDB versions meet the [version requirements](version-compatibility.md#version-compatibility-matrix).
+- Configure authentication for both deployments. Refer to [Configure authentication in MongoDB](./install/authentication.md).
 - Verify that PCSM can connect to the source sharded cluster and the target replica set.
-- Review the known issues and limitations before proceeding.
 
 
 
