@@ -14,6 +14,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--clone-num-insert-workers`: Number of insert workers that write batches to the target. Shared for all collections.
 - `--clone-segment-size`: Segment size for clone operations. Accepts plain bytes or a unit suffix (e.g. `500MB`, `1GiB`). When omitted, the tool automatically calculates segment size based on collection size and available read workers.
 - `--use-collection-bulk-write`: Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+).
+- `--listen-host`: Host the HTTP server binds to. See [Configure the http listen address](../install/start-pcsm.md#configure-the-http-listen-address).
 
 ??? example "Examples"
 
@@ -45,4 +46,5 @@ Alternatively, you can define the following environment variables:
 | `PCSM_REPL_EVENT_QUEUE_SIZE` | Controls the size of the internal event queue used by the replication subsystem. | `5000` |
 | `PCSM_REPL_WORKER_QUEUE_SIZE` | Defines the maximum number of replication events that each replication worker thread can queue before processing. | `5000` |
 | `PCSM_REPL_BULK_OPS_SIZE` | Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication. | `5000` |
+| `PCSM_LISTEN_HOST` | Host the HTTP server binds to. See [Configure the http listen address](../install/start-pcsm.md#configure-the-http-listen-address) | Localhost |
 
