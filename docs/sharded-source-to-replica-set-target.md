@@ -58,7 +58,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
             ```
         5. Check the replication status:
 
-            ```json
+            ```{.text .no-copy}
             pcsm status
             {
                 "ok": false,
