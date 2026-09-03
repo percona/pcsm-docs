@@ -36,6 +36,8 @@ PCSM then continues with the standard clone and replication workflow. No additio
 
 === "Before cross-topology support"
 
+    Without cross-topology handling, PCSM attempts to apply the source collection's sharding configuration to the replica set. The clone fails because the target doesn't support `shardCollection`.
+
     ??? example "Example"
 
         Follow these steps:
@@ -43,29 +45,19 @@ PCSM then continues with the standard clone and replication workflow. No additio
 
         1. Create two clusters, one sharded (source) and the other replicaset (destination).
 
-        2. Set up PCSM.
-
-            ```text
-            pcsm version 
-            Version:   v0.9.0 
-            Platform:  linux 
-            GitCommit: 33567da 
-            GitBranch: HEAD 
-            BuildTime: 2026-08-25_07:48_UTC
-            ```
-        3. Create two collections on the sharded cluster:
+        2. Create two collections on the sharded cluster:
 
             1. Sharded_collection (sharded) 
             2. Plain_collection (non-sharded)
 
-        4. Add documents to both the collections.
+        3. Add documents to both the collections.
 
-        5.  Start replication:
+        4.  Start replication:
 
             ```sh
             pcsm start
             ```
-        6. Check the replication status:
+        5. Check the replication status:
 
             ```json
             pcsm status
@@ -88,7 +80,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
             2026-08-25T07:51:17.586Z FTL error="clone: copy: clone_shard_test_db.sharded_coll: shard collection: (CommandNotFound) no such command: 'shardCollection'"
             ```
         
-        7. Check the logs:
+        6. Check the logs:
 
             `pcsm start 2> pcsm.log`
 
@@ -99,12 +91,11 @@ PCSM then continues with the standard clone and replication workflow. No additio
         2026-08-25T07:56:21.508Z ERR Cluster Replication has failed error="clone: copy: clone_shard_test_db.sharded_coll: shard collection: shard collection: (CommandNotFound) no such command: 'shardCollection'" s=pcsm
         ```
 
-        8. Confirm that the documents for both `plain_collection` and `sharded_collection` did not copy to the destination cluster. 
-
-        Replication fails when PCSM attempts to run `shardCollection` against the replica set target. Before cross-topology support, PCSM attempted to run `shardCollection` on the replica set target when the source collection had a shard key. Because `shardCollection` is only valid on a sharded cluster, the migration failed.
-
+        7. Confirm that neither collection reached the target. The clone stops at the first failure, so even the unsharded collection is missing.
 
 === "After cross-topology support"
+
+    With cross-topology support, PCSM detects the replica set target and skips the unsupported sharding operations.
 
     ??? example "Example"
 
@@ -113,30 +104,19 @@ PCSM then continues with the standard clone and replication workflow. No additio
 
         1. Create two clusters, one sharded (source) and the other replicaset (destination).
 
-        2. Set up PCSM.
-
-            ```text
-            pcsm version 
-            Version:   v0.9.0 
-            Platform:  linux 
-            GitCommit: f12f81 
-            GitBranch: main 
-            BuildTime: 2026-08-25_08:14_UTC
-            GoVersion: go1.27.0
-            ```
-        3. Create two collections on the sharded cluster:
+        2. Create two collections on the sharded cluster:
 
             1. Sharded_collection (sharded) 
             2. Plain_collection (non-sharded)
 
-        4. Add documents to both the collections.
+        3. Add documents to both the collections.
 
-        5.  Start replication:
+        4.  Start replication:
 
             ```sh
             pcsm start
             ```
-        6. Check the replication status:
+        5. Check the replication status:
 
             ```json
             pcsm status
@@ -159,7 +139,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
                 } 
             }
             ```
-        7. Check if if it has successfully finalized 
+        6. Check if it has successfully finalized:
 
             ```json
             pcsm status 
@@ -188,14 +168,11 @@ PCSM then continues with the standard clone and replication workflow. No additio
             } 
             ```
 
-        8. Check the logs:
+        7. Check the logs:
 
             `pcsm start 2> pcsm.log`
 
         8. Confirm that the documents for both `plain_collection` and `sharded_collection` did not copy to the destination cluster. 
-
-        Replication is successful when PCSM runs `shardCollection` against the replica set target.
-
 
 
 
