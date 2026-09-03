@@ -115,7 +115,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
             ```sh
             pcsm start
             ```
-        5. Check the replication status:
+        5. Check the replication status. `clonedSizeBytes` matches `estimatedCloneSizeBytes`, and the state is `running`:
 
             ```json
             pcsm status
@@ -138,7 +138,17 @@ PCSM then continues with the standard clone and replication workflow. No additio
                 } 
             }
             ```
-        6. Check if it has successfully finalized:
+
+        6. Confirm that both collections are present on the target and that document counts match:
+
+        ```javascript
+            db.<collection>.countDocuments()
+        ```
+        
+        The collection that was sharded on the source appears here as a regular collection. That is expected.
+
+
+        7. Finalize the sync and check the status again:
 
             ```json
             pcsm status 
@@ -167,7 +177,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
             } 
             ```
 
-        7. Check the logs:
+        7. Check the logs and confirm that no errors were recorded.
 
             `pcsm start 2> pcsm.log`
 
