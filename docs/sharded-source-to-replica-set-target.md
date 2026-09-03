@@ -42,7 +42,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
         Follow these steps:
         {.power-number}
 
-        1. Create two clusters, one sharded (source) and the other replicaset (destination).
+        1. Create two clusters, one sharded (source) and the other replica set (destination).
 
         2. Create two collections on the sharded cluster:
 
