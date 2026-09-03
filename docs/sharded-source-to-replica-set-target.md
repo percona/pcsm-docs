@@ -141,11 +141,11 @@ PCSM then continues with the standard clone and replication workflow. No additio
 
         6. Confirm that both collections are present on the target and that document counts match:
 
-        ```javascript
-            db.<collection>.countDocuments()
-        ```
+            ```javascript
+                db.<collection>.countDocuments()
+            ```
         
-        The collection that was sharded on the source appears here as a regular collection. That is expected.
+            The collection that was sharded on the source appears here as a regular collection. That is expected.
 
 
         7. Finalize the sync and check the status again:
@@ -177,11 +177,11 @@ PCSM then continues with the standard clone and replication workflow. No additio
             } 
             ```
 
-        7. Check the logs and confirm that no errors were recorded.
+        8. Check the logs and confirm that no errors were recorded.
 
             `pcsm start 2> pcsm.log`
 
-        8. Confirm that the documents for both `plain_collection` and `sharded_collection` did not copy to the destination cluster. 
+        9. Confirm that the documents for both `plain_collection` and `sharded_collection` did not copy to the destination cluster. 
 
 
 
