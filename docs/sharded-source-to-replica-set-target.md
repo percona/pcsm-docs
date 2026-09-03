@@ -111,7 +111,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
         4.  Start replication:
 
             ```sh
-            pcsm start
+            pcsm start 2> pcsm.log
             ```
         5. Check the replication status. `clonedSizeBytes` matches `estimatedCloneSizeBytes`, and the state is `running`:
 
