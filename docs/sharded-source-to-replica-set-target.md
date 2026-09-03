@@ -161,29 +161,29 @@ PCSM then continues with the standard clone and replication workflow. No additio
             ```
 
             ```{.json .no-copy}
-            { 
-              "ok": true, 
-              "state": "finalized", 
-              "info": "Finalized", 
-              "lagTimeSeconds": 1, 
-              "eventsRead": 0, 
-              "eventsApplied": 0, 
-              "lastReplicatedOpTime": { 
-                "ts": "1787645817.1", 
-                "isoDate": "2026-08-25T08:16:57Z" 
-              }, 
-              "initialSync": { 
-                "estimatedCloneSizeBytes": 7490, 
-                "clonedSizeBytes": 7490, 
-                "completed": true, 
-                "cloneCompleted": true 
-              }, 
-              "finalization": { 
-                "completed": true, 
-                "startedAt": "2026-08-25T08:16:57.539447026Z", 
-                "completedAt": "2026-08-25T08:16:57.539557888Z" 
-              } 
-            } 
+            {
+              "ok": true,
+              "state": "finalized",
+              "info": "Finalized",
+              "lagTimeSeconds": 1,
+              "eventsRead": 0,
+              "eventsApplied": 0,
+              "lastReplicatedOpTime": {
+                "ts": "1787645817.1",
+                "isoDate": "2026-08-25T08:16:57Z"
+              },
+              "initialSync": {
+                "estimatedCloneSizeBytes": 7490,
+                "clonedSizeBytes": 7490,
+                "completed": true,
+                "cloneCompleted": true
+              },
+              "finalization": {
+                "completed": true,
+                "startedAt": "2026-08-25T08:16:57.539447026Z",
+                "completedAt": "2026-08-25T08:16:57.539557888Z"
+              }
+            }
             ```
 
         8. Check the logs and confirm that no errors were recorded.
