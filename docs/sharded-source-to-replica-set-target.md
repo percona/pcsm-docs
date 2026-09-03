@@ -190,7 +190,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
 
             `pcsm start 2> pcsm.log`
 
-        9. Confirm that the documents for both `plain_collection` and `sharded_collection` did not copy to the destination cluster. 
+        9. Confirm that the documents for both `plain_collection` and `sharded_collection` got copied to the destination cluster. 
 
 
 
