@@ -85,7 +85,7 @@ A response means the bind address took effect. Connection refused means the serv
 
     In Kubernetes, restrict access with a `NetworkPolicy` or an equivalent network control. If all you need is a health check, an exec probe against `localhost` gives you the same result with no network exposure.
 
-See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for all available options, and [PCSM HTTP API](api.md) for the endpoints themselves.
+See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for all available options, and [PCSM HTTP API](../api.md) for the endpoints themselves.
 
 ## How to see {{pcsm.full_name}} logs
 
