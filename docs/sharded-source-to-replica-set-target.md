@@ -85,7 +85,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
 
             Output:
 
-            ```json
+            ```{.text .no-copy}
             2026-08-25T07:56:21.508Z ERR Data Clone has failed: 0 B in 0s error="copy: clone_shard_test_db.sharded_coll: shard collection: shard collection: (CommandNotFound) no such command: 'shardCollection'" elapsed_secs=0.114 s=clone 
             2026-08-25T07:56:21.508Z ERR Cluster Replication has failed error="clone: copy: clone_shard_test_db.sharded_coll: shard collection: shard collection: (CommandNotFound) no such command: 'shardCollection'" s=pcsm
             ```
@@ -101,12 +101,12 @@ PCSM then continues with the standard clone and replication workflow. No additio
         Follow these steps:
         {.power-number}
 
-        1. Create two clusters, one sharded (source) and the other replicaset (destination).
+        1. Create two clusters, one sharded (source) and the other replica set (destination).
 
         2. Create two collections on the sharded cluster:
 
-            1. Sharded_collection (sharded) 
-            2. Plain_collection (non-sharded)
+            1. `sharded_coll` (sharded)
+            2. `plain_collection` (unsharded)
 
         3. Add documents to both the collections.
 
@@ -117,7 +117,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
             ```
         5. Check the replication status. `clonedSizeBytes` matches `estimatedCloneSizeBytes`, and the state is `running`:
 
-            ```json
+            ```{.text .no-copy}
             pcsm status
             { 
                 "ok": true, 
@@ -186,12 +186,11 @@ PCSM then continues with the standard clone and replication workflow. No additio
             }
             ```
 
-        8. Check the logs and confirm that no errors were recorded.
+        9. Check the logs from the replication run and confirm that no errors were recorded.
 
-            `pcsm start 2> pcsm.log`
+            Review the `pcsm.log` file created when you started replication.
 
-        9. Confirm that the documents for both `plain_collection` and `sharded_collection` got copied to the destination cluster. 
-
+        10. Confirm that the documents for both `plain_collection` and `sharded_coll` got copied to the destination cluster.
 
 
 
