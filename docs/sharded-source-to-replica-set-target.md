@@ -15,8 +15,7 @@ If a source collection is sharded, PCSM skips sharding operations such as `shard
 PCSM then continues with the standard clone and replication workflow. No additional configuration is required.
 
 !!! note
-    !!! note
-        A collection that is sharded on the source is created as a regular collection on the replica set target. The collection data is copied, but the target collection isn't sharded.
+    A collection that is sharded on the source is created as a regular collection on the replica set target. The collection data is copied, but the target collection isn't sharded.
 
 ## What is replicated
 
@@ -88,8 +87,8 @@ PCSM then continues with the standard clone and replication workflow. No additio
 
             ```json
             2026-08-25T07:56:21.508Z ERR Data Clone has failed: 0 B in 0s error="copy: clone_shard_test_db.sharded_coll: shard collection: shard collection: (CommandNotFound) no such command: 'shardCollection'" elapsed_secs=0.114 s=clone 
-        2026-08-25T07:56:21.508Z ERR Cluster Replication has failed error="clone: copy: clone_shard_test_db.sharded_coll: shard collection: shard collection: (CommandNotFound) no such command: 'shardCollection'" s=pcsm
-        ```
+            2026-08-25T07:56:21.508Z ERR Cluster Replication has failed error="clone: copy: clone_shard_test_db.sharded_coll: shard collection: shard collection: (CommandNotFound) no such command: 'shardCollection'" s=pcsm
+            ```
 
         7. Confirm that neither collection reached the target. The clone stops at the first failure, so even the unsharded collection is missing.
 
