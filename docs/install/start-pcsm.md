@@ -40,7 +40,7 @@ See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for a
 
 By default, the PCSM HTTP server listens on `localhost`, which keeps the control API and the profiling endpoints reachable only from the local host. Most deployments don't need to change this.
 
-Kubernetes is the exception. The kubelet runs liveness and readiness probes against the pod IP rather than the container loopback address. A probe against a loopback-only listener is refused, and the pod restarts.
+Kubernetes is the exception. The kubelet runs HTTP liveness and readiness probes against the pod IP rather than the container loopback address. A loopback-only listener refuses these probes; failed readiness probes mark the pod unready, while repeated failed liveness probes can restart it.
 
 To make the server reachable through the pod IP, set the listen host to `0.0.0.0`:
 
