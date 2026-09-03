@@ -148,10 +148,19 @@ PCSM then continues with the standard clone and replication workflow. No additio
             The collection that was sharded on the source appears here as a regular collection. That is expected.
 
 
-        7. Finalize the sync and check the status again:
+        7. Finalize the sync:
 
-            ```json
-            pcsm status 
+            ```{.bash data-prompt="$"}
+            $ pcsm finalize
+            ```
+
+        8. Check the status again:
+
+            ```{.bash data-prompt="$"}
+            $ pcsm status
+            ```
+
+            ```{.json .no-copy}
             { 
               "ok": true, 
               "state": "finalized", 
