@@ -42,16 +42,28 @@ By default, the PCSM HTTP server listens on `localhost`, which keeps the control
 
 Containerized deployments are the exception. Kubernetes runs HTTP liveness and readiness probes against the pod IP, and Docker forwards published ports to the container IP rather than the container loopback address. A loopback-only listener refuses these connections; failed readiness probes mark the pod unready, while repeated failed liveness probes can restart it.
 
-To make the server reachable through the pod IP, set the listen host to `0.0.0.0`:
+To make the server reachable through the pod IP, set the listen host to `0.0.0.0` for an IPv4 pod or `::` for an IPv6 pod:
 
 ```{.bash data-prompt="$"}
 $ PCSM_LISTEN_HOST=0.0.0.0 pcsm
+```
+
+For an IPv6 pod, use `::` instead:
+
+```{.bash data-prompt="$"}
+$ PCSM_LISTEN_HOST=:: pcsm
 ```
 
 Alternatively, use the `--listen-host` option:
 
 ```{.bash data-prompt="$"}
 $ pcsm --listen-host 0.0.0.0
+```
+
+For an IPv6 pod:
+
+```{.bash data-prompt="$"}
+$ pcsm --listen-host ::
 ```
 
 You can also give an IP address or a DNS name. To listen on the IPv6 loopback address:
@@ -72,16 +84,22 @@ Changing the bind host doesn't affect the CLI. Subcommands such as `pcsm status`
 
 ### Check that it worked
 
-From inside the container, confirm the server answers on the pod IP rather than only on loopback:
+From inside the container, confirm the server answers on the pod IP rather than only on loopback. For an IPv4 pod:
 
 ```{.bash data-prompt="$"}
-$ curl -s "http://$(hostname -i | awk '{print $1}'):2242/status"
+$ curl -s "http://$(hostname -i | awk '{for (i=1;i<=NF;i++) if ($i !~ /:/) {print $i; exit}}'):2242/status"
+```
+
+For an IPv6 pod, enclose the address in brackets:
+
+```{.bash data-prompt="$"}
+$ curl -g -s "http://[$(hostname -i | awk '{for (i=1;i<=NF;i++) if ($i ~ /:/) {print $i; exit}}')]:2242/status"
 ```
 
 A response means the bind address took effect. Connection refused means the server is still on loopback, so check that the environment variable or option reached the process.
 
 !!! warning
-    Binding to `0.0.0.0` exposes the control endpoints `/start`, `/pause`, `/resume`, and `/finalize`, along with the `pprof` profiling endpoints, on every network interface of the host or pod. None of them require authentication, so anything that can route to the pod can start, pause, or finalize replication.
+    Binding to `0.0.0.0` (IPv4) or `::` (IPv6) exposes the control endpoints `/start`, `/pause`, `/resume`, and `/finalize`, along with the `pprof` profiling endpoints, on every network interface of the host or pod. None of them require authentication, so anything that can route to the pod can start, pause, or finalize replication.
 
     In Kubernetes, restrict access with a `NetworkPolicy` or an equivalent network control. If all you need is a health check, an exec probe against `localhost` gives you the same result with no network exposure.
 
