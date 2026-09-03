@@ -81,8 +81,6 @@ PCSM then continues with the standard clone and replication workflow. No additio
         
         6. Check the logs:
 
-            `pcsm start 2> pcsm.log`
-
             Output:
 
             ```{.text .no-copy}
