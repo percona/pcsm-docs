@@ -38,33 +38,54 @@ See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for a
 
 ## Configure the HTTP listen address
 
-By default, the PCSM HTTP server listens on localhost. The `--port option `controls the HTTP port.
+By default, the PCSM HTTP server listens on `localhost`, which keeps the control API and the profiling endpoints reachable only from the local host. Most deployments don't need to change this.
 
-This default keeps the PCSM control API and profiling endpoints accessible only from the local host.
+Kubernetes is the exception. The kubelet runs liveness and readiness probes against the pod IP rather than the container loopback address. A probe against a loopback-only listener is refused, and the pod restarts.
 
-In Kubernetes, HTTP liveness and readiness probes connect to the pod IP. To make the PCSM HTTP server reachable through the pod IP, set the listen host to `0.0.0.0:`
+To make the server reachable through the pod IP, set the listen host to `0.0.0.0`:
 
-```text
+```{.bash data-prompt="$"}
 $ PCSM_LISTEN_HOST=0.0.0.0 pcsm
 ```
 
 Alternatively, use the `--listen-host` option:
 
+```{.bash data-prompt="$"}
 $ pcsm --listen-host 0.0.0.0
+```
 
-The default value is localhost. You can also specify an IP address or DNS name. For example, to listen on the IPv6 loopback address:
+You can also give an IP address or a DNS name. To listen on the IPv6 loopback address:
 
-```text
+```{.bash data-prompt="$"}
 $ pcsm --listen-host ::1
 ```
 
-Specify only the host with `--listen-host`. Do not include a port. `Use --port` to configure the HTTP port.
+PCSM adds the brackets itself, so this binds to `[::1]:2242`.
+
+### What to pass
+
+Give `--listen-host` a host and nothing else. The `--port` option sets the port, and defaults to `2242`.
+
+A value that already contains a port is rejected, so `localhost:2242`, `127.0.0.1:2242`, and `[::1]:2242` all fail at startup. A DNS name is accepted without being resolved first, which means a name that can't be resolved isn't caught by validation.
+
+Changing the bind host doesn't affect the CLI. Subcommands such as `pcsm status` always connect to `localhost`.
+
+### Check that it worked
+
+From inside the container, confirm the server answers on the pod IP rather than only on loopback:
+
+```{.bash data-prompt="$"}
+$ curl -s http://$(hostname -i):2242/status
+```
+
+A response means the bind address took effect. Connection refused means the server is still on loopback, so check that the environment variable or option reached the process.
 
 !!! warning
+    Binding to `0.0.0.0` exposes the control endpoints `/start`, `/pause`, `/resume`, and `/finalize`, along with the `pprof` profiling endpoints, on every network interface of the host or pod. None of them require authentication, so anything that can route to the pod can start, pause, or finalize replication.
 
-    Setting `--listen-host` to `0.0.0.0` makes the PCSM control API and profiling endpoints reachable through the network interfaces of the host or pod. These endpoints don't require authentication.
+    In Kubernetes, restrict access with a `NetworkPolicy` or an equivalent network control. If all you need is a health check, an exec probe against `localhost` gives you the same result with no network exposure.
 
-    In Kubernetes, use a `NetworkPolicy` or other network controls to restrict access. If you don't need to expose the HTTP endpoint on the pod network, you can use an exec-based health probe against `localhost` instead.
+See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for all available options, and [PCSM HTTP API](api.md) for the endpoints themselves.
 
 ## How to see {{pcsm.full_name}} logs
 
