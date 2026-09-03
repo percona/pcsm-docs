@@ -46,8 +46,8 @@ PCSM then continues with the standard clone and replication workflow. No additio
 
         2. Create two collections on the sharded cluster:
 
-            1. Sharded_collection (sharded) 
-            2. Plain_collection (non-sharded)
+            1. `sharded_coll` (sharded)
+            2. `plain_collection` (unsharded)
 
         3. Add documents to both the collections.
 
