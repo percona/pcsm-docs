@@ -165,6 +165,7 @@ Start the {{pcsm.short}} container. You can specify connection strings using env
     $ docker run --name pcsm1 --network mymongo -d \
         -e PCSM_SOURCE_URI="mongodb://source:password@psmdb-source:27017" \
         -e PCSM_TARGET_URI="mongodb://target:password@psmdb-target:27017" \
+        -e PCSM_LISTEN_HOST=0.0.0.0 \
         -p 2242:2242 \
         percona/percona-clustersync-mongodb:latest \
         --port 2242 \
