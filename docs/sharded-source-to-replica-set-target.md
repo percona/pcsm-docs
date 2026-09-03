@@ -192,7 +192,7 @@ PCSM then continues with the standard clone and replication workflow. No additio
 
         9. Confirm that the documents for both `plain_collection` and `sharded_collection` got copied to the destination cluster. 
 
-
+To learn how MongoDB uses shard keys to distribute documents across shards, see [Shard Keys octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/sharding-shard-key/){:target="_blank"} in the MongoDB documentation.
 
 
 
