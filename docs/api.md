@@ -60,6 +60,7 @@ curl -X POST "http://localhost:2242/start" \
 
 - `ok`: Boolean indicating if the operation was successful.
 - `error` (optional): Error message if the operation failed.
+- In HA deployments, this endpoint returns HTTP `409` with `error: "not_active"` when the request reaches a standby instance. See [HA responses](#ha-responses) for the optional `me`, `role`, and `group` fields that can also appear in this response.
 
 Example:
 
@@ -83,6 +84,7 @@ curl -X POST http://localhost:2242/finalize
 
 - `ok`: Boolean indicating if the operation was successful.
 - `error` (optional): Error message if the operation failed.
+- In HA deployments, this endpoint returns HTTP `409` with `error: "not_active"` when the request reaches a standby instance. See [HA responses](#ha-responses) for the optional `me`, `role`, and `group` fields that can also appear in this response.
 
 Example:
 
@@ -106,6 +108,7 @@ curl -X POST http://localhost:2242/pause
 
 - `ok`: Boolean indicating if the operation was successful.
 - `error` (optional): Error message if the operation failed.
+- In HA deployments, this endpoint returns HTTP `409` with `error: "not_active"` when the request reaches a standby instance. See [HA responses](#ha-responses) for the optional `me`, `role`, and `group` fields that can also appear in this response.
 
 Example:
 
@@ -137,6 +140,7 @@ curl -X POST http://localhost:2242/resume -d '{
 
 - `ok`: Boolean indicating if the operation was successful.
 - `error` (optional): Error message if the operation failed.
+- In HA deployments, this endpoint returns HTTP `409` with `error: "not_active"` when the request reaches a standby instance. See [HA responses](#ha-responses) for the optional `me`, `role`, and `group` fields that can also appear in this response.
 
 Example:
 
@@ -186,6 +190,8 @@ The following are response fields:
 | `finalization.unsuccessfulIndexes[].type` | string | Machine-readable failure category (`failed`, `incomplete`, `inconsistent`) |
 | `finalization.unsuccessfulIndexes[].reason` | string | Human-readable reason why finalization failed for this index |
 
+In HA deployments, this endpoint returns HTTP `409` with `error: "not_active"` when the request reaches a standby instance. See [HA responses](#ha-responses) for the optional `me`, `role`, and `group` fields that can also appear in this response.
+
 Example:
 
 ```json
@@ -225,6 +231,51 @@ Example:
 }
 ```
 
+### HA responses
+
+The `/status`, `/start`, `/pause`, `/resume`, and `/finalize` endpoints can return the following optional HA fields when PCSM observes more than one live member:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `me.instanceId` | string | Identifier of the instance that handled the request |
+| `role` | string | Role of the instance that handled the request (`ACTIVE` or `STANDBY`) |
+| `group.term` | number | Current HA term |
+| `group.members` | array | Live members observed by the instance |
+| `group.members[].instanceId` | string | Identifier of the listed member |
+| `group.members[].host` | string | Hostname of the listed member |
+| `group.members[].port` | number | Port of the listed member |
+| `group.members[].role` | string | Role of the listed member (`ACTIVE` or `STANDBY`) |
+
+When one of these requests reaches a standby instance, PCSM returns HTTP `409` with `error: "not_active"` and can include the HA fields shown above:
+
+```json
+{
+  "ok": false,
+  "error": "not_active",
+  "me": {
+    "instanceId": "<instance-id>"
+  },
+  "role": "STANDBY",
+  "group": {
+    "term": 7,
+    "members": [
+      {
+        "instanceId": "<instance-id>",
+        "host": "pcsm0",
+        "port": 2242,
+        "role": "ACTIVE"
+      },
+      {
+        "instanceId": "<instance-id>",
+        "host": "pcsm1",
+        "port": 2243,
+        "role": "STANDBY"
+      }
+    ]
+  }
+}
+```
+
 ## Error handling
 
 The API uses standard HTTP status codes and returns error messages in the following format:
@@ -241,5 +292,4 @@ Common error scenarios:
 - 400 Bad Request: Invalid request parameters
 - 404 Not Found: Endpoint not found
 - 500 Internal Server Error: Server-side issues
-
 
