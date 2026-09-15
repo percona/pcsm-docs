@@ -52,7 +52,7 @@ The following limitations apply specifically to sharded cluster replication:
 
 The following functionalities are not supported:
 
-* Multiple source or multiple target clusters 
+* A single PCSM instance cannot have multiple source or target endpoints. Multiple isolated PCSM instances can share one source cluster and replicate to different targets, as described in [Replicate from one source to multiple targets](multiple-targets.md).
 * You cannot resume initial synchronization if an issue occurred. You must start it from scratch.
 * Arbitrary database upgrades during a sync are not supported. For supported staged upgrades from lower to higher MongoDB major versions, follow the cross-version replication procedure.
 * Reverse synchronization
