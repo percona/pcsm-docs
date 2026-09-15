@@ -4,6 +4,7 @@
 
 * **Replica Set to Replica Set**: The source and target replica sets can have different numbers of nodes.
 * **Sharded cluster to Sharded cluster**: The source and target sharded clusters can have different numbers of shards. This functionality is in tech preview stage. See [Sharding support in {{pcsm.full_name}}](sharding.md) for details.
+* **Sharded cluster to Replica Set**: A sharded source cluster can replicate to a replica set target. Collections that are sharded on the source are created as regular collections on the target. See [Replicate from a sharded cluster to a replica set](sharded-source-to-replica-set-target.md) for details.
 
 ## Version requirements
 
