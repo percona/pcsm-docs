@@ -82,6 +82,22 @@ Resets the `PCSM` state and deletes the metadata collections from target deploym
 $ pcsm reset --target
 ```
 
+#### reset members
+
+Clears the recorded HA member information from the target deployment only.
+
+```{.bash data-prompt="$"$}
+$ pcsm reset members --target "<target-mongodb-uri>"
+```
+
+#### reset lease
+
+Clears the HA lease state from the target deployment only.
+
+```{.bash data-prompt="$"$}
+$ pcsm reset lease --target "<target-mongodb-uri>"
+```
+
 ### finalize
 
 Finalize cluster replication.
