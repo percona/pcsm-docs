@@ -31,7 +31,7 @@ Yes. Sharded MongoDB clusters are supported as both sources and targets. Note: t
 
 ## Does {{pcsm.full_name}} support bidirectional sync?
 
-No. {{pcsm.full_name}} currently supports one-way synchronization only (source → target). However, you can rerun Percona {{pcsm.full_name}} with reversed connection strings to perform the other-direction sync.
+No. {{pcsm.full_name}} currently supports one-way synchronization only (source → target). However, you can rerun {{pcsm.full_name}} with reversed connection strings to perform the other-direction sync.
 
 ## Is there a way to monitor sync progress?
 
