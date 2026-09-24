@@ -109,15 +109,13 @@ PCSM reports its bind address when the HTTP server starts. Read the startup log 
 INF s=http Starting HTTP server at http://0.0.0.0:2242
 ```
 
-A response means the bind address took effect. Connection refused means the server is still on loopback, so check that the environment variable or option reached the process.
-
 See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for all available options, and [PCSM HTTP API](../api.md) for the endpoints themselves.
 
 ## How to see {{pcsm.full_name}} logs
 
-With the packaged `systemd` service, the log output to `stdout` is captured by
-systemd's default redirection to `systemd-journald`. You can view it with this
-command:
+With the packaged `systemd` service, the log output to `stdout` is captured by systemd's default redirection to `systemd-journald`. 
+
+You can view it with this command:
 
 ```{.bash data-prompt="$"}
 $ sudo journalctl -u pcsm.service
