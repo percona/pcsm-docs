@@ -3,7 +3,7 @@
 {{pcsm.full_name}} supports the following deployment topologies:
 
 * **Replica Set to Replica Set**: The source and target replica sets can have different numbers of nodes.
-* **Sharded cluster to Sharded cluster**: The source and target sharded clusters can have different numbers of shards. This functionality is in tech preview stage. See [Sharding support in {{pcsm.full_name}}](sharding.md) for details.
+* **Sharded cluster to Sharded cluster**: The source and target sharded clusters can have different numbers of shards. See [Sharding support in {{pcsm.full_name}}](sharding.md) for details.
 
 ## Version requirements
 
