@@ -1,6 +1,6 @@
 # High availability during replication
 
-!!! admonition "Version added: 0.10.0"
+!!! admonition "Version added: 1.0.0"
 
 Percona ClusterSync for MongoDB (PCSM) supports active-standby high availability during replication. Run two or more instances against the same source and target, and one of them takes charge while the rest wait. If the active instance becomes unavailable, another takes over and resumes replication from the last checkpoint.
 
@@ -75,7 +75,7 @@ For example:
   "port": 2242,
   "role": "ACTIVE",
   "term": 7,
-  "pcsmVersion": "0.10.0",
+  "pcsmVersion": "1.0.0",
   "startedAt": { "$date": "2026-07-17T09:14:02.113Z" },
   "lastHeartbeat": { "$date": "2026-07-17T09:20:31.882Z" }
 }
@@ -118,7 +118,7 @@ The default group name is `default`.
 
 !!! info "Important"
 
-    In PCSM 0.10.0, the group name is used for identification and observability. It does not isolate HA coordination between different groups that use the same target cluster.
+    In PCSM 1.0.0, the group name is used for identification and observability. It does not isolate HA coordination between different groups that use the same target cluster.
 
     Do not rely on different group names to create independent HA deployments against the same target.
 
@@ -255,9 +255,9 @@ Use these commands only when you need to clear stored PCSM state. The `pcsm rese
 
 ## Upgrade from PCSM 0.9.0
 
-Replication state created by PCSM 0.9.0 is not compatible with PCSM 0.10.0.
+Replication state created by PCSM 0.9.0 is not compatible with PCSM 1.0.0.
 
-Before starting PCSM 0.10.0:
+Before starting PCSM 1.0.0:
 {.power-number}
 
 1. Stop all PCSM 0.9.0 instances that use the target cluster.
@@ -268,11 +268,11 @@ Before starting PCSM 0.10.0:
     pcsm reset --target "<target-mongodb-uri>"
     ```
 
-3. Start PCSM 0.10.0
+3. Start PCSM 1.0.0
 4. Start a new synchronization run.
 
 !!! info "Important"
-    Do not run PCSM 0.9.0 and PCSM 0.10.0 against the same target at the same time.
+    Do not run PCSM 0.9.0 and PCSM 1.0.0 against the same target at the same time.
 
 ## Next steps
 
