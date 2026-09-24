@@ -12,11 +12,14 @@ You need to create users in both source and target clusters. You will use these 
 
 1. Connect to the **source** cluster and run the following command:
 
+    !!! note
+        When the source is MongoDB Atlas, configure the database user using the Atlas UI, Atlas CLI, or Atlas Administration API.
+    
     ```javascript
     db.getSiblingDB('admin').createUser({
       user: 'source',
       pwd: 'mys3cretpAss',
-      roles: ['backup', 'clusterMonitor',  'readAnyDatabase'],
+      roles: ['backup', 'clusterMonitor', 'clusterManager', 'readAnyDatabase'],
     });
     ```
 
@@ -26,7 +29,7 @@ You need to create users in both source and target clusters. You will use these 
     db.getSiblingDB('admin').createUser({
        user: 'target',
        pwd: 'tops3cr3t',
-       roles: ['restore', 'clusterMonitor', 'clusterManager',       'readWriteAnyDatabase'],
+       roles: ['restore', 'clusterMonitor', 'clusterManager', 'readWriteAnyDatabase'],
       });
     ```
 
