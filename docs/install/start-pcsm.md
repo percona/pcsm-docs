@@ -91,7 +91,7 @@ $ pcsm --listen-host ::1
 | A DNS name | Resolved when the server binds | A named interface. The name is accepted without being resolved first, so validation doesn't catch an unresolvable name. |
 | Anything containing a port | Rejected at startup | Not supported. Values such as `localhost:2242`, `127.0.0.1:2242`, and `[::1]:2242` fail. Use `--port` to set the port. |
 
-Changing the bind host doesn't affect the CLI. Subcommands such as `pcsm status` always connect to `localhost`.
+Changing the bind host doesn't affect the CLI. Subcommands such as `pcsm status` always connect to `localhost`. Keep the loopback address reachable or call the HTTP API directly at the address you configured. 
 
 ### What to pass
 
