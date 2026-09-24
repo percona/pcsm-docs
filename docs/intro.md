@@ -172,11 +172,11 @@ During the replication stage, {{pcsm.short}} copies indexes from the source to t
 
 ### Finalization stage
 
-On the finalization stage, {{pcsm.short}} finalizes index index management on the target cluster to match their configuration on the source:
+On the finalization stage, {{pcsm.short}} finalizes index management on the target cluster to match their configuration on the source:
 
 * **Unique index conversion**: Non-unique indexes that were originally unique on the source are converted back to unique indexes.
 
-* **Hidden indexes**: {{pcsm.short}} restores hidden on the target if they were hidden on the source.
+* **Hidden indexes**: {{pcsm.short}} restores hidden indexes on the target if they were hidden on the source.
 
 * **TTL indexes**: {{pcsm.short}} restores the original `expireAfterSeconds` value for TTL indexes on the target cluster so that documents will expire according to the original configuration.
 
