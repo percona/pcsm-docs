@@ -99,7 +99,7 @@ For a source collection with more than one chunk, if the source and target have 
 
 Instead, {{pcsm.short}} estimates the size of each source chunk and processes the largest chunks first. It places each chunk on the target shard that currently has the smallest estimated amount of assigned data.
 
-{{pcsm.short}} keeps track of the estimated total for each target shard as it assigns chunks. It then recreates the source chunk boundaries on the target using the calculated placement.
+{{pcsm.short}} keeps track of the estimated total for each target shard as it assigns chunks, and those totals carry across every collection in the run. It then recreates the source chunk boundaries on the target using the calculated placement.
 
 ??? example "Different number of shards"
 
