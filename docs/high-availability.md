@@ -249,10 +249,7 @@ pcsm reset members --target "<target-mongodb-uri>"
 Clear all stored PCSM state, including the HA lease and replication checkpoints:
 
 ```bash
-
 pcsm reset --target "<target-mongodb-uri>"
-
-```
 
 Use these commands only when you need to clear stored PCSM state. The `pcsm reset` command removes both HA coordination and replication state.
 
