@@ -68,7 +68,7 @@ Each PCSM Docker image (Docker Hub `percona/percona-clustersync-mongodb` and Per
 | SBOM | Scope | How to access |
 |---|---|---|
 | **Embedded** | PCSM binary and Go modules only | Inside the image filesystem |
-| **OCI-attached** | Full image — PCSM and UBI9 base OS packages | Registry-side, via the OCI Referrers API |
+| **OCI-attached** | Full image: PCSM and UBI9 base OS packages | Registry-side, via the OCI Referrers API |
 
 
 #### Scan via OCI Referrers API (recommended)
