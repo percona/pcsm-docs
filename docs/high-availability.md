@@ -235,7 +235,7 @@ You can use these metrics to identify the active instance, detect role changes, 
 
 ## Reset HA state
 
-PCSM provides commands to clear the stored HA membership or lease state.
+PCSM provides commands to clear the stored HA membership array.
 
 !!! warning
     Stop all PCSM server instances that use the target cluster before running these commands. Do not reset HA state while PCSM is running.
