@@ -18,7 +18,7 @@ The primary shard assignment can also differ between the source and target clust
 
 ## Prerequisites
 
-* Use {{pcsm.full_name}} 0.7.0 or later. Automatic source chunk boundary preparation requires version 0.10.0 or later.
+* Use {{pcsm.full_name}} 0.7.0 or later. Automatic source chunk boundary preparation requires version 1.0.0 or later.
 * Both the source and target clusters must be sharded MongoDB deployments.
 * The source and target clusters must use a supported version combination. See [Cross-version replication](version-compatibility.md) for supported source and target versions.
 
@@ -58,7 +58,7 @@ Check the PCSM logs and resolve the reported problem on the target. Then start a
 
 ## Chunk distribution
 
-!!! admonition "Version added: 0.10.0"
+!!! admonition "Version added: 1.0.0"
 
 During the initial sync, {{pcsm.short}} prepares the chunk distribution of a sharded collection before copying its documents. This happens automatically for every sharded collection, immediately after the collection is sharded on the target. There is no flag and nothing to configure.
 
