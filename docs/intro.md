@@ -176,7 +176,7 @@ On the finalization stage, {{pcsm.short}} finalizes index index management on th
 
 * **Unique index conversion**: Non-unique indexes that were originally unique on the source are converted back to unique indexes.
 
-* **Hidden indexes**: {{pcsm.short}} restores hidden on the target if they were hidden on the source.
+* **Hidden indexes**: {{pcsm.short}} marks target indexes as hidden when the corresponding source indexes use the hidden option.
 
 * **TTL indexes**: {{pcsm.short}} restores the original `expireAfterSeconds` value for TTL indexes on the target cluster so that documents will expire according to the original configuration.
 
