@@ -109,16 +109,16 @@ mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
 
     Output
     ```{.text .no-copy}
-    2026-06-24 15:15:04.503 INF Percona ClusterSync for MongoDB v0.10.0 3eb82dd 2026-06-24_09:36_UTC
-    2026-06-24 15:15:04.504 INF Config: source client compressors: [snappy zstd zlib] s=connect
-    2026-06-24 15:15:04.504 INF Config: source client maxPoolSize: 100 (driver default) s=connect
-    2026-06-24 15:15:04.525 INF Connected to source cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs00:30000
-    2026-06-24 15:15:04.525 INF Config: target client compressors: [snappy zstd zlib] s=connect
-    2026-06-24 15:15:04.525 INF Config: target client maxPoolSize: 100 (driver default) s=connect
-    2026-06-24 15:15:04.533 INF Connected to target cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs10:30100
-    2026-06-24 15:15:04.546 INF Checking Recovery Data for "pcsm" s=recovery
-    2026-06-24 15:15:04.546 INF Recovery Data not found s=recovery
-    2026-06-24 15:15:04.546 INF Starting HTTP server at http://localhost:2242
+    2026-06-24T15:15:04.503Z INF Percona ClusterSync for MongoDB v1.0.0 3eb82dd 2026-06-24_09:36_UTC
+    2026-06-24T15:15:04.504Z INF Config: source client compressors: [snappy zstd zlib] s=connect
+    2026-06-24T15:15:04.504Z INF Config: source client maxPoolSize: 100 (driver default) s=connect
+    2026-06-24T15:15:04.525Z INF Connected to source cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs00:30000
+    2026-06-24T15:15:04.525Z INF Config: target client compressors: [snappy zstd zlib] s=connect
+    2026-06-24T15:15:04.525Z INF Config: target client maxPoolSize: 100 (driver default) s=connect
+    2026-06-24T15:15:04.533Z INF Connected to target cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs10:30100
+    2026-06-24T15:15:04.546Z INF Checking Recovery Data for "pcsm" s=recovery
+    2026-06-24T15:15:04.546Z INF Recovery Data not found s=recovery
+    2026-06-24T15:15:04.546Z INF Starting HTTP server at http://localhost:2242
     ```
 
 ### Recommendations
