@@ -4,7 +4,7 @@ author: Radoslaw Szulgo
 ---
 # Known issues and limitations
 
-This page lists known limitations for using {{pcsm.full_name}}.
+This page lists known limitations for using {{pcsm.full_name}} (PCSM).
 
 ## Versions and topology
 
@@ -28,13 +28,12 @@ This page lists known limitations for using {{pcsm.full_name}}.
 
 The following limitations apply specifically to sharded cluster replication:
 
-* {{pcsm.short}} replicates the data and doesn't replicate metadata. This means that the following information is not preserved from the source cluster:
-
-   * The primary shard name for a collection. The target cluster may have a different primary shard name.
-   * The chunk distribution information. The target cluster manages chunk distribution according to its own sharding configuration. See [Sharding support](sharding.md#limitations) for more information.
-   * The configuration of [zones for sharded data :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/zone-sharding/).
-
-* During data replication, the following commands are not supported: `movePrimary`, `reshardCollecton`, `unshardCollection`, `refineCollectionShardKey`. Running them results in failed replication and you must start it anew, from the initial data sync stage.
+* When both the source and target are sharded clusters, {{pcsm.short}} does not continuously replicate sharding metadata. For ranged shard keys, PCSM uses the source chunk boundaries to initialize the target during the initial sync. Subsequent chunk migrations, splits, and merges aren't reproduced on the target.
+* The primary shard assignment is not preserved. The target cluster can use a different primary shard.
+* Zone configuration is not replicated. See [Zones for sharded data :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/zone-sharding/).
+* Don't reshard a collection during an active synchronization.
+  Running `reshardCollection`, `unshardCollection`, or `refineCollectionShardKey` on a collection included in an active synchronization puts PCSM into a **failure state**. Complete or stop the synchronization first.
+* Replica set to sharded cluster migrations do not apply a shard key. PCSM can copy data from a replica set source to a sharded cluster target, but the migrated collections remain unsharded. If you need sharded collections on the target, apply the required shard key separately.
 
 ## Data types
 
@@ -50,12 +49,9 @@ The following limitations apply specifically to sharded cluster replication:
 
 ## Other
 
-The following functionalities are not supported:
+The following limitations apply:
 
-* Multiple source or multiple target clusters 
-* You cannot resume initial synchronization if an issue occurred. You must start it from scratch.
+* You cannot resume the clone phase after it fails. Resolve the issue and start a new synchronization run from the beginning.
 * Arbitrary database upgrades during a sync are not supported. For supported staged upgrades from lower to higher MongoDB major versions, follow the cross-version replication procedure.
-* Reverse synchronization
-* External authentication via Kerberos, AWS and LDAP
-
-
+* Reverse synchronization, from the target cluster back to the source, is not supported.
+* External authentication through Kerberos, LDAP, and AWS IAM is not supported.
