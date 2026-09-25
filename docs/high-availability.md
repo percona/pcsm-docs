@@ -254,7 +254,7 @@ pcsm reset --target "<target-mongodb-uri>"
 
 Use these commands only when you need to clear stored PCSM state. The `pcsm reset` command removes both HA coordination and replication state.
 
-## Upgrade from PCSM 0.9.0 or any other earlier version
+## Upgrade from PCSM 0.9.0 or earlier
 
 Replication state created by PCSM 0.9.0 is not compatible with PCSM 1.0.0.
 
