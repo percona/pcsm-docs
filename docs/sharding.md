@@ -36,7 +36,7 @@ For detailed information about authentication and connection string configuratio
 
 ### Initial sync preparation
 
-Before starting the initial sync, {{pcsm.short}} checks which collections are sharded on the source cluster and creates corresponding sharded collections on the destination cluster. The only sharding configuration preserved from the source cluster is the sharding key; all other sharding details are handled internally by the destination cluster.
+Before starting the initial sync, {{pcsm.short}} checks which collections are sharded on the source cluster and creates corresponding sharded collections on the destination cluster. The sharding key is preserved from the source cluster. For ranged shard keys, {{pcsm.short}} also recreates the source chunk boundaries on the destination before the clone starts. Later sharding metadata changes are not replicated.
 
 ### Balancer operation
 
@@ -44,9 +44,9 @@ Before starting the initial sync, {{pcsm.short}} checks which collections are sh
 
 ### Chunk distribution
 
-{{pcsm.short}} does not preserve chunk distribution information from the source cluster. The target cluster manages chunk distribution internally through its balancer. This means that after replication, chunks may be distributed differently on the target cluster compared to the source cluster, which is expected behavior.
+For ranged shard keys, {{pcsm.short}} recreates the source chunk boundaries on the target before the initial clone starts. After replication begins, later chunk distribution changes on the source cluster are not replicated. The target cluster manages chunk distribution internally through its balancer, so chunks may later be distributed differently on the target cluster compared to the source cluster, which is expected behavior.
 
-Since the target cluster already has information about which collections are sharded, it handles sharding internally. {{pcsm.short}} does not interfere with the target cluster's sharding configuration or chunk distribution.
+Since the target cluster already has information about which collections are sharded, it handles sharding internally. After the initial preparation, {{pcsm.short}} does not interfere with the target cluster's sharding configuration or chunk distribution.
 
 ## Usage
 

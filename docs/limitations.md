@@ -31,7 +31,7 @@ The following limitations apply specifically to sharded cluster replication:
 * {{pcsm.short}} replicates the data and doesn't replicate metadata. This means that the following information is not preserved from the source cluster:
 
    * The primary shard name for a collection. The target cluster may have a different primary shard name.
-   * The chunk distribution information. The target cluster manages chunk distribution according to its own sharding configuration. See [Sharding support](sharding.md#limitations) for more information.
+   * Subsequent chunk distribution changes. For ranged shard keys, {{pcsm.short}} recreates the source chunk boundaries on the target before the initial clone starts, but later chunk distribution changes are not preserved. The target cluster then manages chunk distribution according to its own sharding configuration. See [Sharding support](sharding.md#chunk-distribution) for more information.
    * The configuration of [zones for sharded data :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/zone-sharding/).
 
 * During data replication, the following commands are not supported: `movePrimary`, `reshardCollecton`, `unshardCollection`, `refineCollectionShardKey`. Running them results in failed replication and you must start it anew, from the initial data sync stage.
@@ -52,10 +52,8 @@ The following limitations apply specifically to sharded cluster replication:
 
 The following functionalities are not supported:
 
-* Multiple source or multiple target clusters 
+* A single PCSM instance cannot have multiple source or target endpoints. Multiple isolated PCSM instances can share one source cluster and replicate to different targets, as described in [Replicate from one source to multiple targets](multiple-targets.md).
 * You cannot resume initial synchronization if an issue occurred. You must start it from scratch.
 * Arbitrary database upgrades during a sync are not supported. For supported staged upgrades from lower to higher MongoDB major versions, follow the cross-version replication procedure.
 * Reverse synchronization
 * External authentication via Kerberos, AWS and LDAP
-
-
