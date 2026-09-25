@@ -929,3 +929,7 @@ You can collect and view the following PCSM metrics at the `/metrics` endpoint:
 | `percona_clustersync_mongodb_copy_insert_document_total` | Total count of the inserted documents |
 | `percona_clustersync_mongodb_copy_read_batch_duration_seconds` | Read batch duration time in seconds |
 | `percona_clustersync_mongodb_copy_insert_batch_duration_seconds` | Insert batch duration time in seconds |
+| `percona_clustersync_mongodb_ha_active` | Shows the current role. `1` means ACTIVE and `0` means STANDBY. |
+| `percona_clustersync_mongodb_ha_term` | Shows the current HA lease term. |
+| `percona_clustersync_mongodb_ha_role_transitions_total` | Counts role changes for the PCSM instance. |
+| `percona_clustersync_mongodb_ha_info` | Reports instance information. The metric has a constant value of `1` and includes the `instance_id` and `group` labels. |
