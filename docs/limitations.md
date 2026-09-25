@@ -48,6 +48,18 @@ The following limitations apply specifically to sharded cluster replication:
 * Persistent Query Settings (added in MongoDB 8) are not supported 
 * Documents that have [field names with periods and dollar signs :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/dot-dollar-considerations/) are not supported
 
+## MongoDB Atlas
+
+Atlas M0 and Flex clusters do not support the `appendOplogNote` command. Therefore, Atlas M0 and Flex clusters are not supported as PCSM sources.
+
+PCSM uses `appendOplogNote` on the source cluster to:
+
+- establish a safe timestamp before the initial data clone
+- advance the source change-stream frontier when the source is idle
+
+To use any of these Atlas clusters as a PCSM source, upgrade the cluster to a dedicated tier, such as M10 or higher. 
+See the MongoDB Atlas documentation for [modifying a cluster](https://www.mongodb.com/docs/atlas/scale-cluster/) for current upgrade procedures and limitations.
+
 ## Other
 
 The following functionalities are not supported:
