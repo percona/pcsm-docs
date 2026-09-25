@@ -71,7 +71,3 @@ Potential mitigation strategies include:
 - Performing a rolling initial sync after the data migration is complete
 
 Larger index files do not necessarily indicate data inconsistency or corruption, and query performance may remain unchanged.
-
-## What features are planned for future releases?
-
- We're currently working on high availability with multiple PCSM instances and shard-to-shard replication.   
