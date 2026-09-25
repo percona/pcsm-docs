@@ -13,9 +13,9 @@ After subsequently starting the service, you may see such messages:
 ??? example "Sample error messages"
 
     ```{.text .no-copy}
-    2025-06-02 21:25:38.927 INF Found Recovery Data. Recovering... s=recovery
+    2026-06-02T10:43:46.854Z INF Found Recovery Data. Recovering... s=recovery
     Error: new server: recover Percona ClusterSync for MongoDB: recover: cannot resume: replication is not started or not resuming from failure
-    2025-06-02 21:25:38.929 FTL error="new server: recover Percona ClusterSync for MongoDB: recover: cannot resume: replication is not started or not resuming from failure"
+    2026-06-02T10:43:46.856Z FTL error="new server: recover Percona ClusterSync for MongoDB: recover: cannot resume: replication is not started or not resuming from failure"
     ```
 
 ### Recovery steps 
@@ -64,10 +64,10 @@ If PCSM exits abnormally or is stopped unexpectedly, restart the `pcsm` service.
 ??? example "Example logs"
 
     ```{.text .no-copy}
-    2025-06-02 21:32:04.592 INF Starting Cluster Replication s=pcsm
-    2025-06-02 21:32:04.592 DBG Change Replication is resuming s=repl
-    2025-06-02 21:32:04.592 INF Change Replication resumed op_ts=[1748887947,1] s=repl
-    2025-06-02 21:32:04.594 DBG Checkpoint saved s=checkpointing
+    2026-06-02T10:43:46.854Z INF Starting Cluster Replication s=pcsm
+    2026-06-02T10:43:46.854Z DBG Change Replication is resuming s=repl
+    2026-06-02T10:43:46.854Z INF Change Replication resumed op_ts=[1748887947,1] s=repl
+    2026-06-02T10:43:46.856Z DBG Checkpoint saved s=checkpointing
     ```
 
 ### Replication fails while PCSM is running
