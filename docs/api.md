@@ -254,6 +254,7 @@ When one of these requests reaches a standby instance, PCSM returns HTTP `409` w
 {
   "ok": false,
   "error": "not_active",
+  "message": "This instance is STANDBY. Active is running on pcsm0:2242."
   "me": {
     "instanceId": "<instance-id>"
   },
