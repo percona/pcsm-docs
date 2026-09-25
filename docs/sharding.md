@@ -19,7 +19,6 @@ The primary shard assignment can also differ between the source and target clust
 ## Prerequisites
 
 * Use {{pcsm.full_name}} 0.7.0 or later. Automatic source chunk boundary preparation requires version 1.0.0 or later.
-* Both the source and target clusters must be sharded MongoDB deployments.
 * The source and target clusters must use a supported version combination. See [Cross-version replication](version-compatibility.md) for supported source and target versions.
 
 ## Connection string format
@@ -49,12 +48,6 @@ Collections with a hashed shard key keep the initial chunk layout created by Mon
 {{pcsm.full_name}} connects to source and target clusters via a `mongos` instance. Therefore, you do not need to disable the balancer on either the source or target cluster before starting replication. The target cluster's balancer continues to operate normally and manages chunk distribution according to its own sharding configuration and balancer settings.
 
 For ranged shard keys, PCSM prepares the target using the source chunk boundaries before the clone begins. Chunk migrations, splits, and merges that occur later are not replicated between the clusters. Each cluster continues to manage its own chunk layout. See [Manage sharded cluster balancer :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/manage-sharded-cluster-balancer/){:target="_blank"} in the MongoDB documentation.
-
-### If the pre-split fails
-
-If {{pcsm.short}} cannot prepare the chunk layout on the target, the initial sync fails. PCSM does not fall back to copying the data into an unsplit collection.
-
-Check the PCSM logs and resolve the reported problem on the target. Then start a new synchronization run from the initial sync stage.
 
 ## Chunk distribution
 
