@@ -8,7 +8,7 @@ Check the [system requirements](../system-requirements.md)  and [known limitatio
 
 To build {{pcsm.full_name}} from source, you need the following:
 
-- Go 1.24 or later. [Install and set up Go tools :octicons-link-external-16:](https://golang.org/doc/install)x
+- Go 1.27 or later. [Install and set up Go tools :octicons-link-external-16:](https://golang.org/doc/install)
 - make
 - git
 
@@ -20,7 +20,7 @@ Here's how to build {{pcsm.full_name}}:
 1. Clone the repository and change directory to `pcsm`:
 
     ```{.bash data-prompt="$"}
-    git clone https://github.com/percona/percona-clustersync-mongodb.git
+    $ git clone https://github.com/percona/percona-clustersync-mongodb.git pcsm
     $ cd pcsm
     ```
 
