@@ -1,8 +1,4 @@
-# Sharding support in {{pcsm.full_name}} (Technical Preview)
-
-!!! warning "Technical Preview"
-
-    Sharding support is available starting with {{pcsm.full_name}} 0.7.0 and is currently in technical preview stage. We encourage you to try it out and share your feedback. This will help us improve the feature in future releases.
+# Sharding support in {{pcsm.full_name}}
 
 {{pcsm.full_name}} supports replication between sharded MongoDB clusters. You can use it to migrate data from one sharded deployment to another with minimal downtime, or to keep data synchronized for testing and development.
 
@@ -80,49 +76,9 @@ PCSM then recreates each source chunk boundary on the target and places the corr
     [-∞, 100)  -> src-a
     [100, +∞)  -> src-b
 
-    Target layout:
-    [-∞, 100)  -> tgt-a
-    [100, +∞)  -> tgt-b
-    ```
-    In this example, `src-a` is paired with `tgt-a` and `src-b` with `tgt-b`. The target keeps the same chunk boundaries and ownership pattern as the source.
+For migrations between sharded clusters, {{pcsm.short}} prepares the target chunk layout before cloning data. For ranged shard keys, it uses source chunk boundaries to pre-split the target. Collections with a hashed shard key keep the initial layout created by MongoDB.
 
-### Different number of shards
-
-For a source collection with more than one chunk, if the source and target have different numbers of shards, {{pcsm.short}} cannot map source chunk ownership directly to the target.
-
-Instead, {{pcsm.short}} estimates the size of each source chunk and processes the largest chunks first. It places each chunk on the target shard that currently has the smallest estimated amount of assigned data.
-
-{{pcsm.short}} keeps track of the estimated total for each target shard as it assigns chunks, and those totals carry across every collection in the run. It then recreates the source chunk boundaries on the target using the calculated placement.
-
-??? example "Different number of shards"
-
-    ```{.text .no-copy}
-    Target shards: tgt-a, tgt-b
-    Source chunk sizes: 100 MB, 60 MB, 40 MB
-
-    100 MB -> tgt-a
-    60 MB -> tgt-b
-    40 MB -> tgt-b
-
-    Final estimated placement:
-    tgt-a: 100 MB
-    tgt-b: 100 MB
-    ```
-    Here, the 100 MB chunk is placed on `tgt-a` first. The 60 MB chunk goes to `tgt-b`, which has no data assigned yet. When the 40 MB chunk is processed, `tgt-b` still has less estimated data than `tgt-a`, so the chunk is also placed there.
-
-### Hashed shard keys
-
-{{pcsm.short}} does not pre-split a collection whose shard key contains a hashed field. The target keeps the initial chunk layout MongoDB creates when `shardCollection` runs, and the target balancer manages it from there.
-
-### Check the chunk distribution
-
-To check how a replicated collection is distributed, connect to the target mongos and run:
-
-```javascript
-db.getSiblingDB('<database>').getCollection('<collection>').getShardDistribution()
-```
-
-The command shows the data distribution across the target shards.
+The target cluster's balancer continues to manage chunk placement. This means chunk distribution may still differ between source and target after replication, which is expected behavior.
 
 ## Usage
 
