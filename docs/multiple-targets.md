@@ -392,6 +392,6 @@ See [Logging in Percona ClusterSync for MongoDB](logging.md).
 
 ## Next steps
 
-- [Use Percona ClusterSync for MongoDB](./install/usage.md){.md-button}
+- [Use Percona ClusterSync for MongoDB](./install/usage.md)
 
-- [Sharding support in Percona ClusterSync for MongoDB](./sharding.md){.md-button}
+- [Sharding support in Percona ClusterSync for MongoDB](./sharding.md)
