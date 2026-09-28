@@ -166,6 +166,7 @@ nav:
      - compare.md
      - deployment.md
      - sharding.md
+     - sharded-source-to-replica-set-target.md
      - limitations.md
   - Get started:
       - Quickstart: installation.md
