@@ -47,7 +47,7 @@ PCSM can output logs in two formats: human-readable text (default) and structure
 
 #### Timestamp format
 
-!!! admonition "Version added: 0.10.0"
+!!! admonition "Version added: 1.0.0"
 
 PCSM writes every log timestamp in [RFC 3339 :octicons-link-external-16:](https://www.rfc-editor.org/rfc/rfc3339){:target="_blank"} format and always in UTC, also known as Zulu time. This applies to both text and JSON output.
 

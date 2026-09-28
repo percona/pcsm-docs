@@ -1,6 +1,6 @@
 # Replicate from one source to multiple targets
 
-!!! admonition "Version added: 0.10.0"
+!!! admonition "Version added: 1.0.0"
 
 You can run multiple {{pcsm.full_name}} (PCSM) instances against the same source cluster and replicate different namespaces to different target clusters at the same time. This lets you split one cluster across several destinations in a single pass, with each instance moving only the data you assign to it.
 
