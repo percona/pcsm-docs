@@ -76,6 +76,7 @@ PCSM then recreates each source chunk boundary on the target and places the corr
     Source layout:
     [-∞, 100)  -> src-a
     [100, +∞)  -> src-b
+    ```
 
 For migrations between sharded clusters, {{pcsm.short}} prepares the target chunk layout before cloning data. For ranged shard keys, it uses source chunk boundaries to pre-split the target. Collections with a hashed shard key keep the initial layout created by MongoDB.
 
