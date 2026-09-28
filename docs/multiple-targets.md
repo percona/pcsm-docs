@@ -9,8 +9,10 @@ You can run multiple {{pcsm.full_name}} (PCSM) instances against the same source
 Each PCSM instance has:
 
 - The same source cluster
-- Its own target cluster
 - Its own namespace filter
+- Its own target cluster
+    Each instance must have its own target cluster. The lease and the checkpoint are stored on the target as single fixed documents, and `--group-name` doesn't isolate them. If two instances share a target, they form an HA pair instead of running as two separate filtered jobs. One instance takes the STANDBY role and can take over the other's run on failover. For details, see High availability. See [High availability](high-availability.md).
+
 
 Every instance runs the full replication workflow on its own: clone, replication, and finalization. See [How PCSM works](intro.md) for what happens at each stage.
 
