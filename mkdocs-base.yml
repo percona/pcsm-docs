@@ -166,6 +166,7 @@ nav:
      - compare.md
      - deployment.md
      - sharding.md
+     - sharded-source-to-replica-set-target.md
      - limitations.md
   - Get started:
       - Quickstart: installation.md
@@ -180,6 +181,8 @@ nav:
       - install/parameters.md
   - Use PCSM: 
     - Usage: install/usage.md
+    - Replicate from one source to multiple targets: multiple-targets.md
+    - High availability: high-availability.md
     - Cross-version replication: version-compatibility.md  
     - pqs.md 
     - PCSM commands: pcsm-commands.md
@@ -192,6 +195,7 @@ nav:
   - FAQ: faq.md
   - Release notes:
       - Release notes index: release-notes.md
+      - 1.0.0: release-notes/1.0.0.md
       - 0.9.0: release-notes/0.9.0.md
       - 0.8.1: release-notes/0.8.1.md
       - 0.8.0: release-notes/0.8.0.md

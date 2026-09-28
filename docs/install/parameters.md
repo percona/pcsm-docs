@@ -5,6 +5,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--port`: The port on which the server will listen (default: 2242)
 - `--source`: The MongoDB connection string for the source cluster
 - `--target`: The MongoDB connection string for the target cluster
+- `--group-name`: A name that identifies the HA deployment in member information, API responses, metrics, and logs (default: "default")
 - `--log-level`: The log level (default: "info")
 - `--log-json`: Output log in JSON format with disabled color
 - `--no-color`: Disable log ANSI color
@@ -14,7 +15,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--clone-num-insert-workers`: Number of insert workers that write batches to the target. Shared for all collections.
 - `--clone-segment-size`: Segment size for clone operations. Accepts plain bytes or a unit suffix (e.g. `500MB`, `1GiB`). When omitted, the tool automatically calculates segment size based on collection size and available read workers.
 - `--use-collection-bulk-write`: Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+).
-
+- `--listen-host`: Host the HTTP server binds to. See [Configure the HTTP listen address](../install/start-pcsm.md#configure-the-http-listen-address).
 
 ??? example "Examples"
 
@@ -35,6 +36,7 @@ Alternatively, you can define the following environment variables:
 |----------|-------------|---------|
 | `PCSM_SOURCE_URI` | MongoDB connection string for the source cluster | - |
 | `PCSM_TARGET_URI` | MongoDB connection string for the target cluster | - |
+| `PCSM_GROUP_NAME` | A name that identifies the HA deployment in member information, API responses, metrics, and logs. | `default` |
 | `PCSM_PORT` | Server port number | `2242` |
 | `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `2` |
 | `PCSM_CLONE_NUM_READ_WORKERS` | Number of read workers for cloning | `NumCPU / 4` |
@@ -46,4 +48,92 @@ Alternatively, you can define the following environment variables:
 | `PCSM_REPL_EVENT_QUEUE_SIZE` | Controls the size of the internal event queue used by the replication subsystem. | `5000` |
 | `PCSM_REPL_WORKER_QUEUE_SIZE` | Defines the maximum number of replication events that each replication worker thread can queue before processing. | `5000` |
 | `PCSM_REPL_BULK_OPS_SIZE` | Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication. | `5000` |
+| `PCSM_LISTEN_HOST` | Host the HTTP server binds to. See [Configure the HTTP listen address](../install/start-pcsm.md#configure-the-http-listen-address) | `localhost` |
 
+
+## MongoDB connection string
+
+!!! admonition "Version added: 1.0.0"
+
+PCSM supports the MongoDB `maxPoolSize` connection string option, which controls the maximum number of connections the MongoDB Go driver can maintain in its connection pool.
+
+You can set this option in the source and/or target MongoDB connection strings using `--source` and `--target` command-line options or through the `PCSM_SOURCE_URI` and `PCSM_TARGET_URI` environment variables.
+
+### Syntax
+
+Append `maxPoolSize` as a query parameter to your connection string:
+
+Without existing query parameters:
+
+~~~text
+mongodb://host:port/?maxPoolSize=500
+~~~
+
+With existing query parameters:
+
+~~~text
+mongodb://host:port/?replicaSet=rs0&maxPoolSize=500
+~~~
+
+??? example "Example: maxPoolSize=500"
+
+    ```{.bash data-prompt="$"}
+    $ pcsm --source='mongodb://rs00:30000/?maxPoolSize=500' --target='mongodb://rs10:30100' --log-level='debug'
+    ```
+
+    Output
+    ```{.text .no-copy}
+    2026-06-24T15:16:40.691Z INF Percona ClusterSync for MongoDB v1.0.0 3eb82dd 2026-06-24_09:36_UTC
+    2026-06-24T15:16:40.692Z INF Config: source client compressors: [snappy zstd zlib] s=connect
+    2026-06-24T15:16:40.692Z INF Config: source client maxPoolSize: 500 s=connect
+    2026-06-24T15:16:40.711Z INF Connected to source cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs00:30000
+    2026-06-24T15:16:40.711Z INF Config: target client compressors: [snappy zstd zlib] s=connect
+    2026-06-24T15:16:40.711Z INF Config: target client maxPoolSize: 100 (driver default) s=connect
+    2026-06-24T15:16:40.724Z INF Connected to target cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs10:30100
+    2026-06-24T15:16:40.728Z INF Checking Recovery Data for "pcsm" s=recovery
+    2026-06-24T15:16:40.729Z INF Recovery Data not found s=recovery
+    2026-06-24T15:16:40.729Z INF Starting HTTP server at http://localhost:2242
+    ```
+
+### How maxPoolSize works
+
+| **Configuration** | **Behavior** |
+| --------------- | -------- |
+| Not set | Driver defaults to **100** connections |
+| `maxPoolSize=N` | Driver caps the pool at **N** connections |
+| `maxPoolSize=0` | Removes the limit, allowing the driver to create as many connections as needed. |
+
+
+??? example "Example: maxPoolSize not defined"
+
+    ```{.bash data-prompt="$"}
+    $ pcsm --source='mongodb://rs00:30000' --target='mongodb://rs10:30100' --log-level='debug'
+    ```
+
+    Output
+    ```{.text .no-copy}
+    2026-06-24T15:15:04.503Z INF Percona ClusterSync for MongoDB v1.0.0 3eb82dd 2026-06-24_09:36_UTC
+    2026-06-24T15:15:04.504Z INF Config: source client compressors: [snappy zstd zlib] s=connect
+    2026-06-24T15:15:04.504Z INF Config: source client maxPoolSize: 100 (driver default) s=connect
+    2026-06-24T15:15:04.525Z INF Connected to source cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs00:30000
+    2026-06-24T15:15:04.525Z INF Config: target client compressors: [snappy zstd zlib] s=connect
+    2026-06-24T15:15:04.525Z INF Config: target client maxPoolSize: 100 (driver default) s=connect
+    2026-06-24T15:15:04.533Z INF Connected to target cluster [Percona Server for MongoDB 8.0.16-5]: mongodb://rs10:30100
+    2026-06-24T15:15:04.546Z INF Checking Recovery Data for "pcsm" s=recovery
+    2026-06-24T15:15:04.546Z INF Recovery Data not found s=recovery
+    2026-06-24T15:15:04.546Z INF Starting HTTP server at http://localhost:2242
+    ```
+
+### Recommendations
+
+For the best clone performance, size the connection pool to match or exceed the number of clone workers.
+
+| Cluster | Recommended `maxPoolSize`           |
+| ------- | ----------------------------------- |
+| Source  | At least `--clone-num-read-workers`   |
+| Target  | At least `--clone-num-insert-workers` |
+
+When PCSM starts, it logs the effective `maxPoolSize` for both the source and target clients.
+
+!!! note
+    `maxPoolSize` applies independently to each MongoDB server or `mongos` instance that the client connects to. It does not define a single global connection limit for the entire client.

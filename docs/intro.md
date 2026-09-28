@@ -95,7 +95,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     For detailed instructions, see [Use {{pcsm.full_name}}](install/usage.md).
 
-=== "Sharded Clusters (Tech Preview)"
+=== "Sharded Clusters"
 
     ### Usage scenario
 
@@ -172,7 +172,7 @@ During the replication stage, {{pcsm.short}} copies indexes from the source to t
 
 ### Finalization stage
 
-On the finalization stage, {{pcsm.short}} finalizes index index management on the target cluster to match their configuration on the source:
+On the finalization stage, {{pcsm.short}} finalizes index management on the target cluster to match their configuration on the source:
 
 * **Unique index conversion**: Non-unique indexes that were originally unique on the source are converted back to unique indexes.
 
