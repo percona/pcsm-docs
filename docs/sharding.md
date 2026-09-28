@@ -1,8 +1,4 @@
-# Sharding support in {{pcsm.full_name}} (Technical Preview)
-
-!!! warning "Technical Preview"
-
-    Sharding support is available starting with {{pcsm.full_name}} 0.7.0 and is currently in technical preview stage. We encourage you to try it out and share your feedback. This will help us improve the feature in future releases.
+# Sharding support in {{pcsm.full_name}}
 
 {{pcsm.full_name}} supports replication between sharded MongoDB clusters, enabling you to migrate or synchronize data from one sharded deployment to another. This capability allows you to migrate sharded clusters with minimal downtime and synchronize data between sharded clusters for testing or development purposes.
 
@@ -44,9 +40,9 @@ Before starting the initial sync, {{pcsm.short}} checks which collections are sh
 
 ### Chunk distribution
 
-{{pcsm.short}} does not preserve chunk distribution information from the source cluster. The target cluster manages chunk distribution internally through its balancer. This means that after replication, chunks may be distributed differently on the target cluster compared to the source cluster, which is expected behavior.
+For migrations between sharded clusters, {{pcsm.short}} prepares the target chunk layout before cloning data. For ranged shard keys, it uses source chunk boundaries to pre-split the target. Collections with a hashed shard key keep the initial layout created by MongoDB.
 
-Since the target cluster already has information about which collections are sharded, it handles sharding internally. {{pcsm.short}} does not interfere with the target cluster's sharding configuration or chunk distribution.
+The target cluster's balancer continues to manage chunk placement. This means chunk distribution may still differ between source and target after replication, which is expected behavior.
 
 ## Usage
 

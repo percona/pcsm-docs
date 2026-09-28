@@ -27,7 +27,7 @@ Yes. Both the source and target must be replica sets.
 
 ## Does {{pcsm.full_name}} support sharded clusters?
 
-Yes. Sharded MongoDB clusters are supported as both sources and targets. Note: this feature is currently in technical preview. Support for shard-to-shard replication is planned for a future release.
+Yes. Sharded MongoDB clusters are supported as both sources and targets.
 
 ## Does {{pcsm.full_name}} support bidirectional sync?
 
@@ -71,7 +71,3 @@ Potential mitigation strategies include:
 - Performing a rolling initial sync after the data migration is complete
 
 Larger index files do not necessarily indicate data inconsistency or corruption, and query performance may remain unchanged.
-
-## What features are planned for future releases?
-
- We're currently working on high availability with multiple PCSM instances and shard-to-shard replication.   

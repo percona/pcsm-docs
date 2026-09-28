@@ -95,7 +95,7 @@ The workflow for {{pcsm.short}} depends on your MongoDB deployment topology. Sel
 
     For detailed instructions, see [Use {{pcsm.full_name}}](install/usage.md).
 
-=== "Sharded Clusters (Tech Preview)"
+=== "Sharded Clusters"
 
     ### Usage scenario
 
