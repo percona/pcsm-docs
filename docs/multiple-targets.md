@@ -385,7 +385,7 @@ Every instance logs separately, so check each one for errors before you decommis
 
 See [Logging in Percona ClusterSync for MongoDB](logging.md).
 
-If replication enters the `failed` state after initial sync while the PCSM server is still running, resolve the underlying issue and use `pcsm resume --from-failure`. If the PCSM process stops unexpectedly during real-time replication, restart it; PCSM resumes automatically from its last saved checkpoint. An interruption during initial sync cannot be resumed. Restart the clone as described in [Recover PCSM during initial data clone](troubleshooting.md#recover-pcsm-during-initial-data-clone). For command details, see [Resume the replication](pcsm-commands.md#resume).
+  If replication enters the `failed` state after the initial clone completes and the PCSM server is still running, resolve the underlying issue and run `pcsm resume --from-failure`. If the PCSM process stops unexpectedly after the initial clone completes, restart it. PCSM resumes from its last saved checkpoint, including during catch-up while `initialSync.completed` is still `false`. An interrupted initial clone cannot be resumed. Restart it as described in [Recover PCSM during initial data clone](troubleshooting.md#recover-pcsm-during-initial-data-clone). For command details, see [Resume the replication](pcsm-commands.md#resume).
 
 ## Next steps
 
