@@ -19,7 +19,7 @@ You need to create users in both source and target clusters. You will use these 
     db.getSiblingDB('admin').createUser({
       user: 'source',
       pwd: 'mys3cretpAss',
-      roles: ['backup', 'clusterMonitor', 'clusterManager', 'readAnyDatabase'],
+      roles: ['backup', 'clusterMonitor', 'readAnyDatabase'],
     });
     ```
 

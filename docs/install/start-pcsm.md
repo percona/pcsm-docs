@@ -93,14 +93,6 @@ $ pcsm --listen-host ::1
 
 Changing the bind host doesn't affect the CLI. Subcommands such as `pcsm status` always connect to `localhost`. Keep the loopback address reachable or call the HTTP API directly at the address you configured. 
 
-### What to pass
-
-Give `--listen-host` a host and nothing else. The `--port` option sets the port, and defaults to `2242`.
-
-A value that already contains a port is rejected, so `localhost:2242`, `127.0.0.1:2242`, and `[::1]:2242` all fail at startup. A DNS name is accepted without being resolved first, which means a name that can't be resolved isn't caught by validation.
-
-Changing the bind host doesn't affect the CLI. Subcommands such as `pcsm status` always connect to `localhost`.
-
 ### Check that it worked
 
 PCSM reports its bind address when the HTTP server starts. Read the startup log and confirm the address matches what you set:

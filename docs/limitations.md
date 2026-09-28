@@ -35,10 +35,6 @@ The following limitations apply specifically to sharded cluster replication:
   Running `reshardCollection`, `unshardCollection`, or `refineCollectionShardKey` on a collection included in an active synchronization puts PCSM into a **failure state**. Complete or stop the synchronization first.
 * Replica set to sharded cluster migrations do not apply a shard key. PCSM can copy data from a replica set source to a sharded cluster target, but the migrated collections remain unsharded. If you need sharded collections on the target, apply the required shard key separately.
 
-    * The configuration of [zones for sharded data :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/zone-sharding/).
-
-- During data replication, the following commands are not supported: `reshardCollection`, `unshardCollection`, `refineCollectionShardKey`. Running them results in failed replication and you must start it anew, from the initial data sync stage.
-
 ## Data types
 * Queryable encryption is not supported
 * Users and roles are not synchronized

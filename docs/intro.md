@@ -180,7 +180,7 @@ On the finalization stage, {{pcsm.short}} finalizes index management on the targ
 
 * **TTL indexes**: {{pcsm.short}} restores the original `expireAfterSeconds` value for TTL indexes on the target cluster so that documents will expire according to the original configuration.
 
-* **Inconsistent indexes**: {{pcsm.short}} skips creating inconsistent indexes, detected during the replication stage. It reports the warning about such an index in the logs. Check the logs for the information about inconsistent indexes and try to manually recreate them on the target. 
+* **Inconsistent indexes**: {{pcsm.short}} checks the source again for indexes that were inconsistent during the replication stage. If the source checks confirm that the index still exists, is no longer being built, and is no longer inconsistent across shards, {{pcsm.short}} attempts to create it on the target using its current source definition. If the checks or recreation fail, {{pcsm.short}} logs a warning and lists the index in `finalization.unsuccessfulIndexes` in the [status response](api.md#get-status). Check the logs and try to manually recreate such indexes on the target.
 
 * **Retry failed indexes**: {{pcsm.short}} attempts to create indexes that failed to be created during replication.
 

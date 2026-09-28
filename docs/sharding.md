@@ -6,7 +6,7 @@
 
 The replication workflow for sharded clusters is similar to the workflow for replica sets. See [How {{pcsm.full_name}} works](intro.md#replication-workflows) for an overview of the replication stages.
 
-For sharded deployments, {{pcsm.short}} connects to `mongos` on both the source and target clusters instead of connecting directly to individual shard members. The source and target can have different numbers of shards.
+For a sharded source, {{pcsm.short}} connects to `mongos` instead of connecting directly to individual shard members. When the target is also sharded, {{pcsm.short}} connects to the target `mongos` as well. The source and target can have different numbers of shards.
 
 {{pcsm.short}} does not continuously replicate sharding metadata. For collections with a ranged shard key, it uses the source chunk boundaries to prepare the target before the initial clone begins. Changes to the chunk layout that occur later on the source are not replicated to the target.
 
@@ -18,7 +18,7 @@ The primary shard assignment can also differ between the source and target clust
 * If the target is a replica set, {{pcsm.full_name}} version 1.0.0 or later.
 * The source must be a sharded MongoDB deployment.
 * The target can be either a sharded MongoDB deployment or a replica set.
-* Both clusters must be running the same MongoDB version. Check [Version requirements](deployment.md#version-requirements) for more information about supported versions.
+* The source and target clusters must use a supported version combination. See [Cross-version replication](version-compatibility.md) for supported source and target versions.
 
 ## Connection string format
 
@@ -38,13 +38,23 @@ The following behavior applies when both the source and target are sharded Mongo
 
 ### Initial sync preparation
 
-Before starting the initial sync, {{pcsm.short}} checks which collections are sharded on the source cluster and creates corresponding sharded collections on the target sharded cluster. The only sharding configuration preserved from the source cluster is the sharding key. All other sharding details are handled internally by the target sharded cluster.
+During the initial sync, {{pcsm.short}} checks which collections are sharded on the source cluster and shards the corresponding collections on the target with the same shard key before copying their documents.
+
+For collections with a ranged shard key, {{pcsm.short}} uses the source chunk boundaries to pre-split the collection on the target before copying any documents. If the source and target have the same number of shards, PCSM preserves the source chunk ownership pattern. If the shard counts differ, PCSM uses the source boundaries and determines the chunk placement across the available target shards.
+
+Collections with a hashed shard key keep the initial chunk layout created by MongoDB when `shardCollection` runs on the target.
+
+{{pcsm.short}} does not continuously replicate sharding metadata after the initial preparation. See [Chunk distribution](#chunk-distribution).
 
 ### Balancer operation
 
 {{pcsm.full_name}} connects to the sharded source through a `mongos` instance. When the target is also sharded, {{pcsm.full_name}} connects to it through `mongos`. You do not need to disable the balancer on either sharded cluster before starting replication. The target balancer continues to operate normally and manages chunk distribution according to the target cluster's sharding configuration and balancer settings.
 
 For ranged shard keys, PCSM prepares the target using the source chunk boundaries before the clone begins. Chunk migrations, splits, and merges that occur later are not replicated between the clusters. Each cluster continues to manage its own chunk layout. See [Manage sharded cluster balancer :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/manage-sharded-cluster-balancer/){:target="_blank"} in the MongoDB documentation.
+
+### If the pre-split fails
+
+If {{pcsm.short}} cannot prepare the chunk layout for a collection, it logs a warning such as `Pre-split of "<database>.<collection>" failed, keeping the native chunk layout` and continues the clone. The collection keeps the layout it has on the target at that point, which can be partially split. The target balancer can redistribute data according to its configuration and balancing thresholds. The initial sync doesn't fail because of it.
 
 ## Chunk distribution
 
@@ -76,11 +86,50 @@ PCSM then recreates each source chunk boundary on the target and places the corr
     Source layout:
     [-∞, 100)  -> src-a
     [100, +∞)  -> src-b
+
+    Target layout:
+    [-∞, 100)  -> tgt-a
+    [100, +∞)  -> tgt-b
     ```
+    In this example, `src-a` is paired with `tgt-a` and `src-b` with `tgt-b`. The target keeps the same chunk boundaries and ownership pattern as the source.
 
-For migrations between sharded clusters, {{pcsm.short}} prepares the target chunk layout before cloning data. For ranged shard keys, it uses source chunk boundaries to pre-split the target. Collections with a hashed shard key keep the initial layout created by MongoDB.
+### Different number of shards
 
-The target cluster's balancer continues to manage chunk placement. This means chunk distribution may still differ between source and target after replication, which is expected behavior.
+For a source collection with more than one chunk, if the source and target have different numbers of shards, {{pcsm.short}} cannot map source chunk ownership directly to the target.
+
+Instead, {{pcsm.short}} estimates the size of each source chunk and processes the largest chunks first. It places each chunk on the target shard that currently has the smallest estimated amount of assigned data. Chunks with no estimated data go to the target shard with the fewest assigned chunks.
+
+{{pcsm.short}} keeps track of the estimated total for each target shard as it assigns chunks, and those totals carry across every collection in the run. It then recreates the source chunk boundaries on the target using the calculated placement.
+
+??? example "Different number of shards"
+
+    ```{.text .no-copy}
+    Target shards: tgt-a, tgt-b
+    Source chunk sizes: 100 MB, 60 MB, 40 MB
+
+    100 MB -> tgt-a
+    60 MB -> tgt-b
+    40 MB -> tgt-b
+
+    Final estimated placement:
+    tgt-a: 100 MB
+    tgt-b: 100 MB
+    ```
+    Here, the 100 MB chunk is placed on `tgt-a` first. The 60 MB chunk goes to `tgt-b`, which has no data assigned yet. When the 40 MB chunk is processed, `tgt-b` still has less estimated data than `tgt-a`, so the chunk is also placed there.
+
+### Hashed shard keys
+
+{{pcsm.short}} does not pre-split a collection whose shard key contains a hashed field. The target keeps the initial chunk layout MongoDB creates when `shardCollection` runs, and the target balancer manages it from there.
+
+### Check the chunk distribution
+
+To check how a replicated collection is distributed, connect to the target `mongos` and run:
+
+```javascript
+db.getSiblingDB('<database>').getCollection('<collection>').getShardDistribution()
+```
+
+The command shows the data distribution across the target shards.
 
 ## Usage
 

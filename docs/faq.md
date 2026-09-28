@@ -23,7 +23,7 @@ Yes. {{pcsm.full_name}} is explicitly built to support Atlas to Percona Server f
 
 ## Does {{pcsm.full_name}} require a replica set on the source or target?
 
-Yes. Both the source and target must be replica sets. 
+Yes. Standalone MongoDB instances are not supported. The source and target must be replica sets or sharded clusters in one of the [supported deployment topologies](deployment.md).
 
 ## Does {{pcsm.full_name}} support sharded clusters?
 
