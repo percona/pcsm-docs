@@ -233,13 +233,13 @@ Example:
 
 ### HA responses
 
-The `/status`, `/start`, `/pause`, `/resume`, and `/finalize` endpoints can return the following optional HA fields when PCSM observes more than one live member:
+The `/status`, `/start`, `/pause`, `/resume`, and `/finalize` endpoints can return the following HA fields. The `message` field is present in every `not_active` response. The other fields are optional and are included only when PCSM observes more than one live member:
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `me.instanceId` | string | Identifier of the instance that handled the request |
 | `role` | string | Role of the instance that handled the request (`ACTIVE` or `STANDBY`) |
-| `message` | string | Present in `not_active` responses. States the role of the responding instance and the `host:port` of the ACTIVE instance when one is known |
+| `message` | string | Present in every `not_active` response. States the role of the responding instance and the `host:port` of the ACTIVE instance when one is known |
 | `group.name` | string | Name of the HA group, set with `--group-name` |
 | `group.term` | number | HA term advertised by the instance that handled the request |
 | `group.members` | array | Live members observed by the instance |
@@ -254,7 +254,7 @@ When one of these requests reaches a standby instance, PCSM returns HTTP `409` w
 {
   "ok": false,
   "error": "not_active",
-  "message": "This instance is STANDBY. Active is running on pcsm0:2242."
+  "message": "This instance is STANDBY. Active is running on pcsm0:2242.",
   "me": {
     "instanceId": "<instance-id>"
   },

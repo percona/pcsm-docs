@@ -196,10 +196,6 @@ The examples below use target clusters with no pre-existing application namespac
 
 === "Sharded cluster"
 
-    !!! warning "Technical preview"
-
-        Sharding support in PCSM is a technical preview and is not recommended for production. See [Sharding support in Percona ClusterSync for MongoDB](sharding.md).
-
     ## Replicate from a sharded cluster to two targets
 
     This example uses three sharded clusters, each with its own [mongos :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/sharded-cluster-query-router/){:target="_blank"}, config server, and two shards. One cluster is the source and two are targets.

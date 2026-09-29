@@ -160,6 +160,7 @@ For example, an operational request sent to a standby returns HTTP `409` with `e
 {
   "ok": false,
   "error": "not_active",
+  "message": "This instance is STANDBY. Active is running on pcsm0:2242.",
   "me": {
     "instanceId": "<instance-id>"
   },
@@ -187,7 +188,7 @@ The response shows which instance handled the request and identifies the current
 
 !!! info "Important"
 
-    The `me`, `role`, and `group` fields are included only when the instance observes more than one live member. Applications that consume the PCSM API must therefore treat these fields as optional.
+    The `me`, `role`, and `group` fields are included only when the instance observes more than one live member. Applications that consume the PCSM API must therefore treat these fields as optional. The `message` field is always present in a `not_active` response and includes the `host:port` of the active instance when the responding instance knows it.
 
     A single PCSM instance continues to return API responses in the same format as earlier releases.
 
@@ -235,33 +236,25 @@ You can use these metrics to identify the active instance, detect role changes, 
 
 ## Reset HA state
 
-PCSM provides commands to clear the stored HA membership array.
+The `pcsm reset` command clears all stored PCSM state on the target cluster: the HA lease, the member document of each instance, and the replication checkpoints.
 
 !!! warning
-    Stop all PCSM server instances that use the target cluster before running these commands. Do not reset HA state while PCSM is running.
-
-Clear the recorded member information:
-
-```bash
-pcsm reset members --target "<target-mongodb-uri>"
-```
-
-Clear all stored PCSM state, including the HA lease and replication checkpoints:
+    Stop all PCSM server instances that use the target cluster before running this command. Do not reset HA state while PCSM is running.
 
 ```bash
 pcsm reset --target "<target-mongodb-uri>"
 ```
 
-Use these commands only when you need to clear stored PCSM state. The `pcsm reset` command removes both HA coordination and replication state.
+Use this command only when you need to clear stored PCSM state.
 
 ## Upgrade from PCSM 0.9.0 or earlier
 
-Replication state created by PCSM 0.9.0 is not compatible with PCSM 1.0.0.
+Replication state created by PCSM 0.9.0 or earlier is not compatible with PCSM 1.0.0.
 
 Before starting PCSM 1.0.0:
 {.power-number}
 
-1. Stop all PCSM 0.9.0 instances that use the target cluster.
+1. Stop all PCSM instances that use the target cluster.
 
 2. Reset the stored PCSM state on the target:
 
@@ -273,7 +266,7 @@ Before starting PCSM 1.0.0:
 4. Start a new synchronization run.
 
 !!! info "Important"
-    Do not run PCSM 0.9.0 and PCSM 1.0.0 against the same target at the same time.
+    Do not run PCSM 0.9.0 or earlier and PCSM 1.0.0 against the same target at the same time.
 
 ## Next steps
 

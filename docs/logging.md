@@ -68,7 +68,7 @@ By default, logs are printed to the console in a color-coded, human-readable for
 
     ```text
     2026-06-02T10:43:46.854Z INF s=http Starting HTTP server at http://localhost:2242
-    2026-06-02T10:43:46.955Z DBG s=repl:watch op=insert ns=test.coll1 op_ts=1780397026,1
+    2026-06-02T10:43:46.955Z DBG s=repl:watch op=insert ns=test.coll1 op_ts=[1780397026,1]
     ```
 
 You can disable the colorization with the `--log-no-color` flag. This is useful when redirecting log output to a file.
