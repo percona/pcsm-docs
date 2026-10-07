@@ -175,14 +175,25 @@ If the source cluster becomes unavailable after initial sync completes, you can 
 !!! warning "The target might have missing data"
     Finalization can succeed even when the target is behind the source. Changes that did not reach {{pcsm.short}} before the outage can be missing from the target, even if replication appeared caught up. {{pcsm.short}} cannot verify that the target contains all changes made before the source became unavailable. Consider the impact of any missing changes on your application before using the target.
 
-Before finalizing:
+Before finalizing, check the replication status:
 {.power-number}
 
-1. [Check the replication status](#check-the-replication-status) and confirm that `initialSync.completed` is `true`. You cannot finalize before initial sync completes.
-2. Review `lagTimeSeconds` and `lastReplicatedOpTime` in the [status response](../api.md#get-status). These fields help you assess replication progress, but they cannot prove that all changes reached the target before the outage.
-3. Consider whether replication was paused when the source became unavailable. Changes made on the source during the pause can be missing from the target, even if finalization succeeds.
+1. Confirm that `initialSync.completed` is true. You cannot finalize before initial sync completes.
 
-Run `pcsm finalize` or send a `POST` request to `/finalize`, as shown above. Then [check finalization status](#check-finalization-status) until `state` is `finalized` and `finalization.completed` is `true`. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target.
+2. Review `lagTimeSeconds` and `lastReplicatedOpTime` in the status response to assess replication progress. These values do not guarantee that the target contains all source changes.
+
+3. Check whether replication was paused before the outage. Any changes made on the source during the pause can be missing from the target.
+
+For example, if replication was paused and the source received new writes before becoming unavailable, finalization can still succeed. Those writes can remain missing from the target.
+
+To finalize replication:
+{.power-number}
+
+1. Run `pcsm finalize` or send a `POST` request to `/finalize`, as shown above. 
+
+2. [Check finalization status](#check-finalization-status) until `state` is `finalized` and `finalization.completed` is `true`. 
+
+2. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target for reads and writes.
 
 ### Check finalization status
 
