@@ -49,6 +49,12 @@ Yes. {{pcsm.full_name}} allows you to include/exclude filters for specific datab
 - It uses checkpointing to resume from the last known sync point after a restart.
 - Logs include detailed error reporting for troubleshooting.
 
+## Can I use the target if the source cluster goes down?
+
+Yes, if initial sync has completed, you can finalize replication and use the target for reads and writes. However, finalization can succeed even if some source changes are missing from the target. Review replication progress and accept the risk of missing data before proceeding.
+
+See [Finalize after losing the source cluster](install/usage.md#finalize-after-losing-the-source-cluster) for the steps and limitations.
+
 ## What database read and write concerns are used?
 By default, Percona ClusterSync for MongoDB uses the `"majority"` read concern level for reads on the source cluster. For writes to the destination cluster, the tool uses a write concern level of `"majority"` with `j: true`.
 
