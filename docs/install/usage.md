@@ -168,6 +168,22 @@ When you no longer need / want to replicate data, finalize the replication. {{pc
     $ curl -X POST http://localhost:2242/finalize
     ```
 
+### Finalize after losing the source cluster
+
+If the source cluster becomes unavailable after initial sync completes, you can finalize replication and use the target cluster for reads and writes. This behavior applies to replica sets and sharded clusters.
+
+!!! warning "Finalization does not guarantee complete data"
+
+    The target can be finalized even if it is behind the source. Changes that did not reach PCSM before the outage can be missing from the target. PCSM cannot verify how far behind the target was when the source became unavailable. Use this option only if you accept the risk of missing data.
+
+Before finalizing:
+
+1. [Check the replication status](#check-the-replication-status) and confirm that `initialSync.completed` is `true`. You cannot finalize before initial sync completes.
+2. Review `lagTimeSeconds` and `lastReplicatedOpTime` in the [status response](../api.md#get-status). These fields help you assess replication progress, but they cannot prove that all changes reached the target before the outage.
+3. Consider whether replication was paused when the source became unavailable. Changes made on the source during the pause can be missing from the target, even if finalization succeeds.
+
+Run `pcsm finalize` or send a POST request to `/finalize`, as shown above. Then [check finalization status](#check-finalization-status) until `state` is `finalized` and `finalization.completed` is `true`. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target.
+
 ### Check finalization status
 
 You can use the `/status` endpoint to monitor finalization progress and inspect the outcome after it completes.
