@@ -176,14 +176,13 @@ If the source cluster becomes unavailable after initial sync completes, you can 
     Finalization can succeed even when the target is behind the source. Changes that did not reach {{pcsm.short}} before the outage can be missing from the target, even if replication appeared caught up. {{pcsm.short}} cannot verify that the target contains all changes made before the source became unavailable. Consider the impact of any missing changes on your application before using the target.
 
 Before finalizing:
-rasika.chivate  [3:42 PM]
 {.power-number}
 
 1. [Check the replication status](#check-the-replication-status) and confirm that `initialSync.completed` is `true`. You cannot finalize before initial sync completes.
 2. Review `lagTimeSeconds` and `lastReplicatedOpTime` in the [status response](../api.md#get-status). These fields help you assess replication progress, but they cannot prove that all changes reached the target before the outage.
 3. Consider whether replication was paused when the source became unavailable. Changes made on the source during the pause can be missing from the target, even if finalization succeeds.
 
-Run `pcsm finalize` or send a POST request to `/finalize`, as shown above. Then [check finalization status](#check-finalization-status) until `state` is `finalized` and `finalization.completed` is `true`. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target.
+Run `pcsm finalize` or send a `POST` request to `/finalize`, as shown above. Then [check finalization status](#check-finalization-status) until `state` is `finalized` and `finalization.completed` is `true`. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target.
 
 ### Check finalization status
 
