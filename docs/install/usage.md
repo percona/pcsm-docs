@@ -184,7 +184,7 @@ Before finalizing, check the replication status:
 
 3. Check whether replication was paused before the outage. Any changes made on the source during the pause can be missing from the target.
 
-For example, if replication was paused and the source received new writes before becoming unavailable, finalization can still succeed. Those writes can remain missing from the target.
+    For example, if replication was paused and the source received new writes before becoming unavailable, finalization can still succeed. Those writes can remain missing from the target.
 
 To finalize replication:
 {.power-number}
