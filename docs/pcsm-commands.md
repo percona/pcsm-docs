@@ -67,6 +67,7 @@ Available flags:
 | `--clone-num-read-workers` | Number of read workers that read collection segments from the source. Shared for all collections.|
 | `--clone-num-insert-workers` | Number of insert workers that write batches to the target. Shared for all collections.|
 | `--clone-segment-size` | Defines the size of each clone segment processed during the initial clone phase.|
+| `--clone-skip-presplit` | Skip pre-splitting on the sharded target and keep the initial chunk layout created by MongoDB. The source shard key is still used. Default: `false`. Available starting with 1.1.0. See [Skip pre-splitting](sharding.md#skip-pre-splitting). |
 | `--repl-num-workers` | Controls how many concurrent replication worker goroutines PCSM uses to apply DML (insert/update/replace/delete) events to the target cluster.|
 | `--repl-change-stream-batch-size`| Sets the maximum number of change stream events PCSM will request and read from MongoDB per batch while streaming changes from the source cluster.|
 | `--repl-event-queue-size`| Controls the size of the internal event queue used by the replication subsystem.|
