@@ -195,6 +195,8 @@ To finalize replication:
 
 2. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target for reads and writes.
 
+This behavior is also listed in [Known limitations](../limitations.md). 
+
 ### Check finalization status
 
 You can use the `/status` endpoint to monitor finalization progress and inspect the outcome after it completes.
