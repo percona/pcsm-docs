@@ -95,7 +95,7 @@ The following examples set the write concern to `1`:
     pcsm start
     ```
 
-If you set both, the `--target-write-concern` flag takes precedence over `PCSM_TARGET_WRITE_CONCERN`. Only `pcsm start` reads the variable. The {{pcsm.short}} server ignores it and has no write concern option of its own, so a run started without a value uses `majority`. That includes a run started automatically with the server's `--start` option. {{pcsm.short}} also ignores any write concern set in the target connection string.
+If you set both, the `--target-write-concern` flag takes precedence over `PCSM_TARGET_WRITE_CONCERN`. Only `pcsm start` reads the variable. The {{pcsm.short}} server ignores it and has no startup option for target write concern, so a run started without a per-run value uses `majority`. That includes a run started automatically with the server's `--start` option. {{pcsm.short}} also ignores any write concern set in the target connection string.
 
 The write concern belongs to the run. {{pcsm.short}} saves the value and keeps it through checkpoint recovery and [HA takeover](../high-availability.md#checkpoint-recovery). Since `pcsm resume` and `/resume` don't accept a write concern, the only way to change it is to start a new run. Keep in mind that a new run drops and recreates the selected target collections, as described in [Start the replication](#start-the-replication).
 
