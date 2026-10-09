@@ -49,6 +49,8 @@ If a previous active instance resumes after losing its lease, its checkpoint wri
 
 When a standby becomes `ACTIVE`, PCSM resumes replication from the last persisted checkpoint. Failover uses the existing recovery mechanism and happens automatically.
 
+Starting with 1.1.0, HA takeover also retains the run's selected target write concern. HA state and checkpoints always use `majority`, but a lower write concern for data writes can allow acknowledged data to roll back after a target primary failure. See [Configure target write concern](install/usage.md#configure-target-write-concern) before choosing a lower value.
+
 The timings are fixed:
 
 | **Setting** | **Value** |

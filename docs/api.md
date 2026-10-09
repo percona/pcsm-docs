@@ -26,6 +26,7 @@ Starts the replication process.
 |-----------|------|----------|-------------|
 | `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
+| `targetWriteConcern` | string | No | Write concern for target data writes during the initial clone and replication. Accepts `"majority"` or a decimal integer string from `"1"` to `"2147483647"`. Defaults to `"majority"` when omitted. Available starting with 1.1.0. See [Configure target write concern](install/usage.md#configure-target-write-concern) for usage and rollback risks. |
 | `replNumWorkers` | int | No | Controls how many concurrent replication worker goroutines PCSM uses to apply DML (insert/update/replace/delete) events to the target cluster.|
 | `replChangeStreamBatchSize` | int | No | Sets the maximum number of change stream events PCSM will request and read from MongoDB per batch while streaming changes from the source cluster. |
 | `replEventQueueSize` | int | No | Controls the size of the internal event queue used by the replication subsystem. |

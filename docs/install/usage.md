@@ -42,6 +42,55 @@ Then it uses [change streams :octicons-link-external-16:](https://www.mongodb.co
 
     ```
 
+### Configure target write concern
+
+!!! admonition "Version added: 1.1.0"
+
+You can choose the [write concern :octicons-link-external-16:](https://www.mongodb.com/docs/v8.0/reference/write-concern/){:target="_blank"} for data written to the target during the initial clone and ongoing replication. Write concern determines how many MongoDB members must acknowledge a write before PCSM continues. The default is `majority`.
+
+Using `1` requires acknowledgment from the target primary only. This can reduce write stalls when target secondaries lag. The setting applies to data writes only. Checkpoints, high availability (HA) state, and schema changes, such as creating collections and indexes, always use `majority`.
+
+!!! warning "Rollback risk with a lower write concern"
+
+    With a write concern below majority, a target primary failure or stepdown can roll back data that PCSM has already recorded as copied. Majority checkpoints do not protect those data writes from rollback. A fresh synchronization may be required.
+
+    Keep `majority` when you rely on automatic recovery to preserve acknowledged data. Use a lower value only for a controlled migration where you can restart and validate the copy after a target failure. Avoid target primary stepdowns during the run. Retain the source and verify target consistency before cutover.
+
+Set the write concern when starting a new run. Use `majority` or a decimal integer from `1` to `2147483647`. Numeric values specify the number of data-bearing members that must acknowledge each write. PCSM rejects `0`, negative values, values above this range, and custom named write concerns.
+
+The following examples use `1`:
+
+=== "Command line"
+
+    ```{.bash data-prompt="$"}
+    $ pcsm start --target-write-concern=1
+    ```
+
+=== "HTTP API"
+
+    Send the value as a string in the `/start` request:
+
+    ```{.bash data-prompt="$"}
+    $ curl -X POST http://localhost:2242/start \
+        -H "Content-Type: application/json" \
+        --data '{"targetWriteConcern": "1"}'
+    ```
+
+=== "Environment variable"
+
+    Set the variable for the `pcsm start` command:
+
+    ```{.bash data-prompt="$"}
+    $ export PCSM_TARGET_WRITE_CONCERN=1
+    $ pcsm start
+    ```
+
+The `--target-write-concern` flag overrides `PCSM_TARGET_WRITE_CONCERN`. This environment variable applies only to `pcsm start`. The PCSM server process ignores it. A run started without an explicit write concern uses `majority`, including a run started automatically with the server's `--start` option. Write concern options in the target connection string do not override this setting.
+
+The selected value is saved with the run and retained during checkpoint recovery and [HA takeover](../high-availability.md#checkpoint-recovery). You cannot change it with `pcsm resume` or `/resume`. To use a different value, start a new run. Starting a new run drops and recreates the selected target collections, as described in [Start the replication](#start-the-replication).
+
+When a run starts or recovers, the [logs](../logging.md) show `Config: TargetWriteConcern: <value>` for the clone and replication components. If the target slows down during migration, monitor the [source oplog window](../oplog-sizing.md#extend-the-oplog-window-if-the-lag-approaches-its-limit) and extend it before required changes expire.
+
 ## Start the filtered replication
 
 You can replicate the whole dataset or specific namespaces - databases and collections. You can specify what namespaces to include and/or exclude from the replication. 
