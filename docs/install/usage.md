@@ -48,7 +48,7 @@ Then it uses [change streams :octicons-link-external-16:](https://www.mongodb.co
 
 You can choose the [write concern :octicons-link-external-16:](https://www.mongodb.com/docs/v8.0/reference/write-concern/){:target="_blank"} for data written to the target during the initial clone and ongoing replication. Write concern determines how many MongoDB members must acknowledge a write before PCSM continues. The default is `majority`.
 
-Using `1` requires acknowledgment from the target primary only. This can reduce write stalls when target secondaries lag. The setting applies to data writes only. Checkpoints, high availability (HA) state, and schema changes, such as creating collections and indexes, always use `majority`.
+Using `1` requires acknowledgment only from the primary of the target replica set, or from each affected shard primary on a sharded target. This can reduce write stalls when target secondaries lag. The setting applies to data writes only. Checkpoints, high availability (HA) state, and schema changes, such as creating collections and indexes, always use `majority`.
 
 !!! warning "Rollback risk with a lower write concern"
 
