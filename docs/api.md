@@ -26,7 +26,8 @@ Starts the replication process.
 |-----------|------|----------|-------------|
 | `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
-| `cloneSkipPresplit` | boolean | No | Set to `true` to skip pre-splitting on the sharded target. The source shard key is still used. If omitted, uses the startup configuration, which defaults to `false`. Available starting with 1.1.0. See [Skip pre-splitting](sharding.md#skip-pre-splitting). |
+| `cloneSkipPresplit` | boolean | No | Set to `true` to skip pre-splitting collections on the sharded target. {{pcsm.short}} still shards each collection with the source shard key. If you omit this field, {{pcsm.short}} uses the value from its startup configuration, which defaults to `false`. Available starting with version 1.1.0.
+See [Skip pre-splitting](sharding.md#skip-pre-splitting). |
 | `replNumWorkers` | int | No | Controls how many concurrent replication worker goroutines PCSM uses to apply DML (insert/update/replace/delete) events to the target cluster.|
 | `replChangeStreamBatchSize` | int | No | Sets the maximum number of change stream events PCSM will request and read from MongoDB per batch while streaming changes from the source cluster. |
 | `replEventQueueSize` | int | No | Controls the size of the internal event queue used by the replication subsystem. |

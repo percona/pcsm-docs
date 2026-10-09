@@ -50,7 +50,7 @@ Collections with a hashed shard key keep the initial chunk layout created by Mon
 
 {{pcsm.full_name}} connects to the sharded source through a `mongos` instance. When the target is also sharded, {{pcsm.full_name}} connects to it through `mongos`. You do not need to disable the balancer on either sharded cluster before starting replication. The target balancer continues to operate normally and manages chunk distribution according to the target cluster's sharding configuration and balancer settings.
 
-By default, for ranged shard keys, PCSM prepares the target using the source chunk boundaries before the clone begins. Chunk migrations, splits, and merges that occur later are not replicated between the clusters. Each cluster continues to manage its own chunk layout. See [Manage sharded cluster balancer :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/manage-sharded-cluster-balancer/){:target="_blank"} in the MongoDB documentation.
+By default, for collections that use ranged sharding, {{pcsm.short}} pre-splits each collection on the target using the source chunk boundaries before the clone begins. After that, chunk migrations, splits, and merges aren't replicated between the clusters, and each cluster manages its own chunk layout. To learn how MongoDB balances chunks across shards, see [Manage sharded cluster balancer :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/manage-sharded-cluster-balancer/){:target="_blank"} in the MongoDB documentation.
 
 ### If the pre-split fails
 
@@ -60,7 +60,7 @@ If {{pcsm.short}} cannot prepare the chunk layout for a collection, it logs a wa
 
 !!! admonition "Version added: 1.0.0"
 
-By default, during the initial sync, {{pcsm.short}} prepares the chunk distribution of a sharded collection before copying its documents. For collections with a ranged shard key, pre-splitting runs immediately after the collection is sharded on the target. Starting with version 1.1.0, you can [skip pre-splitting](#skip-pre-splitting).
+During the initial sync, {{pcsm.short}} prepares the chunk distribution of each sharded collection before copying its documents. For collections that use ranged sharding, pre-splitting runs right after {{pcsm.short}} shards the collection on the target. Starting with version 1.1.0, you can [skip pre-splitting](#skip-pre-splitting).
 
 For an empty collection with a ranged shard key, MongoDB initially creates a single chunk that covers the full shard key range. If the clone starts with this layout, writes can be concentrated on one shard and the target balancer may need to redistribute the data later. See [Data partitioning with chunks :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/sharding-data-partitioning/){:target="_blank"} in the MongoDB documentation.
 
@@ -103,7 +103,9 @@ Use one of the following options when [starting replication](install/usage.md#st
 The default is `false`, so pre-splitting remains enabled unless you disable it. To enable it for a run when the environment variable is `true`, use `pcsm start --clone-skip-presplit=false` or set `cloneSkipPresplit` to `false` in the `/start` request.
 
 !!! note
-    Skipping pre-splitting does not guarantee an even distribution during the initial clone. Writes can initially be concentrated on one shard while the balancer redistributes data. See [Data partitioning with chunks :octicons-link-external-16:](https://www.mongodb.com/docs/v8.0/core/sharding-data-partitioning/){:target="_blank"} and [Balancer operation](#balancer-operation). Collections with [hashed shard keys](#hashed-shard-keys) already use the initial chunk layout created by MongoDB.
+    Skipping pre-splitting doesn't guarantee that data is evenly distributed across shards during the initial clone. At first, writes can concentrate on a single shard while the balancer redistributes the data. For details, see [Data partitioning with chunks :octicons-link-external-16:](https://www.mongodb.com/docs/v8.0/core/sharding-data-partitioning/){:target="_blank"} in the MongoDB documentation and [Balancer operation](#balancer-operation). 
+    
+    Collections with [hashed shard keys](#hashed-shard-keys) already use the initial chunk layout that MongoDB creates, so this option doesn't change how they're distributed.
 
 ### Same number of shards
 
