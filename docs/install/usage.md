@@ -46,24 +46,34 @@ Then it uses [change streams :octicons-link-external-16:](https://www.mongodb.co
 
 !!! admonition "Version added: 1.1.0"
 
-You can choose the [write concern :octicons-link-external-16:](https://www.mongodb.com/docs/v8.0/reference/write-concern/){:target="_blank"} for data written to the target during the initial clone and ongoing replication. Write concern determines how many MongoDB members must acknowledge a write before PCSM continues. The default is `majority`.
+By default, {{pcsm.short}} writes data to the target with `majority` [write concern :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/write-concern/){:target="_blank"}. This applies to documents copied during the initial clone and to changes applied during replication. Write concern controls how many members must acknowledge a write before MongoDB reports it as successful. Waiting for a majority is the safest option, but if target secondaries fall behind, writes can stall while they wait.
 
-Using `1` requires acknowledgment only from the primary of the target replica set, or from each affected shard primary on a sharded target. This can reduce write stalls when target secondaries lag. The setting applies to data writes only. Checkpoints, high availability (HA) state, and schema changes, such as creating collections and indexes, always use `majority`.
+You can set the write concern to `majority` or to a positive integer from `1` to `2147483647`, which is the number of members that must acknowledge each write. {{pcsm.short}} rejects `0` (unacknowledged writes) and custom named write concerns.
 
-!!! warning "Rollback risk with a lower write concern"
+When you set the write concern to `1`, only the primary of the target replica set needs to acknowledge each write. On a sharded target, that's the primary of each affected shard. This can reduce write stalls when target secondaries lag behind.
 
-    With a write concern below majority, a target primary failure or stepdown can roll back data that PCSM has already recorded as copied. Majority checkpoints do not protect those data writes from rollback. A fresh synchronization may be required.
+The setting applies only to data writes. Checkpoints, high availability (HA) state, and DDL operations, such as creating collections and indexes, always use `majority`.
 
-    Keep `majority` when you rely on automatic recovery to preserve acknowledged data. Use a lower value only for a controlled migration where you can restart and validate the copy after a target failure. Avoid target primary stepdowns during the run. Retain the source and verify target consistency before cutover.
+!!! warning "Acknowledged writes can be rolled back"
+    With a write concern below `majority`, the target primary confirms a write before enough secondaries have it to survive a failover. If that primary fails and another member takes over, MongoDB can roll back writes the old primary had already confirmed. {{pcsm.short}} still saves its checkpoints with `majority`, but that doesn't protect the data written before them. On a sharded target, the same applies to every shard. If a rollback happens, you might need to start a fresh sync.
 
-Set the write concern when starting a new run. Use `majority` or a decimal integer from `1` to `2147483647`. Numeric values specify the number of data-bearing members that must acknowledge each write. PCSM rejects `0`, negative values, values above this range, and custom named write concerns.
+Keep `majority` if automatic recovery must preserve data durability. Use a lower value only for a controlled migration where you can restart and validate the copy after a target failure. While you run below `majority`:
+{.power-number}
 
-The following examples use `1`:
+1. Avoid [stepping down :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/method/rs.stepDown/){:target="_blank"} the target primary.
+
+2. If the target degrades during the migration, monitor the source oplog window. [Increase the oplog size :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/change-oplog-size/){:target="_blank"} if needed, so the source still holds the changes {{pcsm.short}} needs to resume replication.
+
+3. Keep the source available and verify that the target is consistent before cutover.
+
+For details on rollbacks, see [Rollbacks during replica set failover :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-rollbacks/){:target="_blank"} in the MongoDB documentation.
+
+The following examples set the write concern to `1`:
 
 === "Command line"
 
     ```{.bash data-prompt="$"}
-    $ pcsm start --target-write-concern=1
+    pcsm start --target-write-concern=1
     ```
 
 === "HTTP API"
@@ -71,7 +81,7 @@ The following examples use `1`:
     Send the value as a string in the `/start` request:
 
     ```{.bash data-prompt="$"}
-    $ curl -X POST http://localhost:2242/start \
+    curl -X POST http://localhost:2242/start \
         -H "Content-Type: application/json" \
         --data '{"targetWriteConcern": "1"}'
     ```
@@ -81,15 +91,15 @@ The following examples use `1`:
     Set the variable for the `pcsm start` command:
 
     ```{.bash data-prompt="$"}
-    $ export PCSM_TARGET_WRITE_CONCERN=1
-    $ pcsm start
+    export PCSM_TARGET_WRITE_CONCERN=1
+    pcsm start
     ```
 
-The `--target-write-concern` flag overrides `PCSM_TARGET_WRITE_CONCERN`. This environment variable applies only to `pcsm start`. The PCSM server process ignores it. A run started without an explicit write concern uses `majority`, including a run started automatically with the server's `--start` option. Write concern options in the target connection string do not override this setting.
+If you set both, the `--target-write-concern` flag takes precedence over `PCSM_TARGET_WRITE_CONCERN`. Only `pcsm start` reads the variable. The {{pcsm.short}} server ignores it and has no write concern option of its own, so a run started without a value uses `majority`. That includes a run started automatically with the server's `--start` option. {{pcsm.short}} also ignores any write concern set in the target connection string.
 
-The selected value is saved with the run and retained during checkpoint recovery and [HA takeover](../high-availability.md#checkpoint-recovery). You cannot change it with `pcsm resume` or `/resume`. To use a different value, start a new run. Starting a new run drops and recreates the selected target collections, as described in [Start the replication](#start-the-replication).
+The write concern belongs to the run. {{pcsm.short}} saves the value and keeps it through checkpoint recovery and [HA takeover](../high-availability.md#checkpoint-recovery). Since `pcsm resume` and `/resume` don't accept a write concern, the only way to change it is to start a new run. Keep in mind that a new run drops and recreates the selected target collections, as described in [Start the replication](#start-the-replication).
 
-When a run starts or recovers, the [logs](../logging.md) show `Config: TargetWriteConcern: <value>` for the clone and replication components. If the target slows down during migration, monitor the [source oplog window](../oplog-sizing.md#extend-the-oplog-window-if-the-lag-approaches-its-limit) and extend it before required changes expire.
+To confirm which value is in effect, check the [logs](../logging.md). When a run starts or recovers, the clone and replication components log `Config: TargetWriteConcern: <value>`.
 
 ## Start the filtered replication
 
