@@ -42,6 +42,7 @@ Alternatively, you can define the following environment variables:
 | `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `2` |
 | `PCSM_CLONE_NUM_READ_WORKERS` | Number of read workers for cloning | `NumCPU / 4` |
 | `PCSM_CLONE_NUM_INSERT_WORKERS` | Number of insert workers for cloning | `NumCPU * 4` |
+| `PCSM_CLONE_SKIP_PRESPLIT` | Set to `true` to skip pre-splitting collections on the sharded target before the initial clone. {{pcsm.short}} still shards each collection with the source shard key but keeps the initial chunk layout that MongoDB creates. Available starting with version 1.1.0. See [Skip pre-splitting](../sharding.md#skip-pre-splitting). | `false` |
 | `PCSM_CLONE_SEGMENT_SIZE` | Defines the segment size used during clone operations. Accepts values in bytes or with size suffixes such as `500MB` or `1GiB`. If not specified, PCSM automatically calculates the segment size based on collection size and available read workers. | `Auto` |
 | `PCSM_MONGODB_OPERATION_TIMEOUT` | Maximum time to wait before timing out MongoDB client operations such as insert, update, delete. If the timeout is reached, the operation will fail.  | `5m` | 
 | `PCSM_REPL_NUM_WORKERS` | Controls how many concurrent replication worker goroutines PCSM uses to apply DML (insert/update/replace/delete) events to the target cluster. | `runtime.NumCPU()` |
