@@ -100,7 +100,7 @@ Use one of the following options when [starting replication](install/usage.md#st
     $ pcsm start
     ```
 
-The default is `false`, so pre-splitting remains enabled unless you disable it. To enable it for a run when the environment variable is `true`, use `pcsm start --clone-skip-presplit=false` or set `cloneSkipPresplit` to `false` in the `/start` request.
+The default is `false`, so pre-splitting stays enabled unless you skip it. To keep pre-splitting for a single run when `PCSM_CLONE_SKIP_PRESPLIT` is `true`, use `pcsm start --clone-skip-presplit=false` or set `cloneSkipPresplit` to `false` in the `/start` request.
 
 !!! note
     Skipping pre-splitting doesn't guarantee that data is evenly distributed across shards during the initial clone. At first, writes can concentrate on a single shard while the balancer redistributes the data. For details, see [Data partitioning with chunks :octicons-link-external-16:](https://www.mongodb.com/docs/v8.0/core/sharding-data-partitioning/){:target="_blank"} in the MongoDB documentation and [Balancer operation](#balancer-operation). 
