@@ -195,7 +195,7 @@ To finalize replication:
 
 2. [Check finalization status](#check-finalization-status) until `state` is `finalized` and `finalization.completed` is `true`. 
 
-   3. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target for reads and writes. With the source unavailable, {{pcsm.short}} cannot recheck `incomplete` or `inconsistent` indexes against the source. They stay in `unsuccessfulIndexes` even though finalization completes, so resolve them on the target yourself.
+3. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target for reads and writes. With the source unavailable, {{pcsm.short}} cannot recheck `incomplete` or `inconsistent` indexes against the source. They stay in `unsuccessfulIndexes` even though finalization completes, so resolve them on the target yourself.
 
 This behavior is also listed in [Known limitations](../limitations.md#finalization-after-source-loss). 
 
@@ -243,7 +243,7 @@ The `unsuccessfulIndexes` array will not appear if there are no unsuccessful ind
 
 #### Unsuccessful indexes
 
-The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. During finalization, PCSM retries the creation of `failed` and `incomplete` indexes, while `inconsistent` indexes are skipped. Only indexes that remain unsuccessful after these retry attempts are reported in the `unsuccessfulIndexes` array. Each entry contains:
+The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. When the source is available, PCSM retries the creation of `failed` and `incomplete` indexes during finalization, while `inconsistent` indexes are skipped. Only indexes that remain unsuccessful after these retry attempts are reported in the `unsuccessfulIndexes` array. With the source unavailable, only `failed` indexes are recreated from their stored specifications. PCSM cannot recheck `incomplete` or `inconsistent` indexes against the source, so they remain in `unsuccessfulIndexes` even though finalization completes. Each entry contains:
 
 | **Field** | **Type** | **Description** |
 |---|---|---|
