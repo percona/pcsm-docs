@@ -51,7 +51,7 @@ Yes. {{pcsm.full_name}} allows you to include/exclude filters for specific datab
 
 ## Can I use the target if the source cluster goes down?
 
-Yes, if initial sync has completed, you can finalize replication and use the target for reads and writes. However, finalization can succeed even if some source changes are missing from the target. Review replication progress and accept the risk of missing data before proceeding.
+Yes, if initial sync has completed, {{pcsm.short}} keeps running, and the replication `state` is not `failed`, you can finalize replication and use the target for reads and writes. {{pcsm.short}} connects to the source cluster at startup, so it cannot start or restart while the source is unavailable. However, finalization can succeed even if some source changes are missing from the target. Review replication progress and accept the risk of missing data before proceeding.
 
 See [Finalize after losing the source cluster](install/usage.md#finalize-after-losing-the-source-cluster) for the steps and limitations.
 
