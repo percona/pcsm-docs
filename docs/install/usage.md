@@ -194,7 +194,7 @@ To finalize replication:
 
 2. [Check finalization status](#check-finalization-status) until `state` is `finalized` and `finalization.completed` is `true`. 
 
-2. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target for reads and writes.
+   3. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target for reads and writes. With the source unavailable, {{pcsm.short}} cannot recheck `incomplete` or `inconsistent` indexes against the source. They stay in `unsuccessfulIndexes` even though finalization completes, so resolve them on the target yourself.
 
 This behavior is also listed in [Known limitations](../limitations.md#finalization-after-source-loss). 
 
