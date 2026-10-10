@@ -73,7 +73,7 @@ The following examples set the write concern to `1`:
 === "Command line"
 
     ```{.bash data-prompt="$"}
-    pcsm start --target-write-concern=1
+    $ pcsm start --target-write-concern=1
     ```
 
 === "HTTP API"
@@ -81,7 +81,7 @@ The following examples set the write concern to `1`:
     Send the value as a string in the `/start` request:
 
     ```{.bash data-prompt="$"}
-    curl -X POST http://localhost:2242/start \
+    $ curl -X POST http://localhost:2242/start \
         -H "Content-Type: application/json" \
         --data '{"targetWriteConcern": "1"}'
     ```
@@ -91,8 +91,8 @@ The following examples set the write concern to `1`:
     Set the variable for the `pcsm start` command:
 
     ```{.bash data-prompt="$"}
-    export PCSM_TARGET_WRITE_CONCERN=1
-    pcsm start
+    $ export PCSM_TARGET_WRITE_CONCERN=1
+    $ pcsm start
     ```
 
 If you set both, the `--target-write-concern` flag takes precedence over `PCSM_TARGET_WRITE_CONCERN`. Only `pcsm start` reads the variable. The {{pcsm.short}} server ignores it and has no startup option for target write concern, so a run started without a per-run value uses `majority`. {{pcsm.short}} also ignores any write concern set in the target connection string.
