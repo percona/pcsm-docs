@@ -50,7 +50,7 @@ Yes. {{pcsm.full_name}} allows you to include/exclude filters for specific datab
 - Logs include detailed error reporting for troubleshooting.
 
 ## What database read and write concerns are used?
-By default, Percona ClusterSync for MongoDB uses the `"majority"` read concern level for reads on the source cluster. For writes to the destination cluster, the tool uses a write concern level of `"majority"` with `j: true`.
+By default, Percona ClusterSync for MongoDB uses the `"majority"` read concern for reads on the source cluster and the `"majority"` write concern for writes to the target cluster. Starting with 1.1.0, you can choose a different write concern for clone and replication data writes when you start a run. Checkpoints, HA state, and catalog operations always use `"majority"`. See [Configure target write concern](install/usage.md#configure-target-write-concern).
 
 ## Why are indexes larger after migrating data with Percona ClusterSync?
 
