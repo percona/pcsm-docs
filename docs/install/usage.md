@@ -180,7 +180,8 @@ Before finalizing, check the replication status:
 
 1. Check the [replication status](#check-the-replication-status) and confirm that `initialSync.completed` is true. You cannot finalize before initial sync completes.
 
-2. Review `lagTimeSeconds` and `lastReplicatedOpTime` in the status response to assess replication progress. These values do not guarantee that the target contains all source changes.
+  2. Review `lastReplicatedOpTime` in the status response and compare it with the time the source became unavailable. Do not rely in this case on `lagTimeSeconds` which is calculated from the source cluster time.
+Neither value guarantees that the target contains all source changes.
 
 3. Check whether replication was paused before the outage. Any changes made on the source during the pause can be missing from the target.
 
