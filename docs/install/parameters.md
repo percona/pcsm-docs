@@ -36,7 +36,7 @@ Alternatively, you can define the following environment variables:
 |----------|-------------|---------|
 | `PCSM_SOURCE_URI` | MongoDB connection string for the source cluster | - |
 | `PCSM_TARGET_URI` | MongoDB connection string for the target cluster | - |
-| `PCSM_TARGET_WRITE_CONCERN` | Sets the write concern for target data writes during the initial clone and ongoing replication. Accepts majority or a positive integer. Applies only to pcsm start; the server process ignores it. Available starting with 1.1.0. See [Configure target write concern](usage.md#configure-target-write-concern). | `majority` |
+| `PCSM_TARGET_WRITE_CONCERN` | Sets the write concern for target data writes during the initial clone and ongoing replication. Accepts `majority` or a positive integer from `1` to `2147483647`. Applies only to `pcsm start`. The server process ignores it. Available starting with version 1.1.0. See [Configure target write concern](usage.md#configure-target-write-concern). | `majority` |
 | `PCSM_GROUP_NAME` | A name that identifies the HA deployment in member information, API responses, metrics, and logs. | `default` |
 | `PCSM_PORT` | Server port number | `2242` |
 | `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `2` |
