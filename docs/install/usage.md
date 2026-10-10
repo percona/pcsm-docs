@@ -62,11 +62,11 @@ Keep `majority` if automatic recovery must preserve data durability. Use a lower
 
 1. Avoid [stepping down :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/method/rs.stepDown/){:target="_blank"} the target primary.
 
-2. If the target degrades during the migration, monitor the source oplog window. [Increase the oplog size :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/change-oplog-size/){:target="_blank"} if needed, so the source still holds the changes {{pcsm.short}} needs to resume replication.
-
-3. Keep the source available and verify that the target is consistent before cutover.
+2. Keep the source available and verify that the target is consistent before cutover.
 
 For details on rollbacks, see [Rollbacks during replica set failover :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-rollbacks/){:target="_blank"} in the MongoDB documentation.
+
+With any write concern, a slow target makes {{pcsm.short}} fall behind the source. Monitor the [source oplog window](../oplog-sizing.md#extend-the-oplog-window-if-the-lag-approaches-its-limit) and extend it before the changes {{pcsm.short}} still needs to apply are removed from the oplog.
 
 The following examples set the write concern to `1`:
 
