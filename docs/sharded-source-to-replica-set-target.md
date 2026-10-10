@@ -2,7 +2,7 @@
 
 !!! admonition "Version added: 1.0.0"
 
-Starting with 1.0.0, {{pcsm.full_name}} (PCSM) supports replication from a sharded MongoDB cluster to a replica set. This lets you migrate data from a sharded deployment without having to recreate the source sharding configuration on the target.
+Starting with version 1.0.0, {{pcsm.full_name}} (PCSM) supports replication from a sharded MongoDB cluster to a replica set. This lets you migrate data from a sharded deployment without having to recreate the source sharding configuration on the target.
 
 For example, you can use this topology when moving data from a sharded MongoDB Atlas or MongoDB Enterprise deployment to a Percona Server for MongoDB replica set.
 
