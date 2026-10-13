@@ -32,7 +32,6 @@ Starts the replication process.
 | `replWorkerQueueSize` | int | No | Defines the maximum number of replication events that each replication worker thread can queue before processing.  |
 | `replBulkOpsSize` | int | No | Defines the maximum number of operations that can be grouped together into a single bulk apply batch during replication. |
 | `cloneSegmentSize` | string | No | Defines the byte size of each clone segment processed during the initial clone phase. Specify either a plain integer number of bytes (for example, `1048576`) or a human-readable size string accepted by the server, for example `500MB` or `1GiB`. |
-| `targetWriteConcern` | string | No | Write concern for target data writes during the initial clone and replication. Accepts `majority` or a positive integer from `1` to `2147483647` (default: `majority`). |
 
 
 Examples:
