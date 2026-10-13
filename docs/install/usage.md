@@ -168,6 +168,37 @@ When you no longer need / want to replicate data, finalize the replication. {{pc
     $ curl -X POST http://localhost:2242/finalize
     ```
 
+### Finalize after losing the source cluster
+
+If the source cluster becomes unavailable after initial sync completes, you can still finalize replication and use the target cluster for reads and writes, as long as {{pcsm.short}} keeps running and the replication `state` is not `failed`. {{pcsm.short}} connects to the source cluster at startup, so it cannot start or restart while the source is unavailable. This applies to replica sets and sharded clusters.
+
+!!! warning "The target might have missing data"
+    Finalization can succeed even when the target is behind the source. Changes that did not reach {{pcsm.short}} before the outage can be missing from the target, even if replication appeared caught up. {{pcsm.short}} cannot verify that the target contains all changes made before the source became unavailable. Consider the impact of any missing changes on your application before using the target.
+
+Before finalizing, check the replication status:
+{.power-number}
+
+1. Check the [replication status](#check-the-replication-status) and confirm that `initialSync.completed` is true. You cannot finalize before initial sync completes.
+
+2. Review `lastReplicatedOpTime` in the status response and compare it with the time the source became unavailable. Do not rely in this case on `lagTimeSeconds` which is calculated from the source cluster time.
+
+    Neither value guarantees that the target contains all source changes.
+
+3. Check whether replication was paused before the outage. Any changes made on the source during the pause can be missing from the target.
+
+    For example, if replication was paused and the source received new writes before becoming unavailable, finalization can still succeed. Those writes can remain missing from the target.
+
+To finalize replication:
+{.power-number}
+
+1. Run `pcsm finalize` or send a `POST` request to `/finalize`, as shown above. 
+
+2. [Check finalization status](#check-finalization-status) until `state` is `finalized` and `finalization.completed` is `true`. 
+
+3. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target for reads and writes. With the source unavailable, {{pcsm.short}} cannot recheck `incomplete` or `inconsistent` indexes against the source. They stay in `unsuccessfulIndexes` even though finalization completes, so resolve them on the target yourself.
+
+This behavior is also listed in [Known limitations](../limitations.md#finalization-after-source-loss). 
+
 ### Check finalization status
 
 You can use the `/status` endpoint to monitor finalization progress and inspect the outcome after it completes.
@@ -212,7 +243,7 @@ The `unsuccessfulIndexes` array will not appear if there are no unsuccessful ind
 
 #### Unsuccessful indexes
 
-The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. During finalization, PCSM retries the creation of `failed` and `incomplete` indexes, while `inconsistent` indexes are skipped. Only indexes that remain unsuccessful after these retry attempts are reported in the `unsuccessfulIndexes` array. Each entry contains:
+The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. When the source is available, PCSM retries the creation of `failed` and `incomplete` indexes during finalization, while `inconsistent` indexes are skipped. Only indexes that remain unsuccessful after these retry attempts are reported in the `unsuccessfulIndexes` array. With the source unavailable, only `failed` indexes are recreated from their stored specifications. PCSM cannot recheck `incomplete` or `inconsistent` indexes against the source, so they remain in `unsuccessfulIndexes` even though finalization completes. Each entry contains:
 
 | **Field** | **Type** | **Description** |
 |---|---|---|
