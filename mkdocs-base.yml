@@ -164,7 +164,7 @@ nav:
      - Deployment architecture: architecture.md
      - compare.md
      - deployment.md
-     - sharding.md
+     - Sharding support: sharding.md
      - sharded-source-to-replica-set-target.md
      - limitations.md
   - Get started:
