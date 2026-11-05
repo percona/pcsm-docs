@@ -51,11 +51,11 @@ When a standby becomes `ACTIVE`, PCSM resumes replication from the last persiste
 
 Starting with version 1.1.0, HA takeover also keeps the target write concern selected for the run. HA state and checkpoints always use `majority`. However, if you choose a lower write concern for data writes, acknowledged data can roll back after a target primary failover. Read [Configure target write concern](install/usage.md#configure-target-write-concern) before you choose a lower value.
 
-The timings are fixed:
+The default timings are:
 
 | **Setting** | **Value** |
 |---------|-------|
-| Lease TTL | 10 seconds |
+| Lease TTL | 10 seconds; [configurable starting with version 1.1.0](#configure-the-ha-lease-ttl) |
 | Lease renewal by the active instance | Every 3 seconds |
 | Heartbeat interval | Every 3 seconds |
 | Stale member threshold | 3 missed heartbeats |
@@ -123,6 +123,65 @@ The default group name is `default`.
     In PCSM 1.0.0, the group name is used for identification and observability. It does not isolate HA coordination between different groups that use the same target cluster.
 
     Do not rely on different group names to create independent HA deployments against the same target.
+
+### Configure the HA lease TTL
+
+!!! admonition "Version added: 1.1.0"
+
+The lease time to live (TTL) sets how long the active instance can keep its lease without renewing it. Increase it to reduce unnecessary failovers during temporary target outages. A longer TTL also delays standby takeover if the active instance fails. This setting applies to both single-instance and HA deployments.
+
+Configure the TTL when starting the PCSM server. Use the same value on every instance:
+
+=== "Command-line option"
+
+    ```{.bash data-prompt="$"}
+    $ pcsm \
+        --source "<source-mongodb-uri>" \
+        --target "<target-mongodb-uri>" \
+        --ha-lease-ttl=60s
+    ```
+
+=== "Environment variable"
+
+    ```{.bash data-prompt="$"}
+    $ export PCSM_HA_LEASE_TTL=60s
+    $ pcsm \
+        --source "<source-mongodb-uri>" \
+        --target "<target-mongodb-uri>"
+    ```
+
+The command-line option takes precedence over the environment variable. The examples set a one-minute lease. This is a server startup setting, not an option for `pcsm start` or the `/start` request.
+
+| Setting | Value |
+|---------|-------|
+| Default | `10s` |
+| Minimum TTL | `10s`. Nonzero values below this minimum are rejected at startup. |
+| Use the default explicitly | `0` |
+| Duration examples | `10s`, `60s`, `1m` |
+
+At startup, PCSM logs the effective value. For the examples above, look for:
+
+```text
+Config: HALeaseTTL: 1m0s
+```
+
+#### Outage tolerance and failover timing
+
+Choose a TTL that balances temporary-outage tolerance with the delay you can accept during failover:
+
+| Situation | What to consider |
+|-----------|------------------|
+| Temporary target outages | A longer TTL can reduce unnecessary failovers and replication restarts. Other errors can still stop replication before the lease expires. |
+| The active instance fails | A standby must wait for the active instance's lease to expire before taking over. A longer TTL can increase the failover delay. |
+| A single instance restarts | PCSM may wait for the previous lease to expire before becoming active. A longer TTL can increase this wait. |
+
+!!! note
+
+    A longer TTL does not guarantee that replication will continue through an outage of that length. MongoDB operation timeouts and other errors still apply.
+
+    The initial clone is not resumable. If it is interrupted, [start a new synchronization run](#failover-during-the-initial-clone).
+
+See [Startup configuration](install/parameters.md) for the complete list of server options and environment variables.
 
 ## Failover during the initial clone
 
