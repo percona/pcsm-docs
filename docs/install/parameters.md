@@ -6,7 +6,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--source`: The MongoDB connection string for the source cluster
 - `--target`: The MongoDB connection string for the target cluster
 - `--group-name`: A name that identifies the HA deployment in member information, API responses, metrics, and logs (default: "default")
-- `--ha-lease-ttl`: How long the HA lease remains valid after renewal (default: `10s`; minimum effective TTL: `10s`). Set the same value on every instance. Available starting with version 1.1.0. See [Configure the HA lease TTL](../high-availability.md#configure-the-ha-lease-ttl) for accepted values and failover considerations.
+- `--ha-lease-ttl`: How long the HA lease remains valid after renewal (default: `10s`; minimum accepted TTL: `10s`). Set the same value on every instance. Available starting with version 1.1.0. See [Configure the HA lease TTL](../high-availability.md#configure-the-ha-lease-ttl) for accepted values and failover considerations.
 - `--log-level`: The log level (default: "info")
 - `--log-json`: Output log in JSON format with disabled color
 - `--no-color`: Disable log ANSI color
