@@ -191,9 +191,9 @@ Before finalizing, check the replication status:
 To finalize replication:
 {.power-number}
 
-1. Run `pcsm finalize` or send a `POST` request to `/finalize`, as shown above. 
+1. Run `pcsm finalize` or send a `POST` request to `/finalize`, as shown above. {{pcsm.short}} first pauses replication and waits for queued writes to drain. If the request times out during the pause, finalization does not start. Wait until `state` is `paused` and run the command again. If `state` becomes `failed`, you cannot finalize.
 
-2. [Check finalization status](#check-finalization-status) until `state` is `finalized` and `finalization.completed` is `true`. 
+2. [Check finalization status](#check-finalization-status) until `state` is `finalized` and `finalization.completed` is `true`.
 
 3. Review any [unsuccessful indexes](#unsuccessful-indexes) before using the target for reads and writes. With the source unavailable, {{pcsm.short}} cannot recheck `incomplete` or `inconsistent` indexes against the source. They stay in `unsuccessfulIndexes` even though finalization completes, so resolve them on the target yourself.
 
