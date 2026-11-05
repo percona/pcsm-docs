@@ -49,11 +49,13 @@ If a previous active instance resumes after losing its lease, its checkpoint wri
 
 When a standby becomes `ACTIVE`, PCSM resumes replication from the last persisted checkpoint. Failover uses the existing recovery mechanism and happens automatically.
 
-The default timings are:
+Starting with version 1.1.0, HA takeover also keeps the target write concern selected for the run. HA state and checkpoints always use `majority`. However, if you choose a lower write concern for data writes, acknowledged data can roll back after a target primary failover. Read [Configure target write concern](install/usage.md#configure-target-write-concern) before you choose a lower value.
+
+The timings are fixed:
 
 | **Setting** | **Value** |
 |---------|-------|
-| Lease TTL | 10 seconds; [configurable starting with version 1.1.0](#configure-the-ha-lease-ttl) |
+| Lease TTL | 10 seconds |
 | Lease renewal by the active instance | Every 3 seconds |
 | Heartbeat interval | Every 3 seconds |
 | Stale member threshold | 3 missed heartbeats |
@@ -121,79 +123,6 @@ The default group name is `default`.
     In PCSM 1.0.0, the group name is used for identification and observability. It does not isolate HA coordination between different groups that use the same target cluster.
 
     Do not rely on different group names to create independent HA deployments against the same target.
-
-### Configure the HA lease TTL
-
-!!! admonition "Version added: 1.1.0"
-
-The lease time to live (TTL) determines how long the active instance retains ownership after a successful renewal. Increase it to reduce unnecessary failovers during temporary target outages. A longer TTL gives it more time to renew, but also delays standby takeover after a failure. This setting also applies when you run a single PCSM instance, where losing the lease can interrupt a clone even though there is no standby to take over.
-
-Configure the TTL when starting the PCSM server. Use the same value on every instance:
-
-=== "Command-line option"
-
-    ```{.bash data-prompt="$"}
-    $ pcsm \
-        --source "<source-mongodb-uri>" \
-        --target "<target-mongodb-uri>" \
-        --ha-lease-ttl=60s
-    ```
-
-=== "Environment variable"
-
-    ```{.bash data-prompt="$"}
-    $ export PCSM_HA_LEASE_TTL=60s
-    $ pcsm \
-        --source "<source-mongodb-uri>" \
-        --target "<target-mongodb-uri>"
-    ```
-
-The command-line option takes precedence over the environment variable. The examples set a one-minute lease. This is a server startup setting, not an option for `pcsm start` or the `/start` request.
-
-| Setting | Value |
-|---------|-------|
-| Default | `10s` |
-| Minimum allowed TTL | `10s`. Nonzero values below this minimum cause a startup validation error (they are not rounded or clamped up). |
-| Use the default explicitly | `0` |
-| Duration examples | `10s`, `60s`, `1m` |
-| Precision | Whole milliseconds. Any smaller fraction is discarded. |
-
-At startup, PCSM logs the effective value. For the examples above, look for:
-
-```text
-Config: HALeaseTTL: 1m0s
-```
-
-#### Outage tolerance and failover timing
-
-Choose the TTL with both temporary outages and failover delays in mind:
-
-| Situation | Effect of the lease TTL |
-|-----------|-------------------------|
-| Lease renewal temporarily fails | The active instance can retain ownership until its lease deadline, unless another error ends the run sooner. The remaining time depends on when the last successful renewal attempt began, not when the outage began. |
-| The active process stops | A standby waits for the stored lease to expire before taking over. Election polling and checkpoint recovery add time after expiration. A longer TTL increases the possible wait. |
-| A single instance restarts | The restarted process has a new instance ID and waits for the previous lease to expire before becoming active. A longer TTL can delay this restart. |
-
-A standby uses the expiration stored by the active instance. Changing only the standby's TTL does not shorten the current owner's lease.
-
-#### Target-outage limits
-
-Lease expiration and checkpoint-write failures can independently end the active run. The earlier one takes effect. Checkpoints are written every 15 seconds by default and on state changes, with one write at a time.
-
-| Target condition | Checkpoint-write limit | Effect of a longer lease TTL |
-|------------------|------------------------|------------------------------|
-| No target server can be selected, for example during a network partition or when there is no primary | A checkpoint write issued during the outage fails after the MongoDB driver's server-selection timeout (often around 30 seconds, depending on driver/URI settings). PCSM does not provide a dedicated server option for this timeout. | With the default checkpoint interval, a checkpoint error can end the run after about 30 to 45 seconds even if the lease TTL is longer. |
-| The primary remains writable, but majority acknowledgements stall | The checkpoint write is subject to PCSM's checkpoint-write operation deadline (5 minutes). | The run ends when either the remaining lease time or the checkpoint-write limit is reached. Raising the TTL does not extend the checkpoint-write operation deadline. |
-
-A checkpoint write already in flight when the outage begins uses the MongoDB operation timeout. Errors such as a connection reset or a primary stepdown can fail a write sooner. The timings above are conditional estimates, not guaranteed outage-tolerance periods.
-
-!!! note
-
-    The TTL is not a guarantee that replication can survive an outage of that length. Checkpoint-write errors or other MongoDB operation failures can end the run before the lease expires. Increasing the TTL does not change MongoDB operation timeouts.
-
-    A longer TTL can help an initial clone continue through a temporary outage without losing its lease. It does not make an interrupted clone resumable. If the active instance loses ownership during the clone, [start a new synchronization run](#failover-during-the-initial-clone).
-
-See [Startup configuration](install/parameters.md) for the complete list of server options and environment variables.
 
 ## Failover during the initial clone
 
@@ -343,10 +272,10 @@ Before starting PCSM 1.0.0:
 
 ## Next steps
 
-[Use the PCSM HTTP API](api.md){.md-button}
+- [Use the PCSM HTTP API](api.md)
 
-[Manage synchronization with PCSM commands](pcsm-commands.md){.md-button}
+- [Manage synchronization with PCSM commands](pcsm-commands.md)
 
-[Set up observability with Percona Monitoring and Management](pmm-setup.md){.md-button}
+- [Set up observability with Percona Monitoring and Management](pmm-setup.md)
 
 
