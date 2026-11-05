@@ -182,8 +182,8 @@ Lease expiration and checkpoint-write failures can independently end the active 
 
 | Target condition | Checkpoint-write limit | Effect of a longer lease TTL |
 |------------------|------------------------|------------------------------|
-| No target server can be selected, for example during a network partition or when there is no primary | A checkpoint write issued during the outage fails after the driver's 30-second server-selection timeout. This timeout is not configurable in PCSM. | With the default checkpoint interval, a checkpoint error can end the run after about 30 to 45 seconds even if the lease TTL is longer. |
-| The primary remains writable, but majority acknowledgements stall | The checkpoint write uses the MongoDB operation timeout, which defaults to `5m`. | The run ends when either the remaining lease time or the checkpoint-write limit is reached. Raising the TTL does not extend the operation timeout. |
+| No target server can be selected, for example during a network partition or when there is no primary | A checkpoint write issued during the outage fails after the MongoDB driver's server-selection timeout (often around 30 seconds, depending on driver/URI settings). PCSM does not provide a dedicated server option for this timeout. | With the default checkpoint interval, a checkpoint error can end the run after about 30 to 45 seconds even if the lease TTL is longer. |
+| The primary remains writable, but majority acknowledgements stall | The checkpoint write is subject to PCSM's checkpoint-write operation deadline (5 minutes). | The run ends when either the remaining lease time or the checkpoint-write limit is reached. Raising the TTL does not extend the checkpoint-write operation deadline. |
 
 A checkpoint write already in flight when the outage begins uses the MongoDB operation timeout. Errors such as a connection reset or a primary stepdown can fail a write sooner. The timings above are conditional estimates, not guaranteed outage-tolerance periods.
 
