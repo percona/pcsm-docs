@@ -128,9 +128,15 @@ The default group name is `default`.
 
 !!! admonition "Version added: 1.1.0"
 
-The lease time to live (TTL) sets how long the active instance can keep its lease without renewing it. Increase it to reduce unnecessary failovers during temporary target outages. A longer TTL also delays standby takeover if the active instance fails. This setting applies to both single-instance and HA deployments.
+The lease time to live (TTL) controls how long the active PCSM instance keeps its lease when it can't renew it. Once the TTL runs out, that instance stops being active. This applies whether you run a single instance or several instances in HA mode.
 
-Configure the TTL when starting the PCSM server. Use the same value on every instance:
+The default TTL is 10 seconds, which keeps failover fast. But a target outage can last longer than that, for example during a slow primary election. When it does, the active instance loses its lease. Replication restarts from the last checkpoint. If the initial clone was in progress, it fails and you must start it again. This hurts most with a single instance, because there's no standby to take over.
+
+A longer TTL helps PCSM survive short outages. The tradeoff is slower failover if the active instance actually fails.
+
+#### Set the TTL
+
+Set the TTL when you start the PCSM server. You can use a command-line option or an environment variable. The `pcsm start` command and the `/start` request don't accept this setting.
 
 === "Command-line option"
 
@@ -150,16 +156,19 @@ Configure the TTL when starting the PCSM server. Use the same value on every ins
         --target "<target-mongodb-uri>"
     ```
 
-The command-line option takes precedence over the environment variable. The examples set a one-minute lease. This is a server startup setting, not an option for `pcsm start` or the `/start` request.
+Both examples set the TTL to one minute. If you set both, the command-line option takes precedence.
+
+Use the same value on every instance. Mismatched values won't cause conflicts, but a standby always waits for the expiry set by the active instance. So failover timing depends on whichever instance happens to be active.
 
 | Setting | Value |
 |---------|-------|
 | Default | `10s` |
-| Minimum TTL | `10s`. Nonzero values below this minimum are rejected at startup. |
-| Use the default explicitly | `0` |
-| Duration examples | `10s`, `60s`, `1m` |
+| Minimum TTL | `10s`. PCSM won't start if you set a nonzero value below this. |
+| Maximum | No upper limit |
+| `0` |Use the default|
+| Format | `10s`, `60s`, `1m` |
 
-At startup, PCSM logs the effective value. For the examples above, look for:
+To confirm which value PCSM is using, check the startup log. For the examples above, you'll see:
 
 ```text
 Config: HALeaseTTL: 1m0s
@@ -167,13 +176,13 @@ Config: HALeaseTTL: 1m0s
 
 #### Outage tolerance and failover timing
 
-Choose a TTL that balances temporary-outage tolerance with the delay you can accept during failover:
+Choose a TTL based on how long a target outage you want to tolerate and how much failover delay you can accept.
 
-| Situation | What to consider |
-|-----------|------------------|
-| Temporary target outages | A longer TTL can reduce unnecessary failovers and replication restarts. Other errors can still stop replication before the lease expires. |
-| The active instance fails | A standby must wait for the active instance's lease to expire before taking over. A longer TTL can increase the failover delay. |
-| A single instance restarts | PCSM may wait for the previous lease to expire before becoming active. A longer TTL can increase this wait. |
+| Scenario | Effect of a longer TTL |
+|-----------|------------------------|
+| Brief target outage | The active instance is less likely to lose its lease. Replication keeps running, and an initial clone in progress can finish without a new `/start` request. |
+| The active instance fails | A standby can't take over until the failed instance's lease expires, so failover takes longer. |
+| A single instance restarts | The restarted instance may wait up to the full TTL for its previous lease to expire before it becomes active. |
 
 !!! note
 
