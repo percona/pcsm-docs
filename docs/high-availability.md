@@ -130,13 +130,13 @@ The default group name is `default`.
 
 The lease time to live (TTL) controls how long the active PCSM instance keeps its lease when it can't renew it. Once the TTL runs out, that instance stops being active. This applies whether you run a single instance or several instances in HA mode.
 
-The default TTL is 10 seconds, which keeps failover fast. But a target outage can last longer than that, for example during a slow primary election. When it does, the active instance loses its lease. Replication restarts from the last checkpoint. If the initial clone was in progress, it fails and you must start it again. This hurts most with a single instance, because there's no standby to take over.
+The default TTL is 10 seconds, which keeps failover fast. But a target outage can last longer than that, for example during a slow primary election. When it does, the active instance loses its lease. Replication restarts from the last checkpoint. If the initial clone was in progress, it fails and you must start it again.
 
-A longer TTL helps PCSM survive short outages. The tradeoff is slower failover if the active instance actually fails.
+A longer TTL helps PCSM survive short outages. However, if the active instance fails, failover takes longer.
 
 #### Set the TTL
 
-Set the TTL when you start the PCSM server. You can use a command-line option or an environment variable. The `pcsm start` command and the `/start` request don't accept this setting.
+Set the TTL when you start the PCSM server. You can use a command-line option or an environment variable. The `pcsm start` command and the `/start` request do not accept this setting.
 
 === "Command-line option"
 
@@ -158,7 +158,7 @@ Set the TTL when you start the PCSM server. You can use a command-line option or
 
 Both examples set the TTL to one minute. If you set both, the command-line option takes precedence.
 
-Use the same value on every instance. Mismatched values won't cause conflicts, but a standby always waits for the expiry set by the active instance. So failover timing depends on whichever instance happens to be active.
+Use the same value on every instance. Mismatched values won't cause conflicts, but a standby always waits for the expiry set by the active instance. So failover timing depends on whichever instance is active.
 
 | Setting | Value |
 |---------|-------|
