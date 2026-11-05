@@ -243,7 +243,7 @@ The `unsuccessfulIndexes` array will not appear if there are no unsuccessful ind
 
 #### Unsuccessful indexes
 
-The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. When the source is available, PCSM retries the creation of `failed` and `incomplete` indexes during finalization, while `inconsistent` indexes are skipped. Only indexes that remain unsuccessful after these retry attempts are reported in the `unsuccessfulIndexes` array. With the source unavailable, only `failed` indexes are recreated from their stored specifications. PCSM cannot recheck `incomplete` or `inconsistent` indexes against the source, so they remain in `unsuccessfulIndexes` even though finalization completes. Each entry contains:
+The `unsuccessfulIndexes` array lists indexes that could not be finalized successfully on the target cluster. During finalization, PCSM recreates `failed` indexes from their stored specifications. It rechecks `incomplete` and `inconsistent` indexes against the source and recreates them from the current source specification only if the index still exists on the source, is no longer building, and is consistent across source shards. Only indexes that remain unsuccessful are reported in the `unsuccessfulIndexes` array. With the source unavailable, PCSM cannot recheck `incomplete` or `inconsistent` indexes, so they remain in `unsuccessfulIndexes` even though finalization completes. Each entry contains:
 
 | **Field** | **Type** | **Description** |
 |---|---|---|
