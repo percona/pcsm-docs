@@ -153,7 +153,7 @@ The command-line option takes precedence over the environment variable. The exam
 | Setting | Value |
 |---------|-------|
 | Default | `10s` |
-| Minimum effective TTL | `10s`. Nonzero values below this minimum are rejected at startup. |
+| Minimum allowed TTL | `10s`. Nonzero values below this minimum cause a startup validation error (they are not rounded or clamped up). |
 | Use the default explicitly | `0` |
 | Duration examples | `10s`, `60s`, `1m` |
 | Precision | Whole milliseconds. Any smaller fraction is discarded. |
