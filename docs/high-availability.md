@@ -126,7 +126,7 @@ The default group name is `default`.
 
 !!! admonition "Version added: 1.1.0"
 
-The lease time to live (TTL) determines how long the active instance retains ownership after a successful renewal. Increase it if temporary target outages cause the instance to lose its lease. A longer TTL gives it more time to renew, but also delays standby takeover after a failure. This setting also applies when you run a single PCSM instance.
+The lease time to live (TTL) determines how long the active instance retains ownership after a successful renewal. Increase it to reduce unnecessary failovers during temporary target outages. A longer TTL gives it more time to renew, but also delays standby takeover after a failure. This setting also applies when you run a single PCSM instance, where losing the lease can interrupt a clone even though there is no standby to take over.
 
 Configure the TTL when starting the PCSM server. Use the same value on every instance:
 
@@ -175,6 +175,17 @@ Choose the TTL with both temporary outages and failover delays in mind:
 | A single instance restarts | The restarted process has a new instance ID and waits for the previous lease to expire before becoming active. A longer TTL can delay this restart. |
 
 A standby uses the expiration stored by the active instance. Changing only the standby's TTL does not shorten the current owner's lease.
+
+#### Target-outage limits
+
+Lease expiration and checkpoint-write failures can independently end the active run. The earlier one takes effect. Checkpoints are written every 15 seconds by default and on state changes, with one write at a time.
+
+| Target condition | Checkpoint-write limit | Effect of a longer lease TTL |
+|------------------|------------------------|------------------------------|
+| No target server can be selected, for example during a network partition or when there is no primary | A checkpoint write issued during the outage fails after the driver's 30-second server-selection timeout. This timeout is not configurable in PCSM. | With the default checkpoint interval, a checkpoint error can end the run after about 30 to 45 seconds even if the lease TTL is longer. |
+| The primary remains writable, but majority acknowledgements stall | The checkpoint write uses the MongoDB operation timeout, which defaults to `5m`. | The run ends when either the remaining lease time or the checkpoint-write limit is reached. Raising the TTL does not extend the operation timeout. |
+
+A checkpoint write already in flight when the outage begins uses the MongoDB operation timeout. Errors such as a connection reset or a primary stepdown can fail a write sooner. The timings above are conditional estimates, not guaranteed outage-tolerance periods.
 
 !!! note
 
