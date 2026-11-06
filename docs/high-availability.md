@@ -253,10 +253,10 @@ Follow the upgrade procedures for [versions earlier than 1.0.0](upgrade.md#upgra
 
 ## Next steps
 
-[Use the PCSM HTTP API](api.md){.md-button}
+- [Use the PCSM HTTP API](api.md)
 
-[Manage synchronization with PCSM commands](pcsm-commands.md){.md-button}
+- [Manage synchronization with PCSM commands](pcsm-commands.md)
 
-[Set up observability with Percona Monitoring and Management](pmm-setup.md){.md-button}
+- [Set up observability with Percona Monitoring and Management](pmm-setup.md)
 
 
