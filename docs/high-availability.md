@@ -186,7 +186,10 @@ Choose a TTL based on how long a target outage you want to tolerate and how much
 
 !!! note
 
-    A longer TTL does not guarantee that replication will continue through an outage of that length. MongoDB operation timeouts and other errors still apply.
+    A longer TTL does not guarantee that replication continues through an outage of that length. A failed checkpoint write has the same effect as losing the lease, and the TTL does not change when that happens:
+
+    - If the target has no primary, for example during an election or a network partition, the checkpoint write fails after the 30-second server selection timeout, which you can't change. Replication restarts from the last checkpoint about 30 to 45 seconds into the outage, however long the TTL is.
+    - If the primary stays writable but majority acknowledgements are delayed, the checkpoint write waits up to the MongoDB operation timeout (`--mongodb-operation-timeout`, default `5m`). In this case a longer TTL does extend how long PCSM tolerates the outage.
 
     The initial clone is not resumable. If it is interrupted, [start a new synchronization run](#failover-during-the-initial-clone).
 
