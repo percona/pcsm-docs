@@ -247,12 +247,6 @@ pcsm reset --target "<target-mongodb-uri>"
 
 Use this command only when you need to clear stored PCSM state.
 
-## Upgrade from PCSM 0.9.0 or earlier
-
-Replication state created by PCSM 0.9.0 or earlier cannot be reused when upgrading to PCSM 1.0.0 or later, including a direct upgrade to 1.1.0. Stop every instance that uses the target, reset the stored state, and start a new synchronization run with a full initial clone.
-
-See [Upgrade from PCSM earlier than 1.0.0](upgrade.md#upgrade-from-pcsm-earlier-than-100) for the procedure and target-data precautions. For upgrades from PCSM 1.0.0, see [Upgrade from PCSM 1.0.0 or later](upgrade.md#upgrade-from-pcsm-100-or-later). State compatibility does not imply a tested non-disruptive upgrade.
-
 ## Next steps
 
 [Use the PCSM HTTP API](api.md){.md-button}
