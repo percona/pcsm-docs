@@ -247,33 +247,16 @@ pcsm reset --target "<target-mongodb-uri>"
 
 Use this command only when you need to clear stored PCSM state.
 
-## Upgrade from PCSM 0.9.0 or earlier
+## Upgrade PCSM
 
-Replication state created by PCSM 0.9.0 or earlier is not compatible with PCSM 1.0.0.
-
-Before starting PCSM 1.0.0:
-{.power-number}
-
-1. Stop all PCSM instances that use the target cluster.
-
-2. Reset the stored PCSM state on the target:
-
-    ```bash
-    pcsm reset --target "<target-mongodb-uri>"
-    ```
-
-3. Start PCSM 1.0.0
-4. Start a new synchronization run.
-
-!!! info "Important"
-    Do not run PCSM 0.9.0 or earlier and PCSM 1.0.0 against the same target at the same time.
+Follow the upgrade procedures for [versions earlier than 1.0.0](upgrade.md#upgrade-from-pcsm-earlier-than-100) or [1.0.0 and later](upgrade.md#upgrade-from-pcsm-100-or-later).
 
 ## Next steps
 
-[Use the PCSM HTTP API](api.md){.md-button}
+- [Use the PCSM HTTP API](api.md)
 
-[Manage synchronization with PCSM commands](pcsm-commands.md){.md-button}
+- [Manage synchronization with PCSM commands](pcsm-commands.md)
 
-[Set up observability with Percona Monitoring and Management](pmm-setup.md){.md-button}
+- [Set up observability with Percona Monitoring and Management](pmm-setup.md)
 
 
