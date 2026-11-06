@@ -178,6 +178,7 @@ nav:
       - 2. Configure authentication: install/authentication.md
       - 3. Start PCSM: install/start-pcsm.md
       - install/parameters.md
+  - Upgrade PCSM: upgrade.md
   - Use PCSM: 
     - Usage: install/usage.md
     - Replicate from one source to multiple targets: multiple-targets.md
