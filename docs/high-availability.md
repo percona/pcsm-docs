@@ -49,11 +49,11 @@ If a previous active instance resumes after losing its lease, its checkpoint wri
 
 When a standby becomes `ACTIVE`, PCSM resumes replication from the last persisted checkpoint. Failover uses the existing recovery mechanism and happens automatically.
 
-The timings are fixed:
+The default timings are:
 
 | **Setting** | **Value** |
 |---------|-------|
-| Lease TTL | 10 seconds |
+| Lease TTL | 10 seconds; [configurable starting with version 1.1.0](#configure-the-lease-duration) |
 | Lease renewal by the active instance | Every 3 seconds |
 | Heartbeat interval | Every 3 seconds |
 | Stale member threshold | 3 missed heartbeats |
@@ -121,6 +121,66 @@ The default group name is `default`.
     In PCSM 1.0.0, the group name is used for identification and observability. It does not isolate HA coordination between different groups that use the same target cluster.
 
     Do not rely on different group names to create independent HA deployments against the same target.
+
+### Configure the lease duration
+
+!!! admonition "Version added: 1.1.0"
+
+Increase the lease time to live (TTL) to reduce unnecessary failovers during temporary target outages. This setting applies to a single PCSM instance as well as an active-standby deployment. A longer TTL gives the active instance more time to renew its lease, but also delays takeover if that instance fails.
+
+Set `--ha-lease-ttl` when starting the PCSM server, or use the `PCSM_HA_LEASE_TTL` environment variable. The `pcsm start` command and the `/start` endpoint do not accept this setting.
+
+For example, set the TTL to one minute:
+
+=== "Command-line option"
+
+    ```{.bash data-prompt="$"}
+    $ pcsm \
+        --source "<source-mongodb-uri>" \
+        --target "<target-mongodb-uri>" \
+        --ha-lease-ttl=60s
+    ```
+
+=== "Environment variable"
+
+    ```{.bash data-prompt="$"}
+    $ export PCSM_HA_LEASE_TTL=60s
+    $ pcsm \
+        --source "<source-mongodb-uri>" \
+        --target "<target-mongodb-uri>"
+    ```
+
+The command-line option takes precedence over the environment variable. Set the same value on every instance. If values differ, a standby waits for the expiry set by the active instance, so takeover timing depends on which instance is active.
+
+| Setting | Value |
+| --- | --- |
+| Default | `10s` |
+| Minimum | `10s`. PCSM rejects nonzero values below this minimum. |
+| Zero | `0` selects the default. |
+| Format | A duration such as `10s`, `60s`, or `1m`. Precision finer than a millisecond is truncated. |
+
+To verify the effective value, look for this entry in the startup log:
+
+```text
+Config: HALeaseTTL: 1m0s
+```
+
+#### Outage tolerance and recovery
+
+Choose a TTL that balances tolerance of temporary outages against the delay before another instance can take over.
+
+| Situation | Effect of a longer TTL |
+| --- | --- |
+| The target remains writable, but majority acknowledgements stall | PCSM has more time to renew its lease. A checkpoint-write error can still interrupt the run, including when the MongoDB operation timeout is reached (`--mongodb-operation-timeout`, default `5m`). |
+| No target server is selectable, for example during a network partition or an election | A checkpoint write issued during the outage can fail after the 30-second server selection timeout. Checkpoints normally run every 15 seconds, so this can interrupt the run after about 30 to 45 seconds, even with a longer TTL. PCSM does not expose a setting for this selection timeout. |
+| The active instance crashes | A standby waits for the failed instance's lease to expire before taking over. A longer TTL delays this recovery. |
+| A single instance restarts | It may wait up to the configured TTL for its previous lease to expire before becoming active. |
+
+!!! warning
+
+    A longer TTL does not guarantee that PCSM can tolerate an outage of that length. Other errors can interrupt the run sooner, and a checkpoint write already in progress can have different timing. If the initial clone is interrupted, it cannot resume: [start a new synchronization run](#failover-during-the-initial-clone). During replication, recovery resumes from the last persisted checkpoint.
+
+See [Startup configuration](install/parameters.md) for the other server options.
 
 ## Failover during the initial clone
 

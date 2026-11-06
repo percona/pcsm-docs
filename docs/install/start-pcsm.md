@@ -36,6 +36,8 @@ Start {{pcsm.full_name}}.
 
 See [Percona ClusterSync for MongoDB startup configuration](parameters.md) for all available options.
 
+To reduce unnecessary failovers during temporary target outages, see [Configure the lease duration](../high-availability.md#configure-the-lease-duration).
+
 ## Configure the HTTP listen address
 
 By default, the PCSM HTTP server listens on `localhost`, which keeps the control API and the profiling endpoints reachable only from the local host. Most deployments don't need to change this.
