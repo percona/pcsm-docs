@@ -247,6 +247,10 @@ pcsm reset --target "<target-mongodb-uri>"
 
 Use this command only when you need to clear stored PCSM state.
 
+## Upgrade PCSM
+
+Follow the upgrade procedures for [versions earlier than 1.0.0](upgrade.md#upgrade-from-pcsm-earlier-than-100) or [1.0.0 and later](upgrade.md#upgrade-from-pcsm-100-or-later).
+
 ## Next steps
 
 [Use the PCSM HTTP API](api.md){.md-button}
