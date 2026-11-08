@@ -16,7 +16,7 @@ Choose the upgrade procedure for your current Percona ClusterSync for MongoDB (P
     ```
 
 2. Read the [release notes](release-notes.md) for the target version and any versions you skip. Check for changes that require a reset or additional upgrade steps.
-3. Save your PCSM startup configuration and namespace filters, including connection settings for both clusters, so you can use them after the upgrade.
+3. Save your PCSM startup parameters and the parameters used to start the synchronization run, including connection settings for both clusters, namespace filters, and any other run options. Reuse these parameters after the upgrade unless the target release requires a change.
 4. Plan an interruption to synchronization. Non-disruptive upgrades are not tested or recommended. Stop all PCSM instances that use the target cluster before replacing them, including standby instances in a high-availability deployment.
 
 ## Upgrade from PCSM earlier than 1.0.0
@@ -50,8 +50,8 @@ To upgrade:
 
     Replace `<target-mongodb-uri>` with your target connection string. Run the reset only while every PCSM instance using that target is stopped.
 
-4. [Start the upgraded PCSM instances](install/start-pcsm.md) with the saved source and target settings.
-5. [Start a new synchronization run](install/usage.md#start-the-replication). Reapply any namespace filters and other run options. For an unfiltered run with default options, use:
+4. [Start the upgraded PCSM instances](install/start-pcsm.md) with the same startup parameters you saved before the upgrade.
+5. [Start a new synchronization run](install/usage.md#start-the-replication) with the same run parameters you used before the upgrade, including namespace filters and any other run options. The following example is only for an unfiltered run with default options:
 
     ```{.bash data-prompt="$"}
     $ pcsm start
@@ -74,5 +74,5 @@ To upgrade while retaining state:
 2. Ensure that the [source oplog retains enough history](oplog-sizing.md) for the interruption. Replication cannot resume from a checkpoint whose required source history is no longer available.
 3. Stop all PCSM instances that use the target cluster, including standby instances. For systemd deployments, run `sudo systemctl stop pcsm` on each host.
 4. Install the target PCSM version on every instance. Keep the existing connection settings and stored replication state. **Do not run `pcsm reset`** for this upgrade path.
-5. [Restart PCSM](install/start-pcsm.md) with the saved configuration. If the checkpoint records a running replication phase, PCSM resumes it automatically. `pcsm start` does not resume an existing run and is rejected while that run is running, paused, or finalizing.
+5. [Restart PCSM](install/start-pcsm.md) with the same startup parameters you saved before the upgrade. If the checkpoint records a running replication phase, PCSM resumes it automatically. `pcsm start` does not resume an existing run and is rejected while that run is running, paused, or finalizing.
 6. Check `pcsm status` on the active instance and inspect the [logs](logging.md). If the recovered run is paused, use [`pcsm resume`](pcsm-commands.md#resume) when you are ready to continue. If the recovered state is `finalizing`, run `pcsm finalize` again to complete the interrupted finalization. If recovery fails, follow the [troubleshooting guide](troubleshooting.md) before deciding whether a reset and full clone are necessary.
