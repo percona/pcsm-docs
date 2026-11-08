@@ -21,7 +21,7 @@ Choose the upgrade procedure for your current Percona ClusterSync for MongoDB (P
 
 ## Upgrade from PCSM earlier than 1.0.0
 
-PCSM 1.0.0 introduced a replication-state compatibility boundary. State created by an earlier version cannot be reused when upgrading across that boundary. For example, upgrading directly from PCSM 0.9.0 to 1.1.0 requires the same reset as upgrading from 0.9.0 to 1.0.0.
+PCSM 1.0.0 introduced a replication-state compatibility boundary. State created by an earlier version must not be reused when upgrading across that boundary. For example, upgrading directly from PCSM 0.9.0 to 1.1.0 requires the same reset as upgrading from 0.9.0 to 1.0.0.
 
 A reset removes the stored PCSM replication state. The next synchronization run begins with a full initial clone.
 
