@@ -258,5 +258,3 @@ Follow the upgrade procedures for [versions earlier than 1.0.0](upgrade.md#upgra
 - [Manage synchronization with PCSM commands](pcsm-commands.md)
 
 - [Set up observability with Percona Monitoring and Management](pmm-setup.md)
-
-
