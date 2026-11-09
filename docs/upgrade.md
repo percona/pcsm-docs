@@ -40,6 +40,8 @@ To upgrade:
 
     For containers or manually started processes, stop every instance using your deployment's process manager.
 
+    For Docker upgrades, pull the target-version image without starting a PCSM server container. In step 3, run the `reset` subcommand in a temporary container using that image, the target connection string, and your deployment's existing network and TLS settings. Wait for the reset to succeed before starting the upgraded server containers in step 4.
+
 2. Install the target PCSM version using your installation method: [packages](install/repos.md), [Docker](install/docker.md), [binary tarballs](install/tarball.md), or [source](install/source.md). Keep all instances stopped until the reset is complete.
 
 3. Use the new PCSM binary to [reset the stored state](pcsm-commands.md#reset) on the target cluster:
