@@ -37,7 +37,8 @@ Alternatively, you can define the following environment variables:
 |----------|-------------|---------|
 | `PCSM_SOURCE_URI` | MongoDB connection string for the source cluster | - |
 | `PCSM_TARGET_URI` | MongoDB connection string for the target cluster | - |
-| `PCSM_GROUP_NAME` | A name that identifies the HA deployment in member information, API responses, metrics, and logs. | `default`|
+| `PCSM_TARGET_WRITE_CONCERN` | Sets the write concern for target data writes during the initial clone and ongoing replication. Accepts `majority` or a positive integer from `1` to `2147483647`. Applies only to `pcsm start`. The server process ignores it. Available starting with version 1.1.0. See [Configure target write concern](usage.md#configure-target-write-concern). | `majority` |
+| `PCSM_GROUP_NAME` | A name that identifies the HA deployment in member information, API responses, metrics, and logs. | `default` |
 | `PCSM_HA_LEASE_TTL` | Sets the lease time to live (TTL), which controls how long the active instance keeps its lease if it can't renew it. The minimum value is `10s`. Set it before you start the PCSM server, and use the same value on every instance. Available starting with version 1.1.0. For accepted values and failover tradeoffs, see [Configure the HA lease TTL](../high-availability.md#configure-the-ha-lease-ttl). | `10s` |
 | `PCSM_PORT` | Server port number | `2242` |
 | `PCSM_CLONE_NUM_PARALLEL_COLLECTIONS` | Number of collections cloned in parallel | `2` |

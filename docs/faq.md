@@ -56,7 +56,7 @@ Yes, if initial sync has completed, {{pcsm.short}} keeps running, and the replic
 See [Finalize after losing the source cluster](install/usage.md#finalize-after-losing-the-source-cluster) for the steps and limitations.
 
 ## What database read and write concerns are used?
-By default, Percona ClusterSync for MongoDB uses the `"majority"` read concern level for reads on the source cluster. For writes to the destination cluster, the tool uses a write concern level of `"majority"` with `j: true`.
+By default, Percona ClusterSync for MongoDB uses the `"majority"` read concern for reads on the source cluster and the `"majority"` write concern for writes to the target cluster. Starting with 1.1.0, you can choose a different write concern for clone and replication data writes when you start a run. Checkpoints, HA state, and catalog operations always use `"majority"`. See [Configure target write concern](install/usage.md#configure-target-write-concern).
 
 ## Why are indexes larger after migrating data with Percona ClusterSync?
 
