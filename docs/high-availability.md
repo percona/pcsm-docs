@@ -51,11 +51,11 @@ When a standby becomes `ACTIVE`, PCSM resumes replication from the last persiste
 
 Starting with version 1.1.0, HA takeover also keeps the target write concern selected for the run. HA state and checkpoints always use `majority`. However, if you choose a lower write concern for data writes, acknowledged data can roll back after a target primary failover. Read [Configure target write concern](install/usage.md#configure-target-write-concern) before you choose a lower value.
 
-The timings are fixed:
+The default timings are:
 
 | **Setting** | **Value** |
 |---------|-------|
-| Lease TTL | 10 seconds |
+| Lease TTL | 10 seconds; [configurable starting with version 1.1.0](#configure-the-ha-lease-ttl) |
 | Lease renewal by the active instance | Every 3 seconds |
 | Heartbeat interval | Every 3 seconds |
 | Stale member threshold | 3 missed heartbeats |
@@ -123,6 +123,77 @@ The default group name is `default`.
     In PCSM 1.0.0, the group name is used for identification and observability. It does not isolate HA coordination between different groups that use the same target cluster.
 
     Do not rely on different group names to create independent HA deployments against the same target.
+
+### Configure the HA lease TTL
+
+!!! admonition "Version added: 1.1.0"
+
+The lease time to live (TTL) controls how long the active PCSM instance keeps its lease when it can't renew it. Once the TTL runs out, that instance stops being active. This applies whether you run a single instance or several instances in HA mode.
+
+The default TTL is 10 seconds, which keeps failover fast. But a target outage can last longer than that, for example during a slow primary election. When it does, the active instance loses its lease. Replication restarts from the last checkpoint. If the initial clone was in progress, it fails and you must start it again.
+
+A longer TTL helps PCSM survive short outages. However, if the active instance fails, failover takes longer.
+
+#### Set the TTL
+
+Set the TTL when you start the PCSM server. You can use a command-line option or an environment variable. The `pcsm start` command and the `/start` request do not accept this setting.
+
+=== "Command-line option"
+
+    ```{.bash data-prompt="$"}
+    $ pcsm \
+        --source "<source-mongodb-uri>" \
+        --target "<target-mongodb-uri>" \
+        --ha-lease-ttl=60s
+    ```
+
+=== "Environment variable"
+
+    ```{.bash data-prompt="$"}
+    $ export PCSM_HA_LEASE_TTL=60s
+    $ pcsm \
+        --source "<source-mongodb-uri>" \
+        --target "<target-mongodb-uri>"
+    ```
+
+Both examples set the TTL to one minute. If you set both, the command-line option takes precedence.
+
+Use the same value on every instance. Mismatched values won't cause conflicts, but a standby always waits for the expiry set by the active instance. So failover timing depends on whichever instance is active.
+
+| Setting | Value |
+|---------|-------|
+| Default | `10s` |
+| Minimum TTL | `10s`. PCSM won't start if you set a nonzero value below this. |
+| Maximum | No upper limit |
+| `0` |Use the default|
+| Format | `10s`, `60s`, `1m` |
+
+To confirm which value PCSM is using, check the startup log. For the examples above, you'll see:
+
+```text
+Config: HALeaseTTL: 1m0s
+```
+
+#### Outage tolerance and failover timing
+
+Choose a TTL based on how long a target outage you want to tolerate and how much failover delay you can accept.
+
+| Scenario | Effect of a longer TTL |
+|-----------|------------------------|
+| Brief target outage | The active instance is less likely to lose its lease. Replication keeps running, and an initial clone in progress can finish without a new `/start` request. |
+| The active instance fails | A standby can't take over until the failed instance's lease expires, so failover takes longer. |
+| A single instance restarts | The restarted instance may wait up to the full TTL for its previous lease to expire before it becomes active. |
+
+!!! note
+
+    A longer TTL does not guarantee that replication continues through an outage of that length. A failed checkpoint write has the same effect as losing the lease, and the TTL does not change when that happens:
+
+    - If the target has no primary, for example during an election or a network partition, the checkpoint write fails after the 30-second server selection timeout, which you can't change. Replication restarts from the last checkpoint about 30 to 45 seconds into the outage, however long the TTL is.
+    - If the primary stays writable but majority acknowledgements are delayed, the checkpoint write waits up to the MongoDB operation timeout (`--mongodb-operation-timeout`, default `5m`). In this case a longer TTL does extend how long PCSM tolerates the outage.
+
+    The initial clone is not resumable. If it is interrupted, [start a new synchronization run](#failover-during-the-initial-clone).
+
+See [Startup configuration](install/parameters.md) for the complete list of server options and environment variables.
 
 ## Failover during the initial clone
 
@@ -249,33 +320,14 @@ pcsm reset --target "<target-mongodb-uri>"
 
 Use this command only when you need to clear stored PCSM state.
 
-## Upgrade from PCSM 0.9.0 or earlier
+## Upgrade PCSM
 
-Replication state created by PCSM 0.9.0 or earlier is not compatible with PCSM 1.0.0.
-
-Before starting PCSM 1.0.0:
-{.power-number}
-
-1. Stop all PCSM instances that use the target cluster.
-
-2. Reset the stored PCSM state on the target:
-
-    ```bash
-    pcsm reset --target "<target-mongodb-uri>"
-    ```
-
-3. Start PCSM 1.0.0
-4. Start a new synchronization run.
-
-!!! info "Important"
-    Do not run PCSM 0.9.0 or earlier and PCSM 1.0.0 against the same target at the same time.
+Follow the upgrade procedures for [versions earlier than 1.0.0](upgrade.md#upgrade-from-pcsm-earlier-than-100) or [1.0.0 and later](upgrade.md#upgrade-from-pcsm-100-or-later).
 
 ## Next steps
 
-[Use the PCSM HTTP API](api.md){.md-button}
+- [Use the PCSM HTTP API](api.md)
 
-[Manage synchronization with PCSM commands](pcsm-commands.md){.md-button}
+- [Manage synchronization with PCSM commands](pcsm-commands.md)
 
-[Set up observability with Percona Monitoring and Management](pmm-setup.md){.md-button}
-
-
+- [Set up observability with Percona Monitoring and Management](pmm-setup.md)

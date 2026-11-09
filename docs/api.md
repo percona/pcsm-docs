@@ -297,4 +297,3 @@ Common error scenarios:
 - 400 Bad Request: Invalid request parameters
 - 404 Not Found: Endpoint not found
 - 500 Internal Server Error: Server-side issues
-
