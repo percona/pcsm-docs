@@ -58,6 +58,12 @@ PCSM uses `appendOplogNote` on the source cluster to:
 To use any of these Atlas clusters as a PCSM source, upgrade the cluster to a dedicated tier, such as M10 or higher. 
 See the MongoDB Atlas documentation for [modifying a cluster](https://www.mongodb.com/docs/atlas/scale-cluster/) for current upgrade procedures and limitations.
 
+## Finalization after source loss
+
+After the source cluster becomes unavailable, finalization cannot guarantee that the target contains all source data. It can succeed even when the target is behind the source, including when replication was paused before the outage. PCSM cannot verify that the target was caught up at the time of source loss.
+
+For prerequisites and checks, see [Finalize after losing the source cluster](install/usage.md#finalize-after-losing-the-source-cluster).
+
 ## Other
 
 The following limitations apply:
