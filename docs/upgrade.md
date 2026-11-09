@@ -44,7 +44,7 @@ To upgrade:
 
 2. Install the target PCSM version using your installation method: [packages](install/repos.md), [Docker](install/docker.md), [binary tarballs](install/tarball.md), or [source](install/source.md). Keep all instances stopped until the reset is complete.
 
-    For package upgrades, temporarily prevent automatic startup of the PCSM services before installing the new version. Keep that restriction in place until the reset is complete, and confirm every instance is stopped before running the reset. Restore the normal service-start policy before step 4.
+    For package upgrades, disable automatic startup of PCSM services before installing the new version. Confirm all instances are stopped before resetting, and keep automatic startup disabled until the reset finishes. Restore the normal startup policy before step 4.
 
 3. Use the new PCSM binary to [reset the stored state](pcsm-commands.md#reset) on the target cluster:
 
