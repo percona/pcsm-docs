@@ -54,6 +54,8 @@ An unavailable tool or skipped test is a limitation, not a passing result.
 
 ## Existing evidence
 
+See the [recorded test report and supporting logs](test-results/pcsm-398.md).
+
 The original local skill was exercised with PCSM-398 and
 [code PR #302](https://github.com/percona/percona-clustersync-mongodb/pull/302),
 at commit `011505c03d6315b64b918b80bf6ffff772677cff`, using two three-member

@@ -1,0 +1,14 @@
+ok  	github.com/percona/percona-clustersync-mongodb	6.942s
+ok  	github.com/percona/percona-clustersync-mongodb/config	1.021s
+?   	github.com/percona/percona-clustersync-mongodb/errors	[no test files]
+ok  	github.com/percona/percona-clustersync-mongodb/ha	1.022s
+ok  	github.com/percona/percona-clustersync-mongodb/log	1.009s
+ok  	github.com/percona/percona-clustersync-mongodb/mdb	1.027s
+?   	github.com/percona/percona-clustersync-mongodb/metrics	[no test files]
+ok  	github.com/percona/percona-clustersync-mongodb/pcsm	1.033s
+ok  	github.com/percona/percona-clustersync-mongodb/pcsm/catalog	1.011s
+ok  	github.com/percona/percona-clustersync-mongodb/pcsm/clone	1.015s
+ok  	github.com/percona/percona-clustersync-mongodb/pcsm/repl	57.631s
+ok  	github.com/percona/percona-clustersync-mongodb/sel	1.011s
+ok  	github.com/percona/percona-clustersync-mongodb/tests	1.012s [no tests to run]
+?   	github.com/percona/percona-clustersync-mongodb/util	[no test files]

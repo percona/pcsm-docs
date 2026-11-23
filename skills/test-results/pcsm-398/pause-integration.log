@@ -1,0 +1,73 @@
+go: downloading github.com/testcontainers/testcontainers-go v0.44.0
+go: downloading github.com/moby/moby/api v1.55.0
+go: downloading dario.cat/mergo v1.0.2
+go: downloading github.com/containerd/errdefs v1.0.0
+go: downloading github.com/moby/go-archive v0.3.3
+go: downloading github.com/cpuguy83/dockercfg v0.3.2
+go: downloading github.com/cenkalti/backoff/v4 v4.3.0
+go: downloading github.com/containerd/platforms v1.0.0-rc.5
+go: downloading github.com/moby/moby/client v0.5.1
+go: downloading github.com/moby/patternmatcher v0.6.1
+go: downloading github.com/opencontainers/image-spec v1.1.1
+go: downloading github.com/containerd/log v0.1.0
+go: downloading github.com/moby/sys/sequential v0.7.0
+go: downloading github.com/moby/sys/user v0.4.1
+go: downloading github.com/moby/sys/userns v0.2.0
+go: downloading github.com/magiconair/properties v1.18.11
+go: downloading github.com/shirou/gopsutil/v4 v4.26.7
+go: downloading github.com/sirupsen/logrus v1.10.2
+go: downloading github.com/opencontainers/go-digest v1.0.0
+go: downloading github.com/distribution/reference v0.6.0
+go: downloading github.com/docker/go-connections v0.8.1
+go: downloading github.com/containerd/errdefs/pkg v0.3.0
+go: downloading go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.71.0
+go: downloading github.com/docker/go-units v0.5.0
+go: downloading go.opentelemetry.io/otel/trace v1.46.0
+go: downloading github.com/moby/term v0.5.2
+go: downloading github.com/moby/docker-image-spec v1.3.1
+go: downloading go.opentelemetry.io/otel v1.46.0
+go: downloading github.com/felixge/httpsnoop v1.1.0
+go: downloading go.opentelemetry.io/otel/metric v1.46.0
+go: downloading github.com/tklauser/go-sysconf v0.4.0
+go: downloading github.com/tklauser/numcpus v0.12.0
+go: downloading github.com/go-logr/logr v1.4.4
+go: downloading go.opentelemetry.io/auto/sdk v1.2.1
+go: downloading github.com/go-logr/stdr v1.2.2
+=== RUN   TestPauseHTTPReportsDrainingUntilTargetWriteCompletes
+=== PAUSE TestPauseHTTPReportsDrainingUntilTargetWriteCompletes
+=== CONT  TestPauseHTTPReportsDrainingUntilTargetWriteCompletes
+2026/11/23 12:25:00 github.com/testcontainers/testcontainers-go - Connected to docker: 
+  Server Version: 29.1.2
+  API Version: 1.52
+  Operating System: Docker Desktop
+  Total Memory: 7936 MB
+  Labels:
+    com.docker.desktop.address=unix:///Users/<user>/Library/Containers/com.docker.docker/Data/docker-cli.sock
+  Testcontainers for Go Version: v0.44.0
+  Resolved Docker Host: unix:///var/run/docker.sock
+  Resolved Docker Socket Path: /var/run/docker.sock
+  Test SessionID: 299e3431e1a84daa90f3eb2533a0549718c413d2bffe30db95fae04e3bd88aaf
+  Test ProcessID: 57636beb-5694-4071-b646-656c166817f8
+2026/11/23 12:25:00 🐳 Creating container for image percona/percona-server-mongodb:8.0.29-13
+2026/11/23 12:25:00 No image auth found for https://index.docker.io/v1/. Setting empty credentials for the image: testcontainers/ryuk:0.14.0. This is expected for public images. Details: credentials not found in native keychain
+2026/11/23 12:25:05 🐳 Creating container for image testcontainers/ryuk:0.14.0
+2026/11/23 12:25:05 ✅ Container created: cd28d5ddf909
+2026/11/23 12:25:05 🐳 Starting container: cd28d5ddf909
+2026/11/23 12:25:05 ✅ Container started: cd28d5ddf909
+2026/11/23 12:25:05 ⏳ Waiting for container id cd28d5ddf909 image: testcontainers/ryuk:0.14.0. Waiting for: all of: [log message "Started", port 8080/tcp to be listening]
+2026/11/23 12:25:05 Shell not found in container
+2026/11/23 12:25:05 🔔 Container is ready: cd28d5ddf909
+2026/11/23 12:25:05 ✅ Container created: 63f7f5ae55c1
+2026/11/23 12:25:05 🐳 Starting container: 63f7f5ae55c1
+2026/11/23 12:25:05 ✅ Container started: 63f7f5ae55c1
+2026/11/23 12:25:05 ⏳ Waiting for container id 63f7f5ae55c1 image: percona/percona-server-mongodb:8.0.29-13. Waiting for: log message "Waiting for connections"
+2026/11/23 12:25:05 🔔 Container is ready: 63f7f5ae55c1
+2026/11/23 12:25:05 🐳 Creating container for image percona/percona-server-mongodb:8.0.29-13
+2026/11/23 12:25:05 ✅ Container created: d2c8934f8622
+2026/11/23 12:25:05 🐳 Starting container: d2c8934f8622
+2026/11/23 12:25:05 ✅ Container started: d2c8934f8622
+2026/11/23 12:25:05 ⏳ Waiting for container id d2c8934f8622 image: percona/percona-server-mongodb:8.0.29-13. Waiting for: log message "Waiting for connections"
+2026/11/23 12:25:06 🔔 Container is ready: d2c8934f8622
+--- PASS: TestPauseHTTPReportsDrainingUntilTargetWriteCompletes (13.89s)
+PASS
+ok  	github.com/percona/percona-clustersync-mongodb	15.993s

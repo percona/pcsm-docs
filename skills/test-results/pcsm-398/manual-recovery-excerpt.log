@@ -1,0 +1,6 @@
+2026-11-23T12:58:44.329Z INF Found Recovery Data. Recovering... s=recovery term=2
+2026-11-23T12:58:44.329Z INF Config: NumWorkers: 2 s=repl
+2026-11-23T12:58:44.329Z INF Config: UseCollectionBulkWrite: true s=repl
+2026-11-23T12:58:44.329Z INF Config: BulkOpsSize: 100 s=repl
+2026-11-23T12:58:44.329Z INF Successfully recovered s=recovery term=2
+2026-11-23T12:58:44.329Z INF Change Replication resumed op_ts=[1795438098,1] s=repl
