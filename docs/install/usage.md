@@ -138,6 +138,8 @@ When both include and exclude filters are used, the exclude filter takes precede
 
 ## Pause the replication
 
+### Pause manually
+
 You can pause the replication at any moment. {{pcsm.short}} stops the replication, saves the timestamp, and enters the `paused` state. {{pcsm.short}} uses the saved timestamp after you [resume the replication](#resume-the-replication).
 
 === "Command line"
