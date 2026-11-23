@@ -167,7 +167,9 @@ curl -X POST http://localhost:2242/start \
 ```
 
 
-Starting with version 1.2.0, PCSM preserves a pending automatic pause through a restart or [HA failover](../high-availability.md#checkpoint-recovery). The initial clone remains non-resumable if interrupted.
+!!! admonition "Version added: 1.2.0"
+
+PCSM preserves a pending automatic pause through a restart or [HA failover](../high-availability.md#checkpoint-recovery). The initial clone remains non-resumable if interrupted.
 
 Check the [status response](../api.md#get-status) to monitor the pause:
 

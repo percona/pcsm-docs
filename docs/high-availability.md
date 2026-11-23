@@ -51,7 +51,9 @@ When a standby becomes `ACTIVE`, PCSM resumes replication from the last persiste
 
 Starting with version 1.1.0, HA takeover also keeps the target write concern selected for the run. HA state and checkpoints always use `majority`. However, if you choose a lower write concern for data writes, acknowledged data can roll back after a target primary failover. Read [Configure target write concern](install/usage.md#configure-target-write-concern) before you choose a lower value.
 
-Starting with version 1.2.0, recovery after a restart or HA failover also preserves the run's clone and replication tuning, including the bulk write mode and any pending `pauseOnInitialSync` request. The recovering instance uses the saved run settings. Changing its startup flags or environment variables doesn't replace those settings for the existing run.
+!!! admonition "Version added: 1.2.0"
+
+Recovery after a restart or HA failover also preserves the run's clone and replication tuning, including the bulk write mode and any pending `pauseOnInitialSync` request. The recovering instance uses the saved run settings. Changing its startup flags or environment variables doesn't replace those settings for the existing run.
 
 Settings left on automatic selection stay automatic. For example, if you leave the replication worker count on automatic selection, PCSM calculates it from the CPU count of the instance that recovers the run. Run all PCSM instances on hosts with the same specifications, as described in [Set up high availability](#set-up-high-availability).
 

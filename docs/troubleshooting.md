@@ -61,7 +61,9 @@ PCSM can successfully complete the initial data clone and then interrupt unexpec
 
 If PCSM exits abnormally or is stopped unexpectedly, restart the `pcsm` service. This is typically sufficient as PCSM resumes replication automatically from the last saved checkpoint.
 
-Starting with version 1.2.0, checkpoint recovery also restores the run's clone and replication tuning and any pending `pauseOnInitialSync` request. Changing the restarted server's tuning flags or environment variables doesn't change the saved settings for that run. See [Checkpoint recovery](high-availability.md#checkpoint-recovery) for automatic tuning and pause behavior.
+!!! admonition "Version added: 1.2.0"
+
+Checkpoint recovery also restores the run's clone and replication tuning and any pending `pauseOnInitialSync` request. Changing the restarted server's tuning flags or environment variables doesn't change the saved settings for that run. See [Checkpoint recovery](high-availability.md#checkpoint-recovery) for automatic tuning and pause behavior.
 
 ??? example "Example logs"
 
