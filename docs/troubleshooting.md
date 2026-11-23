@@ -65,7 +65,6 @@ If PCSM exits abnormally or is stopped unexpectedly, restart the `pcsm` service.
 
 Checkpoint recovery also restores the run's clone and replication tuning, bulk write mode, and any pending `pauseOnInitialSync` request. Changing tuning flags or environment variables on the restarted server doesn't affect the saved settings for that run. To apply new settings, start a new run. See [Checkpoint recovery](high-availability.md#checkpoint-recovery).
 
-
 ??? example "Example logs"
 
     ```{.text .no-copy}
