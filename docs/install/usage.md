@@ -154,6 +154,28 @@ You can pause the replication at any moment. {{pcsm.short}} stops the replicatio
     $ curl -X POST http://localhost:2242/pause
     ```
 
+### Pause automatically after initial sync
+
+To pause replication automatically when initial sync completes, set `pauseOnInitialSync` to `true` in the `/start` request. This starts a new synchronization run and drops and recreates the selected target collections, as described in [Start the replication](#start-the-replication).
+
+For example:
+
+```bash
+curl -X POST http://localhost:2242/start \
+    -H "Content-Type: application/json" \
+    --data '{"pauseOnInitialSync": true}'
+```
+
+
+Starting with version 1.2.0, PCSM preserves a pending automatic pause through a restart or [HA failover](../high-availability.md#checkpoint-recovery). The initial clone remains non-resumable if interrupted.
+
+Check the [status response](../api.md#get-status) to monitor the pause:
+
+* `pauseOnInitialSync: true` means the automatic pause is still pending.
+* PCSM omits `pauseOnInitialSync` once it accepts the automatic pause, or if you didn't request one. Check `state` to determine whether replication is `paused`.
+
+Use `pcsm resume` or `POST /resume` to continue replication after the pause. In version 1.2.0 and later, the automatic pause happens only once per run. A later restart or failover doesn't trigger it again.
+
 ## Resume the replication
 
 Resume the replication. {{pcsm.short}} changes the state to `running` and copies the changes that occurred from the timestamp it saved when you paused the replication. Then it continues monitoring data changes and replicating them in real time. 
