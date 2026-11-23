@@ -53,11 +53,11 @@ Starting with version 1.1.0, HA takeover also keeps the target write concern sel
 
 !!! admonition "Version added: 1.2.0"
 
-Recovery after a restart or HA failover also preserves the run's clone and replication tuning, including the bulk write mode and any pending `pauseOnInitialSync` request. The recovering instance uses the saved run settings. Changing its startup flags or environment variables doesn't replace those settings for the existing run.
+Recovery after a restart or HA failover preserves the run's clone and replication tuning. Recovery also preserves the bulk write mode and any pending `pauseOnInitialSync` request. The recovering instance uses the saved run settings. Startup flags and environment variables don't replace the saved settings for the existing run.
 
-Settings left on automatic selection stay automatic. For example, if you leave the replication worker count on automatic selection, PCSM calculates it from the CPU count of the instance that recovers the run. Run all PCSM instances on hosts with the same specifications, as described in [Set up high availability](#set-up-high-availability).
+Settings with automatic selection remain automatic after recovery. For example, PCSM recalculates an automatic replication worker count from the CPU count of the recovering instance. Run all PCSM instances on hosts with the same specifications. See [HA configuration](#set-up-high-availability).
 
-The automatic pause after initial sync happens once per run. After you resume from that pause, a later restart or failover doesn't trigger it again. See [Pause automatically after initial sync](install/usage.md#pause-automatically-after-initial-sync).
+The automatic pause after initial sync happens once per run. After you resume from that pause, a restart or failover doesn't trigger another automatic pause. See [Pause automatically after initial sync](install/usage.md#pause-automatically-after-initial-sync).
 
 The default timings are:
 
@@ -97,7 +97,7 @@ A member that does not send a heartbeat within the stale-member threshold is rem
 
 Run at least two PCSM instances on separate hosts, containers, or pods. Configure every instance with the same source and target clusters.
 
-All PCSM instances must run on hosts with the same specifications, including the CPU count. This keeps automatically selected tuning consistent when another instance takes over.
+All PCSM instances must run on hosts with the same specifications and CPU count. Matching host specifications keep automatic tuning consistent across HA failovers.
 
 For example, run the following command on each host:
 
