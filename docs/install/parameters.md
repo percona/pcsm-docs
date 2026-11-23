@@ -6,7 +6,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--source`: The MongoDB connection string for the source cluster
 - `--target`: The MongoDB connection string for the target cluster
 - `--group-name`: A name that identifies the HA deployment in member information, API responses, metrics, and logs (default: "default")
-- `--ha-lease-ttl`: Sets the lease time to live (TTL), which controls how long the active instance keeps its lease if it can't renew it (default: 10s). See [Configure the HA lease TTL](../high-availability.md#configure-the-ha-lease-ttl) for accepted values and failover considerations.
+- `--ha-lease-ttl`: Sets the lease time to live (TTL), which controls how long the active instance keeps its lease if it can't renew it (default: 10 seconds). See [Configure the HA lease TTL](../high-availability.md#configure-the-ha-lease-ttl) for accepted values and failover considerations.
 - `--log-level`: The log level (default: "info")
 - `--log-json`: Output log in JSON format with disabled color
 - `--no-color`: Disable log ANSI color
@@ -14,7 +14,7 @@ When [starting the `pcsm` process](start-pcsm.md), you can use the following opt
 - `--clone-num-parallel-collections`: Number of collections cloned in parallel during clone.
 - `--clone-num-read-workers`: Number of read workers that read collection segments from the source. Shared for all collections.
 - `--clone-num-insert-workers`: Number of insert workers that write batches to the target. Shared for all collections.
-- `--clone-segment-size`: Segment size for clone operations. Accepts plain bytes or a unit suffix (e.g. `500MB`, `1GiB`). When omitted, the tool automatically calculates segment size based on collection size and available read workers.
+- `--clone-segment-size`: Segment size for clone operations. Accepts plain bytes or a unit suffix (for example, `500MB`, `1GiB`). When omitted, the tool automatically calculates segment size based on collection size and available read workers.
 - `--use-collection-bulk-write`: Forces collection-level bulk write instead of the newer client-level bulk write (MongoDB 8.0+).
 - `--listen-host`: Host the HTTP server binds to. See [Configure the HTTP listen address](../install/start-pcsm.md#configure-the-http-listen-address).
 

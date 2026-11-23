@@ -123,6 +123,6 @@ If you started `pcsm` manually, see the file you redirected `stdout` and `stderr
 
 ## Next steps
 
-Congratulations! you have successfully installed and connected PCSM to your source and target MongoDB. Now you have it up and running and you are ready to use it.
+Congratulations. You have successfully installed and connected PCSM to your source and target MongoDB. Now you have it up and running and you are ready to use it.
 
 [Use {{pcsm.full_name}} :material-arrow-right:](usage.md){.md-button}

@@ -1,6 +1,6 @@
 # PCSM-398 test results
 
-Recorded on **23 November 2026**. These results come from the earlier local
+Recorded on **November 23, 2026**. These results come from the earlier local
 evaluation of the skill, before this documentation PR. Publishing the evidence
 does not rerun the tests or demonstrate a fresh team evaluation.
 

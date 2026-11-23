@@ -1,6 +1,6 @@
 # Contributing guide
 
-Welcome to Percona ClusterSync for MongoDB (PCSM) documentation!
+Welcome to Percona ClusterSync for MongoDB (PCSM) documentation.
 
 We're glad that you would like to become a Percona community member and help keep open source open.  
 
@@ -87,7 +87,7 @@ The doc files are in the `docs` directory.
 	 - Select the **Create a new branch for this commit and start a pull request** option
 	 - Click **Propose changes**.
 
-4. GitHub creates a branch and a commit for your changes. It loads a new page on which you can open a pull request to Percona. The page shows the base branch - the one you offer your changes for, your commit message, and a diff - a visual representation of your changes against the original page.  This allows you to make a last-minute review. When you are ready, click the **Create pull request** button.
+4. GitHub creates a branch and a commit for your changes. It loads a new page on which you can open a pull request to Percona. The page shows the base branch - the one you offer your changes for, your commit message, and a diff - a visual representation of your changes against the original page. This allows you to make a last-minute review. When you are ready, click the **Create pull request** button.
 5. Someone from our team reviews the pull request and, if everything is correct, merges it into the documentation. Then it gets published on the site.
 
 #### Edit documentation locally
@@ -162,5 +162,4 @@ mkdocs serve
 
 ## After your pull request is merged
 
-Once your pull request is merged, you are an official Percona Community Contributor. Welcome to the community!
-
+Once your pull request is merged, you are an official Percona Community Contributor. Welcome to the community.

@@ -70,7 +70,7 @@ Data migration is a resource-intensive task. Therefore, we recommend installing 
         $ sudo yum install percona-clustersync-mongodb
         ``` 
     
-Congratulations! You have successfully installed {{pcsm.full_name}}. Now you must connect it to source and target MongoDB deployments.
+Congratulations. You have successfully installed {{pcsm.full_name}}. Now you must connect it to source and target MongoDB deployments.
 
 ## Next steps
 
