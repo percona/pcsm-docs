@@ -168,7 +168,7 @@ curl -X POST http://localhost:2242/start \
 
 !!! admonition "Version added: 1.2.0"
 
-PCSM preserves a pending automatic pause through a restart or [HA failover](../high-availability.md#checkpoint-recovery). PCSM cannot resume the initial clone after an interruption.
+If {{pcsm.short}} restarts or fails over after the initial clone completes but before the automatic pause takes effect, it keeps the pending pause. If the interruption happens during the initial clone, {{pcsm.short}} stops the synchronization instead. See [Checkpoint recovery](../high-availability.md#checkpoint-recovery).
 
 Check the [status response](../api.md#get-status) to monitor the pause:
 
@@ -176,7 +176,7 @@ Check the [status response](../api.md#get-status) to monitor the pause:
 
 * PCSM omits `pauseOnInitialSync` once PCSM accepts the automatic pause. PCSM also omits the field if you don't request an automatic pause. Check `state` to determine whether replication is `paused`.
 
-Use `pcsm resume` or `POST /resume` to continue replication after the pause. The automatic pause happens only once per run. A restart or failover doesn't trigger another automatic pause after you resume replication.
+To continue, run `pcsm resume` or send `POST /resume`. The automatic pause happens only once per run, so a later restart or failover won't pause replication again.
 
 ## Resume the replication
 

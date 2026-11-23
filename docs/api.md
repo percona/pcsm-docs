@@ -24,7 +24,7 @@ Starts the replication process.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `pauseOnInitialSync` | boolean | No | Set to `true` to pause automatically when initial sync completes. Default: `false`. Starting with version 1.2.0, a pending pause survives checkpoint recovery. The automatic pause happens only once per run. See [Pause automatically after initial sync](install/usage.md#pause-automatically-after-initial-sync). |
+| `pauseOnInitialSync` | boolean | No | Set to `true` to pause replication automatically when initial sync completes. Default: `false`. Starting with version 1.2.0, {{pcsm.short}} keeps a pending pause after a restart or HA failover. See [Pause automatically after initial sync](install/usage.md#pause-automatically-after-initial-sync). |
 | `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
 | `cloneSkipPresplit` | boolean | No | Set to `true` to skip pre-splitting collections on the sharded target. {{pcsm.short}} still shards each collection with the source shard key. If you omit this field, {{pcsm.short}} uses the value from its startup configuration, which defaults to `false`. Available starting with version 1.1.0. See [Skip pre-splitting](sharding.md#skip-pre-splitting). |
@@ -171,7 +171,7 @@ The following are response fields:
 |-------|------|-------------|
 | `ok` | boolean | Operation success status |
 | `state` | string | Current replication state |
-| `pauseOnInitialSync` | boolean | Starting with version 1.2.0, `true` means the automatic pause after initial sync is still pending. PCSM omits this field once PCSM accepts the automatic pause. PCSM also omits this field if you don't request an automatic pause. Use `state` to check whether replication is `paused`. |
+| `pauseOnInitialSync` | boolean | Available starting with version 1.2.0. `true` means the automatic pause after initial sync is still pending. The field is omitted if you didn't request an automatic pause, or once {{pcsm.short}} accepts the pause. Use `state` to check whether replication is `paused`. |
 | `info` | string | Additional information about the current state|
 | `error`| string | (optional): The error message if the operation failed.
 | `lagTimeSeconds` | number | Current lag time in logical seconds between source and target clusters. |
