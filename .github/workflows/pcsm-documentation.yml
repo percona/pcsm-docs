@@ -1,0 +1,120 @@
+name: PCSM documentation event
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pcsm-documentation.yml'
+      - 'automation/pcsm_docs/**'
+  workflow_dispatch:
+    inputs:
+      event_json:
+        description: Rendered PCSM Jira transition event (JSON)
+        required: false
+        default: '{}'
+        type: string
+      mode:
+        description: Self-test, validate Jira, test PR for PCSM-436, or process
+        type: choice
+        default: validate
+        options:
+          - self-test
+          - validate
+          - test-pr
+          - process
+
+permissions:
+  contents: read
+
+jobs:
+  self-test:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test without service credentials or external writes
+        run: python -m unittest discover -s automation/pcsm_docs -p 'test_*.py'
+
+  validate:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test event and publication guards
+        run: python -m unittest discover -s automation/pcsm_docs -p 'test_*.py'
+      - name: Verify event against Jira and the release branch
+        if: inputs.mode != 'self-test'
+        env:
+          PCSM_EVENT_JSON: ${{ inputs.event_json }}
+          JIRA_EMAIL: ${{ secrets.PCSM_JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.PCSM_JIRA_API_TOKEN }}
+          PCSM_BOARD_FILTER_ID: ${{ vars.PCSM_BOARD_FILTER_ID }}
+          PCSM_RELEASE_BRANCHES: ${{ vars.PCSM_RELEASE_BRANCHES }}
+          GH_TOKEN: ${{ github.token }}
+        run: python automation/pcsm_docs/worker.py validate
+
+  process:
+    needs: validate
+    if: inputs.mode == 'process' || inputs.mode == 'test-pr'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Require explicit activation
+        env:
+          ENABLED: ${{ vars.PCSM_DOCS_ENABLED }}
+          TEST_ENABLED: ${{ vars.PCSM_DOCS_TEST_ENABLED }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          if [ "$MODE" = test-pr ]; then
+            ENABLED="$TEST_ENABLED"
+          fi
+          if [ "$ENABLED" != true ]; then
+            echo 'Processing is disabled. Configure and verify service credentials before activation.'
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Create repository-scoped installation token
+        id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.PCSM_DOCS_APP_ID }}
+          private-key: ${{ secrets.PCSM_DOCS_APP_PRIVATE_KEY }}
+          owner: percona
+          repositories: pcsm-docs
+      - name: Research, draft, validate, and publish
+        env:
+          PCSM_EVENT_JSON: ${{ inputs.event_json }}
+          PCSM_DOCS_ENABLED: ${{ vars.PCSM_DOCS_ENABLED }}
+          PCSM_DOCS_TEST_ENABLED: ${{ vars.PCSM_DOCS_TEST_ENABLED }}
+          PCSM_MODE: ${{ inputs.mode }}
+          PCSM_BOARD_FILTER_ID: ${{ vars.PCSM_BOARD_FILTER_ID }}
+          PCSM_RELEASE_BRANCHES: ${{ vars.PCSM_RELEASE_BRANCHES }}
+          PCSM_DOCS_MODEL: ${{ vars.PCSM_DOCS_MODEL }}
+          JIRA_EMAIL: ${{ secrets.PCSM_JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.PCSM_JIRA_API_TOKEN }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          PCSM_SOURCE_TOKEN: ${{ secrets.PCSM_SOURCE_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.PCSM_OPENAI_API_KEY }}
+          SMTP_HOST: ${{ vars.PCSM_SMTP_HOST }}
+          SMTP_PORT: ${{ vars.PCSM_SMTP_PORT }}
+          SMTP_USER: ${{ secrets.PCSM_SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.PCSM_SMTP_PASSWORD }}
+          SMTP_FROM: ${{ vars.PCSM_SMTP_FROM }}
+          PCSM_COPILOT_REVIEWER: ${{ vars.PCSM_COPILOT_REVIEWER }}
+        run: python automation/pcsm_docs/worker.py "$PCSM_MODE"

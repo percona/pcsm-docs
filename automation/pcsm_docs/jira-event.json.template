@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "event_id": "pcsm-{{issue.id}}-{{issue.updated.toMillis}}-{{changelog.status.to}}",
+  "event_type": "jira.issue.status_changed",
+  "site_url": "https://perconadev.atlassian.net",
+  "board_id": 141,
+  "issue_key": "{{issue.key}}",
+  "occurred_at_ms": "{{issue.updated.toMillis}}",
+  "transition": {
+    "from_id": "{{changelog.status.from}}",
+    "to_id": "{{changelog.status.to}}",
+    "from_name": {{changelog.status.fromString.asJsonString}},
+    "to_name": {{changelog.status.toString.asJsonString}}
+  }
+}
