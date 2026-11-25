@@ -1,6 +1,8 @@
 import copy
 import json
 import os
+from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -170,6 +172,19 @@ class Guards(unittest.TestCase):
     def test_build_environment_excludes_secrets(self):
         with patch.dict(os.environ, {'GH_TOKEN': 'secret', 'OPENAI_API_KEY': 'secret', 'SMTP_PASSWORD': 'secret'}):
             self.assertFalse({'GH_TOKEN', 'OPENAI_API_KEY', 'SMTP_PASSWORD'} & w.clean_env().keys())
+
+    def test_documentation_build_isolated_from_worker(self):
+        with tempfile.TemporaryDirectory() as directory:
+            checkout = Path(directory) / 'docs'
+            site = Path(directory) / 'site'
+            checkout.mkdir()
+            with patch.object(w, 'command') as run:
+                w.build_docs(checkout, site, 'pcsm-docs-build:test')
+            args = run.call_args.args[0]
+            self.assertIn('--network=none', args)
+            self.assertIn('--read-only', args)
+            self.assertIn('--cap-drop=ALL', args)
+            self.assertIn('--security-opt=no-new-privileges', args)
 
     def test_codex_model_rejected_before_network(self):
         with patch.dict(os.environ, {'PCSM_DOCS_MODEL': 'some-codex-model'}), patch.object(w, 'api') as api:

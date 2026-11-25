@@ -1,7 +1,8 @@
 """PCSM event processor. Direct HTTPS APIs only; no Codex or local connections.
 
 All writes are deterministic application code. Model output is limited to exact
-replacements in existing Markdown files and never becomes an executable command.
+replacements in existing Markdown files. Documentation builds run in an isolated
+container without worker credentials or network access.
 """
 import base64
 import hashlib
@@ -341,11 +342,41 @@ def clean_env():
 
 
 def command(args, cwd=None):
-    # Repository builds cannot read API, mail or GitHub credentials from the environment.
-    # Capture output because docs builds can include private generated source excerpts.
     result = subprocess.run(args, cwd=cwd, env=clean_env(), capture_output=True, timeout=600)
     if result.returncode:
         raise Blocked('Documentation checkout/build failed; no PR was published.')
+
+
+def build_image(checkout, root):
+    context = root / 'build-image'
+    context.mkdir()
+    (context / 'requirements.txt').write_bytes((checkout / 'requirements.txt').read_bytes())
+    (context / 'Dockerfile').write_text(
+        'FROM python:3.12-slim\n'
+        'RUN apt-get update && apt-get install -y --no-install-recommends git '
+        '&& rm -rf /var/lib/apt/lists/*\n'
+        'COPY requirements.txt /tmp/requirements.txt\n'
+        'RUN python -m venv /opt/venv && '
+        '/opt/venv/bin/pip install --no-cache-dir -r /tmp/requirements.txt\n'
+        'WORKDIR /workspace\n'
+    )
+    image = 'pcsm-docs-build:' + digest(str(root))[:12]
+    command(['docker', 'build', '--quiet', '--tag', image, str(context)])
+    return image
+
+
+def build_docs(checkout, site_dir, image):
+    site_dir.mkdir()
+    command([
+        'docker', 'run', '--rm', '--network=none', '--read-only',
+        '--cap-drop=ALL', '--security-opt=no-new-privileges',
+        '--user', f'{os.getuid()}:{os.getgid()}',
+        '--tmpfs', '/tmp:rw,noexec,nosuid,size=64m',
+        '--env', 'HOME=/tmp', '--workdir', '/workspace',
+        '--mount', f'type=bind,source={checkout},target=/workspace,readonly',
+        '--mount', f'type=bind,source={site_dir},target=/site',
+        image, '/opt/venv/bin/mkdocs', 'build', '--strict', '--site-dir', '/site',
+    ])
 
 
 def draft_and_build(info, evidence, root):
@@ -370,13 +401,11 @@ def draft_and_build(info, evidence, root):
                               'Pass 2: critically check every claim, release applicability, public-data suitability, '
                               'exact edits and writing. Return the corrected proposal or a blocker.')
     changes = apply_edits(files, reviewed, sources)
-    venv = root / 'venv'
-    command([sys.executable, '-m', 'venv', str(venv)])
-    command([str(venv / 'bin/pip'), 'install', '-r', 'requirements.txt'], cwd=checkout)
-    command([str(venv / 'bin/mkdocs'), 'build', '--strict', '--site-dir', str(root / 'baseline')], cwd=checkout)
+    image = build_image(checkout, root)
+    build_docs(checkout, root / 'baseline', image)
     for path, content in changes.items():
         (checkout / path).write_text(content)
-    command([str(venv / 'bin/mkdocs'), 'build', '--strict', '--site-dir', str(root / 'site')], cwd=checkout)
+    build_docs(checkout, root / 'site', image)
     return reviewed, changes
 
 

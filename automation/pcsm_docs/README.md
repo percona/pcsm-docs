@@ -15,14 +15,16 @@ Jira Automation sends an authenticated workflow-dispatch request to GitHub. A
 validation job checks the source, current board filter, Needs Doc, Fix version,
 existing documentation branch and latest status transition. A separate gated job
 researches the ticket and explicitly linked implementation PRs, drafts exact edits,
-performs a second model review, builds the baseline and updated docs, and opens a
-draft PR with a claim-to-source map. It adds a Jira backlink and sends start/end
-notifications to `rasika.chivate@percona.com`. It never merges or changes Jira status.
+performs a second model review, builds the baseline and updated docs in a network-isolated
+container without service credentials, and opens a draft PR with a claim-to-source map.
+It adds a Jira backlink and sends start/end notifications to `rasika.chivate@percona.com`.
+It never merges or changes Jira status.
 
 The initial worker only edits existing Markdown pages. New pages/navigation,
 missing evidence, ambiguous releases, inaccessible attachments, oversized evidence
 or failing strict baseline builds require manual follow-up; it does not publish a
-placeholder documentation PR. Model-generated code is never executed.
+placeholder documentation PR. Markdown rendering can execute Jinja code, so builds
+run without service credentials or network access.
 
 ## Verified setup facts (25 November 2026)
 
