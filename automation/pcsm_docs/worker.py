@@ -482,7 +482,7 @@ def process(event, test=False):
             with tempfile.TemporaryDirectory(prefix='pcsm-docs-') as directory:
                 proposal, changes = draft_and_build(info, evidence, Path(directory))
                 pr = publish(info, proposal, changes, test, state)
-            followups(info, pr, state, test)
+        followups(info, pr, state, test)
         state.data['pr_url'] = pr['html_url']
         notify(state, 'completion_email', prefix + event['issue_key'] + ': documentation processing finished',
                pr['html_url'] + '\nReview request: ' + state.data['stages'].get('review', 'existing PR reused'))
