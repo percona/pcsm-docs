@@ -170,7 +170,7 @@ curl -X POST http://localhost:2242/start \
 
 !!! admonition "Version added: 1.2.0"
 
-If {{pcsm.short}} restarts or fails over after the initial clone completes but before the automatic pause takes effect, it keeps the pending pause. If the interruption happens during the initial clone, {{pcsm.short}} stops the synchronization instead. See [Checkpoint recovery](../high-availability.md#checkpoint-recovery).
+If {{pcsm.short}} restarts or fails over after the initial clone completes but before the automatic pause takes effect, it keeps the pending pause. If recovery finds an interrupted initial clone, the run stops in the `failed` state and you need to start a new one. Set `pauseOnInitialSync` again in that `/start` request. See [Failover during the initial clone](../high-availability.md#failover-during-the-initial-clone).
 
 Check the [status response](../api.md#get-status) to monitor the pause:
 
