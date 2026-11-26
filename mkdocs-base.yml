@@ -1,7 +1,7 @@
 # MkDocs configuration for builds with material theme
 
 site_name: Percona ClusterSync for MongoDB
-site_description: documentation
+site_description: "Percona ClusterSync for MongoDB, a tool that clones data and replicates changes in real time between MongoDB deployments, with installation, usage and reference guides"
 site_author: Percona LLC
 copyright: >
   <a href="https://www.percona.com/about">Percona LLC</a> and/or its affiliates © 2026 
