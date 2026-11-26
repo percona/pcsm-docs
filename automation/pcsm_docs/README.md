@@ -58,7 +58,7 @@ The GitHub workflow page is a viewing link; Jira must POST to the API endpoint b
 | Repository variable | Required value |
 | --- | --- |
 | `PCSM_BOARD_FILTER_ID` | `13034`, verified against board 141 on 25 November 2026 |
-| `PCSM_RELEASE_BRANCHES` | JSON mapping of exact Jira Fix versions to reviewed, existing documentation branches |
+| `PCSM_RELEASE_BRANCHES` | Required explicit JSON mapping; the ticket's exact Fix version selects the target branch (see below) |
 | `PCSM_DOCS_ENABLED` | Leave `false` or unset during setup |
 | `PCSM_DOCS_TEST_ENABLED` | Leave `false` until IT is ready for the PCSM-436 test |
 | `PCSM_DOCS_APP_ID` | Percona-owned GitHub App ID, installed on `percona/pcsm-docs` |
@@ -67,7 +67,37 @@ The GitHub workflow page is a viewing link; Jira must POST to the API endpoint b
 | `PCSM_SMTP_FROM` | Sender address authorized by the SMTP service |
 | `PCSM_COPILOT_REVIEWER` | Optional reviewer login supported by the repository; failure is reported separately |
 
-`main` currently advertises release 1.1.0. Branch `1.2.0` exists, but its
+### Select the target branch from Fix version
+
+Set the repository variable `PCSM_RELEASE_BRANCHES` to an explicit mapping owned
+by the documentation branch owner. For example:
+
+```json
+{
+  "1.2.0": "1.2.0",
+  "1.3.0": "release/1.3"
+}
+```
+
+These are illustrative entries; configure only reviewed branches that exist.
+The key is the exact Jira **Fix version** name and the value is the documentation
+branch to target. A ticket with Fix version `1.3.0` uses `release/1.3` in this
+example, even if a branch named `1.3.0` also exists. The workflow does not infer a
+branch from the version or fall back to `main`, the newest release, or the branch
+running the workflow. `ref: main` in the Jira dispatch selects the workflow code;
+it does not select the generated documentation PR's base.
+
+When adding a release, add its mapping entry and retain entries for releases still
+in use. No workflow code change is needed. This explicit mapping does require one
+configuration update per new release.
+
+Validation stops for a missing or multiple Fix versions, malformed mapping,
+duplicate version keys, an unmapped version, or a missing/inaccessible mapped
+branch. The worker does not create a release branch. Drafting and builds use the
+selected branch's verified commit. Before publication, the worker rechecks the
+release, mapped branch, and commit; if any changed, it stops for a fresh run.
+
+The earlier release check found that `main` advertises release 1.1.0. Branch `1.2.0` exists, but its
 `variables.yml` still advertises 1.1.0. Confirm that release mapping with the docs
 owner before configuring it. The worker never creates a missing release branch.
 
