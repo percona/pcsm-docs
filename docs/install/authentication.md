@@ -85,7 +85,7 @@ You can pass additional connection options to the MongoDB connection string. The
 | `authSource` | Specifies the database that contains the user's credentials. Defaults to the database specified in the connection string. If not specified, defaults to the `admin` database|
 | `authMechanism` | Specifies the authentication mechanism to use. Common values include: SCRAM-SHA-1, SCRAM-SHA-256, MONGODB-X509, GSSAPI, PLAIN, and MONGODB-AWS. |
 | `authMechanismProperties` | Specifies additional properties for the authentication mechanism. Format is `key=value` pairs separated by commas. |
-| `gssapiServiceName` | Specifies the service name to use for GSSAPI authentication. Defaults to "mongodb". |
+| `gssapiServiceName` | Specifies the service name to use for GSSAPI authentication. Defaults to `mongodb`. |
 | `tls` | Enables TLS/SSL for the connection. Use this option instead of the deprecated `ssl` option. |
 | `ssl` | (Deprecated) Enables SSL for the connection. Use `tls` instead. |
 | `tlsCertificateKeyFile` | Specifies the path to the client certificate and private key file for TLS/SSL connections. |

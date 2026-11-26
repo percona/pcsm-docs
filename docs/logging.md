@@ -18,7 +18,7 @@ Alternatively, you can define the following environment variables:
 
 | Variable | Description | Default |
 | --- | --- | --- |
-| `PCSM_LOG_LEVEL` |Log level used for output (e.g., debug, info, warn, error). Controls the verbosity of logs. | `info` |
+| `PCSM_LOG_LEVEL` |Log level used for output (for example, debug, info, warn, error). Controls the verbosity of logs. | `info` |
 | `PCSM_LOG_JSON` | Output logs in JSON format. When enabled, log coloring is automatically disabled. | `false` |
 | `PCSM_LOG_NO_COLOR` | Disable ANSI color codes in log output (useful for non-interactive terminals and log aggregation systems). | `false` |
 
@@ -106,15 +106,14 @@ When `--log-json` is enabled, the following fields may appear in the log entries
 
 | Field          | Type    | Description                                                                |
 |----------------|---------|----------------------------------------------------------------------------|
-| `level`        | string  | The severity of the log entry (e.g., info, debug).                         |
-| `s`	           | string	 | The scope or component where the log originated (e.g., http, clone, repl). |
+| `level`        | string  | The severity of the log entry (for example, info, debug).                         |
+| `s`	           | string	 | The scope or component where the log originated (for example, http, clone, repl). |
 | `ns`	         | string	 | The MongoDB namespace (database.collection) related to the event.          |
 | `elapsed_secs` | float	 | The time taken for an operation to complete, in seconds.                   |
 | `time`	       | string  | The timestamp of the log event in RFC 3339 format, always in UTC (`YYYY-MM-DDTHH:MM:SS.mmmZ`).           |
 | `message`	     | string	 | The main log message.                                                      |
 | `error`	       | string	 | The error message, if an error occurred.                                   |
-| `op`	         | string	 | The type of operation (e.g., insert, createIndexes).                       |
+| `op`	         | string	 | The type of operation (for example, insert, createIndexes).                       |
 | `op_ts`	       | array	 | The MongoDB operation timestamp as [timestamp, increment].                 |
 | `count`	       | integer | A count of items, such as documents in a batch.                            |
 | `size_bytes`	 | integer | The size of data in bytes.                                                 |
-

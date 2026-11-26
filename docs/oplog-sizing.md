@@ -33,7 +33,7 @@ During the initial data clone, PCSM clones data and then applies oplog entries o
 
     The value you get is the minimum oplog window, in seconds.
 
-2. Compare this value to the current sync lag using the `PCSM status` command and the `lagTime` field.  If the `lagTime` approaches the oplog window, extend the window using the `replSetResizeOplog` with a higher `minRetentionHours` value.
+2. Compare this value to the current sync lag using the `PCSM status` command and the `lagTime` field. If the `lagTime` approaches the oplog window, extend the window using the `replSetResizeOplog` with a higher `minRetentionHours` value.
 
 ### Improve the sync performance to reduce lag  
 

@@ -1,0 +1,216 @@
+[
+  {
+    "check": "Source and target ready",
+    "result": "PASS",
+    "evidence": {
+      "source": {
+        "version": "8.0.29-13",
+        "primary": true,
+        "fcv": "8.0"
+      },
+      "target": {
+        "version": "8.0.29-13",
+        "primary": true,
+        "fcv": "8.0"
+      }
+    }
+  },
+  {
+    "check": "Start accepted",
+    "result": "PASS",
+    "evidence": {
+      "pauseOnInitialSync": true,
+      "replBulkOpsSize": 100,
+      "cloneNumReadWorkers": 3,
+      "useCollectionBulkWrite": true
+    }
+  },
+  {
+    "check": "Pending pause visible in status",
+    "result": "PASS",
+    "evidence": [
+      {
+        "elapsed": 0.0030053749796934426,
+        "status": {
+          "pauseOnInitialSync": true,
+          "ok": true,
+          "state": "running",
+          "info": "Initial Sync: Cloning Data",
+          "lagTimeSeconds": 0,
+          "eventsRead": 0,
+          "eventsApplied": 0,
+          "initialSync": {
+            "clonedSizeBytes": 0,
+            "completed": false,
+            "cloneCompleted": false
+          }
+        }
+      },
+      {
+        "elapsed": 2.1148219159804285,
+        "status": {
+          "ok": true,
+          "state": "paused",
+          "lagTimeSeconds": 1,
+          "eventsRead": 0,
+          "eventsApplied": 0,
+          "lastReplicatedOpTime": {
+            "ts": "1795436699.2",
+            "isoDate": "2026-11-23T12:24:59Z"
+          },
+          "initialSync": {
+            "estimatedCloneSizeBytes": 5900000,
+            "clonedSizeBytes": 5900000,
+            "completed": true,
+            "cloneCompleted": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "check": "Automatic pause completes and flag is omitted",
+    "result": "PASS",
+    "evidence": {
+      "ok": true,
+      "state": "paused",
+      "lagTimeSeconds": 1,
+      "eventsRead": 0,
+      "eventsApplied": 0,
+      "lastReplicatedOpTime": {
+        "ts": "1795436699.2",
+        "isoDate": "2026-11-23T12:24:59Z"
+      },
+      "initialSync": {
+        "estimatedCloneSizeBytes": 5900000,
+        "clonedSizeBytes": 5900000,
+        "completed": true,
+        "cloneCompleted": true
+      }
+    }
+  },
+  {
+    "check": "Checkpoint stores tuning and consumed pause",
+    "result": "PASS",
+    "evidence": {
+      "clone": {
+        "readWorkers": 3
+      },
+      "repl": {
+        "useCollectionBulkWrite": true,
+        "numWorkers": 2,
+        "bulkOpsSize": 100
+      }
+    }
+  },
+  {
+    "check": "Initial data matches",
+    "result": "PASS",
+    "evidence": {
+      "source": {
+        "count": 20000,
+        "hash": "0862e87f23b587c443d173ded0a79965"
+      },
+      "target": {
+        "count": 20000,
+        "hash": "0862e87f23b587c443d173ded0a79965"
+      }
+    }
+  },
+  {
+    "check": "Resume accepted",
+    "result": "PASS",
+    "evidence": {}
+  },
+  {
+    "check": "Restart restores workers and bulk size without server env",
+    "result": "PASS",
+    "evidence": {
+      "lines": [
+        "2026-11-23T12:25:04.978Z INF Config: source client compressors: [snappy zstd zlib] s=connect",
+        "2026-11-23T12:25:04.978Z INF Config: source client maxPoolSize: 100 (driver default) s=connect",
+        "2026-11-23T12:25:04.981Z INF Config: target client compressors: [snappy zstd zlib] s=connect",
+        "2026-11-23T12:25:04.981Z INF Config: target client maxPoolSize: 100 (driver default) s=connect",
+        "2026-11-23T12:25:04.986Z INF Config: HALeaseTTL: 10s",
+        "2026-11-23T12:25:14.000Z INF Config: TargetWriteConcern: majority s=clone",
+        "2026-11-23T12:25:14.000Z INF Config: TargetWriteConcern: majority s=repl",
+        "2026-11-23T12:25:14.000Z INF Config: NumWorkers: 2 s=repl",
+        "2026-11-23T12:25:14.000Z INF Config: UseCollectionBulkWrite: true s=repl",
+        "2026-11-23T12:25:14.000Z INF Config: ChangeStreamBatchSize: 10000 s=repl",
+        "2026-11-23T12:25:14.000Z INF Config: EventQueueSize: 5000 s=repl",
+        "2026-11-23T12:25:14.000Z INF Config: WorkerQueueSize: 5000 s=repl",
+        "2026-11-23T12:25:14.000Z INF Config: BulkOpsSize: 100 s=repl",
+        "2026-11-23T12:25:14.000Z INF Config: WorkerFlushInterval: 1s s=repl",
+        "2026-11-23T12:25:14.000Z INF Config: WorkerBulkQueueSize: 3 s=repl"
+      ]
+    }
+  },
+  {
+    "check": "Restart preserves collection bulk write mode",
+    "result": "PASS",
+    "evidence": {}
+  },
+  {
+    "check": "Restart does not restore consumed automatic pause",
+    "result": "PASS",
+    "evidence": {
+      "ok": true,
+      "state": "running",
+      "info": "Replicating Changes",
+      "lagTimeSeconds": 0,
+      "eventsRead": 1,
+      "eventsApplied": 0,
+      "lastReplicatedOpTime": {
+        "ts": "1795436702.2",
+        "isoDate": "2026-11-23T12:25:02Z"
+      },
+      "initialSync": {
+        "estimatedCloneSizeBytes": 5900000,
+        "clonedSizeBytes": 5900000,
+        "completed": true,
+        "cloneCompleted": true
+      }
+    }
+  },
+  {
+    "check": "No second automatic pause after restart",
+    "result": "PASS",
+    "evidence": {
+      "ok": true,
+      "state": "running",
+      "info": "Replicating Changes",
+      "lagTimeSeconds": 1,
+      "eventsRead": 2,
+      "eventsApplied": 2,
+      "lastReplicatedOpTime": {
+        "ts": "1795436725.1",
+        "isoDate": "2026-11-23T12:25:25Z"
+      },
+      "initialSync": {
+        "estimatedCloneSizeBytes": 5900000,
+        "clonedSizeBytes": 5900000,
+        "completed": true,
+        "cloneCompleted": true
+      }
+    }
+  },
+  {
+    "check": "Post-restart source and target contents match",
+    "result": "PASS",
+    "evidence": {
+      "source": {
+        "count": 20002,
+        "hash": "36bdb31c133a2543c8b7396be33d43e7"
+      },
+      "target": {
+        "count": 20002,
+        "hash": "36bdb31c133a2543c8b7396be33d43e7"
+      }
+    }
+  },
+  {
+    "check": "Explicit pause accepted",
+    "result": "PASS",
+    "evidence": {}
+  }
+]

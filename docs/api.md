@@ -24,7 +24,7 @@ Starts the replication process.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, ["db.*", "db.collection"]) |
+| `includeNamespaces` | string[] | No | List of namespaces to include in replication (for example, `["db.*", "db.collection"]`) |
 | `excludeNamespaces` | string[] | No | List of namespaces to exclude from replication |
 | `cloneSkipPresplit` | boolean | No | Set to `true` to skip pre-splitting collections on the sharded target. {{pcsm.short}} still shards each collection with the source shard key. If you omit this field, {{pcsm.short}} uses the value from its startup configuration, which defaults to `false`. Available starting with version 1.1.0. See [Skip pre-splitting](sharding.md#skip-pre-splitting). |
 | `targetWriteConcern` | string | No | The write concern for data writes on the target during the initial clone and replication. Set it to `"majority"` or a positive integer from `"1"` to `"2147483647"`, passed as a string. {{pcsm.short}} rejects `"0"` and custom named write concerns. If you omit this field, {{pcsm.short}} uses `"majority"`. The `/resume` endpoint ignores this field. Available starting with version 1.1.0. See [Configure target write concern](install/usage.md#configure-target-write-concern) for usage and rollback risks. |
@@ -176,7 +176,7 @@ The following are response fields:
 | `eventsRead` | number | Total number of events read from the source |
 | `eventsApplied` | number | Total number of events applied to the target |
 | `lastReplicatedOpTime.ts` | string | The timestamp of the last replicated operation time.  |
-| `lastReplicatedOpTime.isoDate` | date.Time | The human-readable representation of the last replicated operation time.  |
+| `lastReplicatedOpTime.isoDate` | `date.Time` | The human-readable representation of the last replicated operation time. |
 | `initialSync.completed` | boolean | Initial sync completion status |
 | `initialSync.lagTime` | number | The lag time in logical seconds until the initial sync completed|
 | `initialSync.cloneCompleted` | boolean | Clone process completion status |

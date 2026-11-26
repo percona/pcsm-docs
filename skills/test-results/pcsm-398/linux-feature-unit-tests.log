@@ -1,0 +1,31 @@
+go: downloading github.com/stretchr/testify v1.12.1
+=== RUN   TestPauseOnInitialSync_DoesNotJoinOwnExecution
+=== PAUSE TestPauseOnInitialSync_DoesNotJoinOwnExecution
+=== RUN   TestRecoverRunOptions
+=== PAUSE TestRecoverRunOptions
+=== RUN   TestRecoverOldCheckpointUsesDefaults
+=== PAUSE TestRecoverOldCheckpointUsesDefaults
+=== RUN   TestStatusReportsPauseOnInitialSync
+=== PAUSE TestStatusReportsPauseOnInitialSync
+=== RUN   TestPauseOnInitialSyncPausesOnce
+=== PAUSE TestPauseOnInitialSyncPausesOnce
+=== RUN   TestRunOptionsKeepEveryOption
+=== PAUSE TestRunOptionsKeepEveryOption
+=== RUN   TestCheckpointKeepsAutoTuning
+=== PAUSE TestCheckpointKeepsAutoTuning
+=== CONT  TestPauseOnInitialSync_DoesNotJoinOwnExecution
+=== CONT  TestStatusReportsPauseOnInitialSync
+=== CONT  TestCheckpointKeepsAutoTuning
+=== CONT  TestRecoverOldCheckpointUsesDefaults
+=== CONT  TestRecoverRunOptions
+=== CONT  TestPauseOnInitialSyncPausesOnce
+=== CONT  TestRunOptionsKeepEveryOption
+--- PASS: TestPauseOnInitialSync_DoesNotJoinOwnExecution (0.00s)
+--- PASS: TestStatusReportsPauseOnInitialSync (0.00s)
+--- PASS: TestRecoverOldCheckpointUsesDefaults (0.00s)
+--- PASS: TestRunOptionsKeepEveryOption (0.00s)
+--- PASS: TestRecoverRunOptions (0.00s)
+--- PASS: TestCheckpointKeepsAutoTuning (0.00s)
+--- PASS: TestPauseOnInitialSyncPausesOnce (0.00s)
+PASS
+ok  	github.com/percona/percona-clustersync-mongodb/pcsm	1.015s

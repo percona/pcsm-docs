@@ -12,7 +12,7 @@ The following flag is available on all subcommands:
 
 | Name     | Description                                                                                                                                                            |
 | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--port` | Port number of the running PCSM server to connect to (default: `2242`). Use this when the server is listening on a non-default port (e.g., `pcsm status --port 3000`). |
+| `--port` | Port number of the running PCSM server to connect to (default: `2242`). Use this when the server is listening on a non-default port (for example, `pcsm status --port 3000`). |
 
 
 ### version
