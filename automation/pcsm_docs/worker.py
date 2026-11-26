@@ -26,6 +26,7 @@ REPO = 'percona/pcsm-docs'
 SOURCE_REPO = 'percona/percona-clustersync-mongodb'
 RECIPIENT = 'rasika.chivate@percona.com'
 STATE_BRANCH = 'automation/pcsm-event-state'
+STATE_SAVE_ATTEMPTS = 3
 TARGETS = {'10045': 'In QA', '10043': 'In Doc'}
 
 
@@ -204,6 +205,7 @@ class State:
         self.path = '.automation-state/' + self.key + '.json'
         self.blob_sha = None
         self.data = {'digest': digest(event), 'status': 'new', 'stages': {}}
+        self.saved_data = None
         try:
             f = gh('contents/' + self.path + '?ref=' + quote(STATE_BRANCH, safe=''))
             self.blob_sha = f['sha']
@@ -211,17 +213,46 @@ class State:
             if prior['digest'] != self.data['digest']:
                 raise Blocked('Event-ID conflict: payload changed.')
             self.data = prior
+            self.saved_data = json.loads(json.dumps(prior))
         except ApiError as exc:
             if exc.status != 404:
                 raise
 
+    def refresh_after_conflict(self):
+        try:
+            f = gh('contents/' + self.path + '?ref=' + quote(STATE_BRANCH, safe=''))
+        except ApiError as exc:
+            if exc.status != 404:
+                raise
+            self.blob_sha = None
+            return
+        remote = json.loads(base64.b64decode(f['content']))
+        if remote.get('digest') != self.data['digest']:
+            raise Blocked('Checkpoint event changed concurrently; manual reconciliation required.')
+        if remote == self.data:
+            self.blob_sha = f['sha']
+            self.saved_data = json.loads(json.dumps(remote))
+            return
+        if remote != self.saved_data:
+            raise Blocked('Checkpoint changed concurrently; manual reconciliation required.')
+        self.blob_sha = f['sha']
+
     def save(self):
         body = {'message': 'Checkpoint PCSM documentation event', 'branch': STATE_BRANCH,
                 'content': base64.b64encode(json.dumps(self.data, sort_keys=True).encode()).decode()}
-        if self.blob_sha:
-            body['sha'] = self.blob_sha
-        result = gh('contents/' + self.path, 'PUT', body)
-        self.blob_sha = result['content']['sha']
+        for attempt in range(STATE_SAVE_ATTEMPTS):
+            body.pop('sha', None)
+            if self.blob_sha:
+                body['sha'] = self.blob_sha
+            try:
+                result = gh('contents/' + self.path, 'PUT', body)
+                self.blob_sha = result['content']['sha']
+                self.saved_data = json.loads(json.dumps(self.data))
+                return
+            except ApiError as exc:
+                if exc.status != 409 or attempt == STATE_SAVE_ATTEMPTS - 1:
+                    raise
+                self.refresh_after_conflict()
 
 
 def ensure_state_branch():
@@ -509,8 +540,8 @@ def process(event, test=False):
     if state.data['status'] != 'new':
         raise Blocked('Interrupted attempt remains locked for manual reconciliation.')
     state.data.update(status='running', run_id=os.environ.get('GITHUB_RUN_ID', 'local'), lock=lock)
-    state.save()
     try:
+        state.save()
         prefix = '[TEST] ' if test else ''
         notify(state, 'start_email', prefix + event['issue_key'] + ': documentation processing started',
                SITE + '/browse/' + event['issue_key'])

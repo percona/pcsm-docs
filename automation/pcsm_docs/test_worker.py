@@ -196,6 +196,72 @@ class Guards(unittest.TestCase):
             with self.assertRaises(w.Blocked):
                 w.State(changed, True)
 
+    def test_state_save_reconciles_bounded_branch_conflicts(self):
+        import base64
+        prior = {'digest': w.digest(event()), 'status': 'new', 'stages': {}}
+        saved = {'sha': 'blob-old', 'content': base64.b64encode(json.dumps(prior).encode()).decode()}
+        with patch.object(w, 'gh', side_effect=[
+                saved, w.ApiError(409), saved, {'content': {'sha': 'blob-new'}}]) as github:
+            state = w.State(event(), True)
+            state.data['status'] = 'running'
+            state.save()
+        self.assertEqual(state.blob_sha, 'blob-new')
+        self.assertEqual(state.saved_data, state.data)
+        self.assertEqual(github.call_count, 4)
+        self.assertEqual(github.call_args_list[-1].args[2]['sha'], 'blob-old')
+
+    def test_state_save_does_not_overwrite_concurrent_checkpoint(self):
+        import base64
+        prior = {'digest': w.digest(event()), 'status': 'new', 'stages': {}}
+        changed = {**prior, 'status': 'completed'}
+        saved = {'sha': 'blob-old', 'content': base64.b64encode(json.dumps(prior).encode()).decode()}
+        concurrent = {'sha': 'blob-other', 'content': base64.b64encode(json.dumps(changed).encode()).decode()}
+        with patch.object(w, 'gh', side_effect=[saved, w.ApiError(409), concurrent]) as github:
+            state = w.State(event(), True)
+            state.data['status'] = 'running'
+            with self.assertRaisesRegex(w.Blocked, 'changed concurrently'):
+                state.save()
+        self.assertEqual(github.call_count, 3)
+
+    def test_state_save_stops_after_bounded_conflicts(self):
+        import base64
+        prior = {'digest': w.digest(event()), 'status': 'new', 'stages': {}}
+        saved = {'sha': 'blob', 'content': base64.b64encode(json.dumps(prior).encode()).decode()}
+        actions = [saved]
+        for attempt in range(w.STATE_SAVE_ATTEMPTS):
+            actions.append(w.ApiError(409))
+            if attempt < w.STATE_SAVE_ATTEMPTS - 1:
+                actions.append(saved)
+        with patch.object(w, 'gh', side_effect=actions) as github:
+            state = w.State(event(), True)
+            state.data['status'] = 'running'
+            with self.assertRaises(w.ApiError):
+                state.save()
+        self.assertEqual(github.call_count, 2 * w.STATE_SAVE_ATTEMPTS)
+
+    def test_initial_checkpoint_failure_uses_failure_handler(self):
+        state = type('StateFixture', (), {})()
+        state.data = {'digest': w.digest(event()), 'status': 'new', 'stages': {}}
+        attempts = []
+
+        def save():
+            attempts.append(state.data['status'])
+            if len(attempts) == 1:
+                raise w.ApiError(500)
+
+        state.save = save
+        env = {'PCSM_DOCS_ENABLED': 'true', 'OPENAI_API_KEY': 'key',
+               'PCSM_DOCS_MODEL': 'model', 'SMTP_HOST': 'host',
+               'SMTP_USER': 'user', 'SMTP_PASSWORD': 'password', 'SMTP_FROM': 'from@example.com'}
+        with patch.dict(os.environ, env), \
+                patch.object(w, 'ensure_state_branch'), patch.object(w, 'verify', return_value={'sha': 'base'}), \
+                patch.object(w, 'State', return_value=state), patch.object(w, 'gh'), \
+                patch.object(w, 'notify') as notify:
+            with self.assertRaises(w.ApiError):
+                w.process(event())
+        self.assertEqual(attempts, ['running', 'blocked'])
+        notify.assert_called_once()
+
     def test_all_pr_states_and_test_reuse(self):
         normal = {'title': 'PCSM-436: docs', 'body': '', 'base': {'ref': '1.2.0'}, 'state': 'closed'}
         test = copy.deepcopy(normal)
