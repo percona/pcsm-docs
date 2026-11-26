@@ -51,6 +51,14 @@ When a standby becomes `ACTIVE`, PCSM resumes replication from the last persiste
 
 Starting with version 1.1.0, HA takeover also keeps the target write concern selected for the run. HA state and checkpoints always use `majority`. However, if you choose a lower write concern for data writes, acknowledged data can roll back after a target primary failover. Read [Configure target write concern](install/usage.md#configure-target-write-concern) before you choose a lower value.
 
+!!! admonition "Version added: 1.2.0"
+
+After a restart or HA failover, PCSM restores the run's clone and replication tuning, bulk write mode, and any pending `pauseOnInitialSync` request. Startup flags and environment variables on the recovering instance don't override these saved settings, so they stay fixed for the run. To change them, you have to abandon the run: stop all PCSM instances, [reset PCSM state](#reset-ha-state), restart PCSM, and start a new run with the settings you want. The new run clones the data again from scratch. If you upgrade from an earlier version and keep the stored replication state, the recovered run uses the built-in default tuning, not your startup flags, and has no pending pause.
+
+Settings that PCSM tunes automatically stay automatic. For example, if the replication worker count is automatic, PCSM recalculates it from the CPU count of the recovering instance. To keep performance consistent, run all PCSM instances on hosts with the same specifications. See [Set up high availability](#set-up-high-availability).
+
+A pending automatic pause after initial sync carries over too. It happens only once per run. See [Pause automatically after initial sync](install/usage.md#pause-automatically-after-initial-sync).
+
 The default timings are:
 
 | **Setting** | **Value** |
@@ -96,6 +104,9 @@ pcsm \
     --source "<source-mongodb-uri>" \
     --target "<target-mongodb-uri>"
 ```
+
+!!! note
+    Run all PCSM instances on hosts with the same specifications, including CPU count. This keeps automatic tuning consistent after a failover.
 
 No additional HA option is required.
 

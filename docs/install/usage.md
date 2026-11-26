@@ -138,6 +138,8 @@ When both include and exclude filters are used, the exclude filter takes precede
 
 ## Pause the replication
 
+### Pause manually
+
 You can pause the replication at any moment. {{pcsm.short}} stops the replication, saves the timestamp, and enters the `paused` state. {{pcsm.short}} uses the saved timestamp after you [resume the replication](#resume-the-replication).
 
 === "Command line"
@@ -153,6 +155,30 @@ You can pause the replication at any moment. {{pcsm.short}} stops the replicatio
     ```{.bash data-prompt="$"}
     $ curl -X POST http://localhost:2242/pause
     ```
+
+### Pause automatically after initial sync
+
+To pause replication automatically when initial sync completes, set `pauseOnInitialSync` to `true` in the `/start` request. This starts a new synchronization run and drops and recreates the selected target collections, as described in [Start the replication](#start-the-replication).
+
+For example:
+
+```bash
+curl -X POST http://localhost:2242/start \
+    -H "Content-Type: application/json" \
+    --data '{"pauseOnInitialSync": true}'
+```
+
+!!! admonition "Version added: 1.2.0"
+
+If {{pcsm.short}} restarts or fails over after the initial clone completes but before the automatic pause takes effect, it keeps the pending pause. If recovery finds an interrupted initial clone, the run stops in the `failed` state and you need to start a new one. Set `pauseOnInitialSync` again in that `/start` request. See [Failover during the initial clone](../high-availability.md#failover-during-the-initial-clone).
+
+Check the [status response](../api.md#get-status) to monitor the pause:
+
+* `pauseOnInitialSync: true` means the automatic pause is still pending.
+
+* PCSM omits `pauseOnInitialSync` once PCSM accepts the automatic pause. PCSM also omits the field if you don't request an automatic pause. Check `state` to determine whether replication is `paused`.
+
+To continue, run `pcsm resume` or send `POST /resume`. The automatic pause happens only once per run, so a later restart or failover won't pause replication again.
 
 ## Resume the replication
 
