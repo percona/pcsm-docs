@@ -28,8 +28,7 @@ class Guards(unittest.TestCase):
         return issue, history
 
     def verify_fixture(self, issue, history, event=None, filter_id=13034):
-        with patch.dict(os.environ, {'PCSM_BOARD_FILTER_ID': '13034',
-                                     'PCSM_RELEASE_BRANCHES': '{"1.2.0":"1.2.0"}'}), \
+        with patch.dict(os.environ, {'PCSM_BOARD_FILTER_ID': '13034'}), \
                 patch.object(w, 'jira', side_effect=[{'filter': {'id': filter_id}}, {'issues': [issue]}]), \
                 patch.object(w, 'gh', return_value={'commit': {'sha': 'base'}}), \
                 patch.object(w, 'paged_jira', return_value=[history]):
@@ -41,46 +40,39 @@ class Guards(unittest.TestCase):
         verified = self.verify_fixture(issue, history)
         self.assertEqual((verified['base'], verified['history_id']), ('1.2.0', '42'))
 
-    def test_fix_version_selects_exact_mapped_branch(self):
+    def test_fix_version_is_the_exact_target_branch(self):
         issue, history = self.verification_fixture(event())
-        mapping = {'1.2.0': 'release/1.2', '1.3.0': 'docs-1.3'}
-        for release, branch in mapping.items():
+        for release in ['1.2.0', '1.3.0', 'release/1.4']:
             issue['fields']['fixVersions'] = [{'name': release}]
             with self.subTest(release=release), \
                     patch.dict(os.environ, {'PCSM_BOARD_FILTER_ID': '13034',
-                                            'PCSM_RELEASE_BRANCHES': json.dumps(mapping)}), \
+                                            'PCSM_RELEASE_BRANCHES': '{"1.2.0":"wrong-branch"}'}), \
                     patch.object(w, 'jira', side_effect=[{'filter': {'id': 13034}}, {'issues': [issue]}]), \
                     patch.object(w, 'gh', return_value={'commit': {'sha': 'selected-sha'}}) as github, \
                     patch.object(w, 'paged_jira', return_value=[history]):
                 info = w.verify(event())
                 self.assertEqual((info['release'], info['base'], info['sha']),
-                                 (release, branch, 'selected-sha'))
-                github.assert_called_once_with('branches/' + w.quote(branch, safe=''))
+                                 (release, release, 'selected-sha'))
+                github.assert_called_once_with('branches/' + w.quote(release, safe=''))
 
-    def test_invalid_mapping_blocks_without_branch_lookup(self):
-        mappings = ['not json', 'null', '[]', '{}',
-                    '{"1.2.0":"one","1.2.0":"two"}',
-                    '{"1.2.0":null}', '{"1.2.0":[]}', '{"1.2.0":""}',
-                    '{"1.2.0":"../main"}', '{"1.2.0":"branch with spaces"}',
-                    '{"1.3.0":"1.3.0"}']
-        for mapping in mappings:
-            with self.subTest(mapping=mapping), \
-                    patch.dict(os.environ, {'PCSM_RELEASE_BRANCHES': mapping}), \
-                    patch.object(w, 'gh') as github:
+    def test_invalid_fix_version_blocks_without_branch_lookup(self):
+        for versions in [None, [], [{'name': '1.2.0'}, {'name': '1.3.0'}],
+                         [None], [{}], [{'name': None}], [{'name': ''}],
+                         [{'name': '../main'}], [{'name': ' 1.2.0 '}]]:
+            with self.subTest(versions=versions), patch.object(w, 'gh') as github:
                 with self.assertRaises(w.Blocked):
-                    w.mapped_release_branch([{'name': '1.2.0'}])
+                    w.fix_version_branch(versions)
                 github.assert_not_called()
 
-    def test_missing_mapped_branch_has_no_fallback_or_creation(self):
-        with patch.dict(os.environ, {'PCSM_RELEASE_BRANCHES': '{"1.2.0":"release/1.2"}'}), \
-                patch.object(w, 'gh', side_effect=w.ApiError(404)) as github:
+    def test_missing_fix_version_branch_has_no_fallback_or_creation(self):
+        with patch.object(w, 'gh', side_effect=w.ApiError(404)) as github:
             with self.assertRaisesRegex(w.Blocked, 'no branch is created'):
-                w.mapped_release_branch([{'name': '1.2.0'}])
-            github.assert_called_once_with('branches/release%2F1.2')
+                w.fix_version_branch([{'name': '1.2.0'}])
+            github.assert_called_once_with('branches/1.2.0')
 
-    def test_changed_mapping_blocks_publication(self):
-        info = {'release': '1.2.0', 'base': 'release/1.2', 'sha': 'same'}
-        with patch.object(w, 'verify', return_value={**info, 'base': 'another-branch'}), \
+    def test_changed_fix_version_blocks_publication(self):
+        info = {'release': '1.2.0', 'base': '1.2.0', 'sha': 'same'}
+        with patch.object(w, 'verify', return_value={**info, 'release': '1.3.0', 'base': '1.3.0'}), \
                 patch.object(w, 'gh') as github:
             with self.assertRaises(w.Blocked):
                 w.publish(info, {}, {}, True, None)
@@ -101,7 +93,7 @@ class Guards(unittest.TestCase):
 
     def test_missing_or_ambiguous_fix_version(self):
         issue, history = self.verification_fixture(event())
-        for versions in [[], [{'name': '1.1.0'}, {'name': '1.2.0'}], [{'name': 'unmapped'}]]:
+        for versions in [[], [{'name': '1.1.0'}, {'name': '1.2.0'}]]:
             issue['fields']['fixVersions'] = versions
             with self.assertRaises(w.Blocked):
                 self.verify_fixture(issue, history)

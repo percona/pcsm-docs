@@ -13,7 +13,7 @@ is not a deployed workflow link. Creating the workflow does not supply credentia
 
 Jira Automation sends an authenticated workflow-dispatch request to GitHub. A
 validation job checks the source, current board filter, Needs Doc, Fix version,
-existing documentation branch and latest status transition. A separate gated job
+existing branch named exactly by Fix version and latest status transition. A separate gated job
 researches the ticket and explicitly linked implementation PRs, drafts exact edits,
 performs a second model review, builds the baseline and updated docs in a network-isolated
 container without service credentials, and opens a draft PR with a claim-to-source map.
@@ -58,7 +58,6 @@ The GitHub workflow page is a viewing link; Jira must POST to the API endpoint b
 | Repository variable | Required value |
 | --- | --- |
 | `PCSM_BOARD_FILTER_ID` | `13034`, verified against board 141 on 25 November 2026 |
-| `PCSM_RELEASE_BRANCHES` | Required explicit JSON mapping; the ticket's exact Fix version selects the target branch (see below) |
 | `PCSM_DOCS_ENABLED` | Leave `false` or unset during setup |
 | `PCSM_DOCS_TEST_ENABLED` | Leave `false` until IT is ready for the PCSM-436 test |
 | `PCSM_DOCS_APP_ID` | Percona-owned GitHub App ID, installed on `percona/pcsm-docs` |
@@ -67,39 +66,30 @@ The GitHub workflow page is a viewing link; Jira must POST to the API endpoint b
 | `PCSM_SMTP_FROM` | Sender address authorized by the SMTP service |
 | `PCSM_COPILOT_REVIEWER` | Optional reviewer login supported by the repository; failure is reported separately |
 
-### Select the target branch from Fix version
+### Use Fix version as the target branch
 
-Set the repository variable `PCSM_RELEASE_BRANCHES` to an explicit mapping owned
-by the documentation branch owner. For example:
+The ticket must have exactly one Jira **Fix version**. The worker uses that exact
+name as the target documentation branch: Fix version `1.2.0` targets branch
+`1.2.0`, and Fix version `1.3.0` targets branch `1.3.0`. It does not add a prefix,
+trim the name, choose the latest release, or fall back to `main`.
 
-```json
-{
-  "1.2.0": "1.2.0",
-  "1.3.0": "release/1.3"
-}
-```
+No per-release mapping or workflow edit is required. `PCSM_RELEASE_BRANCHES`
+is no longer used and can be removed if it was previously configured.
+The branch owner prepares the matching documentation branch for each release.
+The worker checks that the branch exists and uses its verified commit for
+drafting and builds; it never creates a release branch.
 
-These are illustrative entries; configure only reviewed branches that exist.
-The key is the exact Jira **Fix version** name and the value is the documentation
-branch to target. A ticket with Fix version `1.3.0` uses `release/1.3` in this
-example, even if a branch named `1.3.0` also exists. The workflow does not infer a
-branch from the version or fall back to `main`, the newest release, or the branch
-running the workflow. `ref: main` in the Jira dispatch selects the workflow code;
-it does not select the generated documentation PR's base.
+Validation stops if Fix version is missing, multiple versions are set, or the
+matching branch is missing or inaccessible. Before publication, the worker
+rechecks the Fix version, target branch, and commit and stops if any changed.
 
-When adding a release, add its mapping entry and retain entries for releases still
-in use. No workflow code change is needed. This explicit mapping does require one
-configuration update per new release.
+The dispatch `ref: main` selects the workflow code to run. The generated
+documentation PR targets the branch named by the ticket's Fix version.
 
-Validation stops for a missing or multiple Fix versions, malformed mapping,
-duplicate version keys, an unmapped version, or a missing/inaccessible mapped
-branch. The worker does not create a release branch. Drafting and builds use the
-selected branch's verified commit. Before publication, the worker rechecks the
-release, mapped branch, and commit; if any changed, it stops for a fresh run.
-
-The earlier release check found that `main` advertises release 1.1.0. Branch `1.2.0` exists, but its
-`variables.yml` still advertises 1.1.0. Confirm that release mapping with the docs
-owner before configuring it. The worker never creates a missing release branch.
+The earlier release check found that branch `1.2.0` still advertised 1.1.0 in
+`variables.yml`. The branch owner should confirm the release content and metadata
+before the controlled test; the worker does not infer release applicability from
+the branch name alone.
 
 | Repository secret | Purpose |
 | --- | --- |
@@ -183,13 +173,13 @@ is claimed: the event must be wrapped in `inputs.event_json` as shown.
    false and the Jira rule disabled. Open the workflow page and use **Run workflow**,
    mode `self-test`, event JSON `{}`. The tests must pass; no service credentials,
    draft PRs, model calls or emails are used in this mode.
-2. Configure the Jira credentials and confirmed filter/release mapping. Coordinate
+2. Configure the Jira credentials and confirmed board filter. Coordinate
    one genuine transition on PCSM-436 and capture its rendered event. Run mode
    `validate` with that event. Check eligibility and history verification pass.
    Wrong-board, Needs Doc No, stale and mismatched events must fail with no writes.
 3. Configure the remaining service credentials. Set only `PCSM_DOCS_TEST_ENABLED`
    to `true`; leave `PCSM_DOCS_ENABLED` false. PCSM-436 must contain an explicit link
-   to a relevant implementation PR, and its Fix version must have a reviewed base.
+   to a relevant implementation PR, and a reviewed branch with the exact Fix version name must exist.
 4. Run mode `test-pr` with the verified event. This intentionally creates a real
    `[TEST] PCSM-436` **draft documentation PR**, marked **Do not merge**, adds a Jira
    backlink and sends start/end notifications. Inspect its actual documentation

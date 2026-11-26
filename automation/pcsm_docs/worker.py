@@ -119,41 +119,21 @@ def paged_jira(path, key):
     raise Blocked('Could not read complete Jira evidence.')
 
 
-def mapped_release_branch(versions):
-    """Resolve the exact Jira Fix version through the owner's explicit mapping."""
+def fix_version_branch(versions):
+    """Use the exact Jira Fix version name as the existing documentation branch."""
     if not isinstance(versions, list) or len(versions) != 1:
         raise Blocked('Exactly one Fix version is required.')
     version = versions[0]
     release = version.get('name') if isinstance(version, dict) else None
-    if not isinstance(release, str) or not release.strip():
-        raise Blocked('Fix version must have a nonempty name.')
-
-    def unique_entries(pairs):
-        mapping = {}
-        for key, value in pairs:
-            if key in mapping:
-                raise Blocked('PCSM_RELEASE_BRANCHES contains a duplicate Fix version.')
-            mapping[key] = value
-        return mapping
-
+    if not isinstance(release, str) or not re.fullmatch(r'[A-Za-z0-9._/-]+', release) or '..' in release:
+        raise Blocked('Fix version must exactly name a valid nonempty documentation branch.')
     try:
-        mapping = json.loads(required('PCSM_RELEASE_BRANCHES'), object_pairs_hook=unique_entries)
-    except ValueError:
-        raise Blocked('PCSM_RELEASE_BRANCHES must be a JSON object mapping Fix versions to branches.') from None
-    if not isinstance(mapping, dict):
-        raise Blocked('PCSM_RELEASE_BRANCHES must be a JSON object mapping Fix versions to branches.')
-    if release not in mapping:
-        raise Blocked('Fix version has no explicit PCSM_RELEASE_BRANCHES entry; no fallback branch is used.')
-    branch = mapping[release]
-    if not isinstance(branch, str) or not re.fullmatch(r'[A-Za-z0-9._/-]+', branch) or '..' in branch:
-        raise Blocked('Mapped documentation branch must be a valid nonempty branch name.')
-    try:
-        base = gh('branches/' + quote(branch, safe=''))['commit']['sha']
+        base = gh('branches/' + quote(release, safe=''))['commit']['sha']
     except ApiError as exc:
         if exc.status == 404:
-            raise Blocked('Mapped documentation branch was not found or is inaccessible; no branch is created.') from None
+            raise Blocked('The branch named by Fix version was not found or is inaccessible; no branch is created.') from None
         raise
-    return release, branch, base
+    return release, release, base
 
 
 def verify(event):
@@ -178,7 +158,7 @@ def verify(event):
         raise Blocked('Ticket is stale or Needs Doc is not Yes.')
     if fields.get('issuetype', {}).get('subtask') or fields.get('issuetype', {}).get('name', '').lower() in {'admin', 'administrative task'}:
         raise Blocked('Administrative work and subtasks require manual triage.')
-    release, branch, base = mapped_release_branch(fields.get('fixVersions', []))
+    release, branch, base = fix_version_branch(fields.get('fixVersions', []))
     histories = paged_jira(f'/rest/api/3/issue/{key}/changelog', 'values')
     transitions = [(h, item) for h in histories for item in h.get('items', []) if item.get('field') == 'status']
     if not transitions:

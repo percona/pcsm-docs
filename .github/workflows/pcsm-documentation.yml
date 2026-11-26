@@ -60,7 +60,6 @@ jobs:
           JIRA_EMAIL: ${{ secrets.PCSM_JIRA_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.PCSM_JIRA_API_TOKEN }}
           PCSM_BOARD_FILTER_ID: ${{ vars.PCSM_BOARD_FILTER_ID }}
-          PCSM_RELEASE_BRANCHES: ${{ vars.PCSM_RELEASE_BRANCHES }}
           GH_TOKEN: ${{ github.token }}
         run: python automation/pcsm_docs/worker.py validate
 
@@ -104,7 +103,6 @@ jobs:
           PCSM_DOCS_TEST_ENABLED: ${{ vars.PCSM_DOCS_TEST_ENABLED }}
           PCSM_MODE: ${{ inputs.mode }}
           PCSM_BOARD_FILTER_ID: ${{ vars.PCSM_BOARD_FILTER_ID }}
-          PCSM_RELEASE_BRANCHES: ${{ vars.PCSM_RELEASE_BRANCHES }}
           PCSM_DOCS_MODEL: ${{ vars.PCSM_DOCS_MODEL }}
           JIRA_EMAIL: ${{ secrets.PCSM_JIRA_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.PCSM_JIRA_API_TOKEN }}
