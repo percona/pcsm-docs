@@ -1,155 +1,117 @@
-# PCSM documentation events without Codex
+# PCSM documentation events
 
-This workflow uses GitHub-hosted runners, direct Jira/GitHub/SMTP APIs and the OpenAI
-Responses API with an explicitly configured non-Codex model. It does not run Codex,
-depend on a Mac, use a ChatGPT subscription/session, or expose a tunnel.
-
-**Deployment status: proposed implementation. Keep the Jira rule disabled.**
-Configuration, a merge to `main`, a successful self-test and a controlled live test
-are required before calling this deployed and verified. A PR or source-file link
-is not a deployed workflow link. Creating the workflow does not supply credentials.
+This workflow runs on GitHub-hosted runners with the Jira, GitHub, and OpenAI Responses APIs.
+Configure a non-Codex model for documentation drafts.
 
 ## Event flow
 
-Jira Automation sends an authenticated workflow-dispatch request to GitHub. A
-validation job checks the source, current board filter, Needs Doc, Fix version,
-existing branch named exactly by Fix version and latest status transition. A separate gated job
-researches the ticket and explicitly linked implementation PRs, drafts exact edits,
-performs a second model review, builds the baseline and updated docs in a network-isolated
-container without service credentials, and opens a draft PR with a claim-to-source map.
-It adds a Jira backlink and sends start/end notifications to `rasika.chivate@percona.com`.
-It never merges or changes Jira status.
+Jira Automation dispatches a workflow when a ticket enters an eligible status.
+The validation job checks board membership, Needs Doc, Fix version, and the last status transition.
+The worker uses the exact Fix version name as the documentation branch.
 
-The initial worker only edits existing Markdown pages. New pages/navigation,
-missing evidence, ambiguous releases, inaccessible attachments, oversized evidence
-or failing strict baseline builds require manual follow-up; it does not publish a
-placeholder documentation PR. Markdown rendering can execute Jinja code, so builds
-run without service credentials or network access.
+A separate job researches the ticket and explicitly linked implementation PRs.
+Two model passes draft and review edits to existing Markdown pages.
+The worker builds baseline and updated documentation in containers without service credentials or network access.
+A successful run creates a draft PR with a claim-to-source map and a verified Jira backlink.
+The worker never merges PRs or changes Jira status.
 
-## Verified setup facts (25 November 2026)
+Missing evidence, ambiguous releases, inaccessible attachments, and failed strict builds require manual review.
+Changes that need additional pages or navigation also require manual review.
 
-The Jira API confirms board 141 uses saved filter **13034** (name `PCSM`). Its
-stored JQL is `project = 10120 ORDER BY Rank ASC`; project 10120 is PCSM, so this
-is equivalent to `project = PCSM ORDER BY Rank ASC`. Board columns confirm
-`In QA` = `10045` and `In Doc` = `10043`. The ticket metadata confirms
-`Needs Doc` is `customfield_10066`.
+## Notifications
 
-PCSM-436 currently has Needs Doc = Yes, Fix version 1.2.0 and status Open.
-It needs a fresh, coordinated qualifying transition before event validation can
-pass. Its description references PCSM-398; this first worker does not follow
-other Jira issues automatically. Add the verified implementation PR URL to the
-test ticket before processing, or extend and review evidence collection first.
-Do not transition the ticket just to manufacture a payload during setup.
+The worker posts the outcome on the documentation PR through the GitHub comments API.
+The comment contains the Jira link, target release, review-request status, backlink status, and workflow-run link.
+A failed run posts a blocked outcome if a verified documentation PR exists.
 
-The GitHub API shows only `main.yml` in the default branch's `.github/workflows`
-directory. `pcsm-documentation.yml` is prepared locally, not deployed. HD-33020
-is the original IT request with the Mac endpoint; this package replaces that
-destination with GitHub dispatch. HD-33159 requests a separate Percona PCSM Docs Automation app installed on
-`percona/pcsm-docs`, with Contents and Pull requests write permissions and the
-`PCSM_DOCS_APP_PRIVATE_KEY` repository secret. Its latest visible status is
-Waiting for support; app provisioning is not evidence of workflow deployment.
+Progress and failures before PR creation appear in the GitHub Actions run summary.
+The worker does not create a placeholder PR just to post a notification.
 
-## IT configuration
+Each event has a stable comment marker.
+The worker checks for that marker before the worker creates a comment.
+An outcome change updates the same comment.
+Completed-event replay creates no additional comment.
+A different eligible event can add its own outcome comment to the same PR.
 
-Configure repository variables and secrets through the approved IT secret-management
-process. Never paste credentials in tickets, chat, source files or dispatch payloads.
-The GitHub workflow page is a viewing link; Jira must POST to the API endpoint below.
+Subscribe to the PR or watch the repository to receive GitHub notifications.
+Email delivery depends on your [GitHub notification settings](https://docs.github.com/en/subscriptions-and-notifications/get-started/configuring-notifications).
+The worker requires no SMTP service, mail credentials, sender address, or recipient configuration.
+Remove the former `PCSM_SMTP_*` variables and secrets if present.
 
-| Repository variable | Required value |
+## Repository configuration
+
+Keep the Jira rule and both activation flags disabled until the acceptance test succeeds.
+Configure credentials through your approved secret-management process.
+Do not place credentials in tickets, source files, or dispatch payloads.
+
+| Repository variable | Purpose |
 | --- | --- |
-| `PCSM_BOARD_FILTER_ID` | `13034`, verified against board 141 on 25 November 2026 |
-| `PCSM_DOCS_ENABLED` | Leave `false` or unset during setup |
-| `PCSM_DOCS_TEST_ENABLED` | Leave `false` until IT is ready for the PCSM-436 test |
-| `PCSM_DOCS_APP_ID` | Percona-owned GitHub App ID, installed on `percona/pcsm-docs` |
-| `PCSM_DOCS_MODEL` | Approved non-Codex OpenAI model supporting Responses structured outputs |
-| `PCSM_SMTP_HOST`, `PCSM_SMTP_PORT` | Approved SMTP submission host and STARTTLS port (default 587) |
-| `PCSM_SMTP_FROM` | Sender address authorized by the SMTP service |
-| `PCSM_COPILOT_REVIEWER` | Optional reviewer login supported by the repository; failure is reported separately |
-
-### Use Fix version as the target branch
-
-The ticket must have exactly one Jira **Fix version**. The worker uses that exact
-name as the target documentation branch: Fix version `1.2.0` targets branch
-`1.2.0`, and Fix version `1.3.0` targets branch `1.3.0`. It does not add a prefix,
-trim the name, choose the latest release, or fall back to `main`.
-
-No per-release mapping or workflow edit is required. `PCSM_RELEASE_BRANCHES`
-is no longer used and can be removed if it was previously configured.
-The branch owner prepares the matching documentation branch for each release.
-The worker checks that the branch exists and uses its verified commit for
-drafting and builds; it never creates a release branch.
-
-Validation stops if Fix version is missing, multiple versions are set, or the
-matching branch is missing or inaccessible. Before publication, the worker
-rechecks the Fix version, target branch, and commit and stops if any changed.
-
-The dispatch `ref: main` selects the workflow code to run. The generated
-documentation PR targets the branch named by the ticket's Fix version.
-
-The earlier release check found that branch `1.2.0` still advertised 1.1.0 in
-`variables.yml`. The branch owner should confirm the release content and metadata
-before the controlled test; the worker does not infer release applicability from
-the branch name alone.
+| `PCSM_BOARD_FILTER_ID` | Saved filter ID for board 141. The worker verifies the match against Jira. |
+| `PCSM_DOCS_ENABLED` | Production activation flag. Leave `false` or unset during setup. |
+| `PCSM_DOCS_TEST_ENABLED` | Controlled-test activation flag. Leave `false` or unset during setup. |
+| `PCSM_DOCS_TEST_ISSUE` | Approved test ticket key, required for `test-pr` mode. All other tickets are rejected in that mode. |
+| `PCSM_DOCS_APP_ID` | GitHub App ID, installed on `percona/pcsm-docs`. |
+| `PCSM_DOCS_MODEL` | Approved non-Codex OpenAI model with Responses structured-output support. |
+| `PCSM_COPILOT_REVIEWER` | Optional reviewer login supported by the repository. The outcome comment reports request status. |
 
 | Repository secret | Purpose |
 | --- | --- |
-| `PCSM_JIRA_EMAIL`, `PCSM_JIRA_API_TOKEN` | Service identity with board/filter/ticket/history/comment access and permission to add a remote link |
-| `PCSM_DOCS_APP_PRIVATE_KEY` | App installation token generation for the docs repository only; Contents and Pull requests write permissions |
-| `PCSM_SOURCE_TOKEN` | Optional separate read-only credential if the implementation repository requires authentication |
-| `PCSM_OPENAI_API_KEY` | Approved API project with billing and permission to process the selected ticket/code evidence |
-| `PCSM_SMTP_USER`, `PCSM_SMTP_PASSWORD` | Authorized SMTP sender credentials |
+| `PCSM_JIRA_EMAIL`, `PCSM_JIRA_API_TOKEN` | Jira service identity with board, filter, ticket, history, and comment access; permission to add a remote link. |
+| `PCSM_DOCS_APP_PRIVATE_KEY` | GitHub App installation token generation. Grant Contents and Pull requests write permissions on this repository. |
+| `PCSM_SOURCE_TOKEN` | Optional read-only credential for the implementation repository. |
+| `PCSM_OPENAI_API_KEY` | API project with permission to process the selected ticket and code evidence. |
 
-Do not copy the Mac's session files or local keychain credentials. IT must provision
-the service identities, API budget and intended access. No live model calls or
-emails are performed by the fixture tests. Model usage is limited to two requests
-per drafting attempt, each with at most 12,000 output tokens. The workflow timeout
-is 45 minutes. Configure a project spending limit independently.
+Pull requests write permission covers outcome comments through the GitHub issue-comments API.
+Model usage has a limit of two requests per draft attempt, with 12,000 output tokens per request.
+The workflow timeout is 45 minutes.
+Configure an API project budget separately.
+
+### Release selection
+
+The ticket must have exactly one Fix version.
+The worker uses that exact name as the target documentation branch for every release.
+No release number or release-to-branch mapping belongs in workflow configuration.
+The worker ignores the former `PCSM_RELEASE_BRANCHES` configuration.
+
+The branch owner prepares the matching branch and verifies its release content and metadata before processing.
+The worker checks branch existence and uses the returned commit for drafts and builds.
+The worker does not create release branches or fall back to `main`.
+
+Missing or multiple Fix versions stop validation.
+A missing or inaccessible matching branch also stops validation.
+Before publication and PR follow-ups, the worker rechecks eligibility, Fix version, target branch, and commit.
+Any change stops the attempt.
+
+The dispatch `ref: main` selects workflow code.
+The generated documentation PR targets the ticket's Fix version branch.
 
 ## Jira rule and API destination
 
-Keep the board/status/Needs Doc conditions from HD-33020. Do not enable a schedule.
-Use status IDs 10045 (In QA) and 10043 (In Doc), verified against board 141.
-Keep the project rule **Trigger PCSM documentation PR** disabled initially.
-The rule condition is:
+Use an event rule for board 141 with Needs Doc = Yes.
+The worker accepts `In QA` (status ID `10045`) and `In Doc` (status ID `10043`).
+The Needs Doc field is `customfield_10066`.
+Confirm these IDs and the board filter during provisioning.
+The rule needs no schedule or separate email action.
 
-```jql
-filter = 13034 AND cf[10066] = "Yes" AND status in ("In QA", "In Doc")
+Restrict the controlled-test rule to the ticket configured in `PCSM_DOCS_TEST_ISSUE`.
+The ticket must contain an explicit implementation PR link in its description, comments, or remote links.
+The worker does not follow related Jira issues to discover implementation PRs.
+
+After the workflow reaches `main`, open the [workflow page](https://github.com/percona/pcsm-docs/actions/workflows/pcsm-documentation.yml).
+Jira must send requests to the dispatch API, not the workflow page:
+
+```text
+POST https://api.github.com/repos/percona/pcsm-docs/actions/workflows/pcsm-documentation.yml/dispatches
 ```
 
-For the controlled live test, additionally restrict the rule to `key = PCSM-436`.
-No scheduler or separate Jira email action is needed.
-
-Once merged into the default branch, the workflow viewing link is:
-
-`https://github.com/percona/pcsm-docs/actions/workflows/pcsm-documentation.yml`
-
-This is the intended link, not evidence that deployment has happened. Verify it
-opens and displays successful runs before sharing it as deployed.
-
-Jira's Send web request destination is:
-
-`POST https://api.github.com/repos/percona/pcsm-docs/actions/workflows/pcsm-documentation.yml/dispatches`
-
-Use `Accept: application/vnd.github+json`, `Content-Type: application/json`, and a
-hidden `Authorization: Bearer <IT-managed GitHub dispatch credential>` header.
-This credential needs Actions write access to this repository. It is not the old
-webhook bearer token. GitHub App installation tokens expire; IT must arrange token
-minting/refresh through an approved integration if using them for Jira dispatch.
+Use `Accept: application/vnd.github+json`, `Content-Type: application/json`, and a hidden `Authorization: Bearer <dispatch-credential>` header.
+The dispatch credential requires Actions write access to this repository.
+For GitHub App tokens, configure token renewal through an approved integration.
 Do not paste an App private key into Jira's Authorization header.
 
-Create a Jira Automation variable named `eventPayload` from
-[`jira-event.json.template`](jira-event.json.template). It preserves the original
-HD-33020 event contract, with JSON-escaped status names and a stable event ID.
-Use [`jira-dispatch.json.template`](jira-dispatch.json.template) as the Send web
-request custom body (shown below). These are Jira templates, not rendered JSON
-files; do not dispatch the literal smart values.
-
-Capture the transition values when the rule fires, before any re-fetch or edit
-step that might change `issue.updated`. Retried deliveries must reuse that captured
-event body and ID. Verify the actual rendered smart values in a controlled Jira
-run; local fixture tests cannot verify Jira's runtime template expansion.
-
-Dispatch body:
+Create a Jira Automation variable named `eventPayload` from [jira-event.json.template](jira-event.json.template).
+The template includes JSON-escaped status names and a stable event ID.
+Use [jira-dispatch.json.template](jira-dispatch.json.template) as the request body:
 
 ```json
 {
@@ -161,69 +123,83 @@ Dispatch body:
 }
 ```
 
-Verify the rendered JSON in Jira's audit log. An accepted dispatch only means
-GitHub accepted a request; inspect its run to determine the actual outcome.
-Do not use the workflow page URL or the old `/v1/pcsm/documentation-events` path
-as the request destination. No direct compatibility with the old receiver body
-is claimed: the event must be wrapped in `inputs.event_json` as shown.
+Capture transition values before any issue refresh or edit that changes `issue.updated`.
+Retries must reuse the captured event body and ID.
+Verify the rendered JSON in Jira's audit log during the controlled test.
+Local fixtures cannot verify Jira smart-value expansion.
+An accepted dispatch confirms request acceptance; inspect the GitHub run for the result.
 
-## IT acceptance test
+## Acceptance test
 
-1. Merge the reviewed workflow and worker to `main`. Keep both activation variables
-   false and the Jira rule disabled. Open the workflow page and use **Run workflow**,
-   mode `self-test`, event JSON `{}`. The tests must pass; no service credentials,
-   draft PRs, model calls or emails are used in this mode.
-2. Configure the Jira credentials and confirmed board filter. Coordinate
-   one genuine transition on PCSM-436 and capture its rendered event. Run mode
-   `validate` with that event. Check eligibility and history verification pass.
-   Wrong-board, Needs Doc No, stale and mismatched events must fail with no writes.
-3. Configure the remaining service credentials. Set only `PCSM_DOCS_TEST_ENABLED`
-   to `true`; leave `PCSM_DOCS_ENABLED` false. PCSM-436 must contain an explicit link
-   to a relevant implementation PR, and a reviewed branch with the exact Fix version name must exist.
-4. Run mode `test-pr` with the verified event. This intentionally creates a real
-   `[TEST] PCSM-436` **draft documentation PR**, marked **Do not merge**, adds a Jira
-   backlink and sends start/end notifications. Inspect its actual documentation
-   diff, source map, base branch, build result and notification acceptance.
-5. Replay the identical event. The same PR must be returned with no extra email.
-   A different legitimate transition for PCSM-436 reuses the existing test PR;
-   event-level notifications may occur once for that new event. Other tickets
-   are rejected in test-PR mode. A real, non-test PR is not reused as the test PR.
-6. For a Jira-driven test, temporarily restrict the disabled rule to `key = PCSM-436`,
-   set its request mode to `test-pr`, and coordinate enabling it and performing a
-   fresh transition. Verify the audit result and the GitHub run. Disable the rule
-   after the test and reset `PCSM_DOCS_TEST_ENABLED` to false. Do not merge the test PR.
-7. Production activation is a separate coordinated step: remove the temporary
-   ticket restriction, use mode `process`, and set `PCSM_DOCS_ENABLED` true only
-   after the test succeeds and the docs owner approves activation.
+1. Merge the reviewed workflow to `main` with both activation flags false and the Jira rule disabled.
+   Select Run workflow, mode `self-test`, and event JSON `{}`.
+   Fixture tests require no service credentials or external writes.
 
-No test ticket transition, credential installation, email, test PR or Jira rule
-activation is performed merely by publishing this implementation PR.
+2. Configure Jira credentials and the board filter.
+   Choose an approved test ticket and set `PCSM_DOCS_TEST_ISSUE` to its key.
+   Coordinate a genuine eligible transition and capture its rendered event.
+   Run `validate` with that event.
+   Wrong-board, Needs Doc No, stale, and mismatched events must fail without writes.
 
-## Replay, failures and recovery
+3. Configure the remaining credentials and model.
+   Confirm the test ticket contains a relevant implementation PR link and exactly one Fix version.
+   Verify that the matching documentation branch exists with appropriate release content.
+   Set `PCSM_DOCS_TEST_ENABLED` to `true`; leave `PCSM_DOCS_ENABLED` false.
 
-Event checkpoints are committed to `automation/pcsm-event-state`, keyed by an
-opaque hash of event ID and mode. Only digests, stages, run IDs and public PR URLs
-are persisted there; ticket descriptions and model evidence remain in the runner's
-temporary directory and are not uploaded as artifacts or printed to build logs.
-Protect this branch from deletion and restrict changes to the automation owners.
+4. Run `test-pr` with the verified event.
+   Inspect the resulting draft PR, source map, target branch, Jira backlink, and outcome comment.
+   The PR title includes `[TEST]` and its description says Do not merge.
+   Verify that the comment links to the workflow run and reflects the review-request status.
 
-An atomic `automation/pcsm-lock-pcsm-<number>` Git ref serializes each ticket across
-test and production runs. A concurrent run fails visibly and requires replay; this
-implementation is not an automatically retrying durable job queue. Completed events
-deduplicate before drafting. Same-ID/different-payload requests are rejected.
-Existing PRs are checked in all states, scoped to the exact documentation base.
+5. Replay the same event.
+   Confirm that the worker returns the same PR without another model request or comment.
+   Other tickets must fail in `test-pr` mode.
+   A production PR must not serve as a test PR.
 
-On interruption or error the lock remains. Do not blindly re-run blocked events.
-The operator must inspect the recorded run, deterministic head branch, all-state
-PRs, Jira remote links and SMTP delivery logs. Resolve uncertain writes, reconcile
-the checkpoint, then remove the stale lock only when no run is active. A blocked
-checkpoint is not automatically reset. SMTP `sending`/`unverified` stages are not
-resent automatically, because SMTP cannot guarantee exactly-once delivery.
+6. Test the Jira rule with its temporary test-ticket restriction and request mode `test-pr`.
+   Coordinate activation and a fresh transition.
+   Inspect the Jira audit log and GitHub run.
+   Disable the rule and reset `PCSM_DOCS_TEST_ENABLED` to false after the test.
+   Do not merge the test PR.
 
-If Copilot review cannot be requested, the verified draft PR remains and the
-checkpoint records the limitation. Email acceptance is not proof of inbox delivery.
-Never delete state/locks to force a new test PR without reconciling existing work.
+7. Obtain the documentation owner's approval for production activation after the controlled test succeeds.
+   Remove the temporary ticket restriction, select `process`, and set `PCSM_DOCS_ENABLED` to true.
 
-References: [workflow dispatch API](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event),
-[workflow triggers](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow),
-[Responses API](https://developers.openai.com/api/reference/resources/responses/methods/create).
+Publication of workflow code does not activate the Jira rule or either processing mode.
+
+## Replay and recovery
+
+Event checkpoints use the `automation/pcsm-event-state` branch and a hash of event ID and mode.
+Checkpoints contain outcome stages, run IDs, and public PR or comment URLs.
+Private ticket descriptions and model evidence stay in the runner's temporary directory.
+Protect the state branch from deletion and restrict edits to automation owners.
+
+An atomic `automation/pcsm-lock-pcsm-<number>` Git ref serializes each ticket across test and production modes.
+Concurrent runs for the same ticket stop for operator review.
+Deterministic checkpoint writes reconcile shared-branch conflicts with bounded retries.
+They do not retry PR or comment creation.
+
+The duplicate check requires the ticket key at the start of the PR title, after any `[TEST]` prefix.
+A ticket mentioned only in the PR description does not establish ownership.
+Matches must use the exact release branch and test mode.
+Multiple matches or a matching PR closed without merge require manual review.
+
+An interrupted attempt keeps its lock.
+Inspect its workflow run, checkpoint, branch, PRs, Jira links, and event-marked comment before replay.
+A timed-out comment write triggers a read to check whether GitHub accepted the comment.
+An unverified write requires reconciliation; the worker does not blindly create another comment.
+Reconcile the checkpoint before removing a stale lock, and confirm that no run is active.
+
+If no verified PR exists, use the run summary for failure details.
+A failed comment request leaves the verified PR intact and the run blocked for review.
+A review-request failure appears in the outcome comment and checkpoint.
+
+References:
+
+- [Workflow dispatch API](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event)
+
+- [Issue and PR comments API](https://docs.github.com/en/rest/issues/comments)
+
+- [GitHub Actions job summaries](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#adding-a-job-summary)
+
+- [Responses API](https://developers.openai.com/api/reference/resources/responses/methods/create)

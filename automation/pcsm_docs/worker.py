@@ -9,13 +9,10 @@ import hashlib
 import json
 import os
 import re
-import smtplib
-import ssl
 import subprocess
 import sys
 import tempfile
 from datetime import datetime, timezone
-from email.message import EmailMessage
 from pathlib import Path, PurePosixPath
 from urllib.error import HTTPError
 from urllib.parse import quote, urlencode
@@ -24,7 +21,6 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 SITE = 'https://perconadev.atlassian.net'
 REPO = 'percona/pcsm-docs'
 SOURCE_REPO = 'percona/percona-clustersync-mongodb'
-RECIPIENT = 'rasika.chivate@percona.com'
 STATE_BRANCH = 'automation/pcsm-event-state'
 STATE_SAVE_ATTEMPTS = 3
 TARGETS = {'10045': 'In QA', '10043': 'In Doc'}
@@ -190,12 +186,18 @@ def gh_pages(path, source=False):
 
 def existing_pr(info, test=False):
     key = info['issue']['key']
+    matches = []
     for pr in gh_pages('pulls?state=all'):
-        title_body = pr['title'] + '\n' + (pr.get('body') or '')
-        if pr['base']['ref'] == info['base'] and re.search(r'\b' + re.escape(key) + r'\b', title_body):
-            if test == ('<!-- pcsm-automation-test -->' in title_body):
-                return pr
-    return None
+        # A ticket mentioned only as related evidence does not own the PR.
+        title = re.sub(r'^\[TEST\]\s+', '', pr['title'])
+        if pr['base']['ref'] == info['base'] and re.match(re.escape(key) + r'(?=[:\s]|$)', title):
+            if test == ('<!-- pcsm-automation-test -->' in (pr.get('body') or '')):
+                matches.append(pr)
+    if len(matches) > 1:
+        raise Blocked('Multiple documentation PRs match this ticket and release; manual review required.')
+    if matches and matches[0]['state'] == 'closed' and not matches[0].get('merged_at'):
+        raise Blocked('Matching documentation PR is closed without merge; manual review required.')
+    return matches[0] if matches else None
 
 
 class State:
@@ -270,33 +272,64 @@ def ensure_state_branch():
             gh('git/ref/heads/' + STATE_BRANCH)
 
 
-def notify(state, stage, subject, body):
-    prior = state.data['stages'].get(stage)
-    if prior:
-        # SMTP has no idempotency primitive. An uncertain send is never retried.
-        return prior
-    state.data['stages'][stage] = 'sending'
+def workflow_run_url():
+    run_id = os.environ.get('GITHUB_RUN_ID', '')
+    return f'https://github.com/{REPO}/actions/runs/{run_id}' if run_id.isdigit() else None
+
+
+def job_summary(message):
+    path = os.environ.get('GITHUB_STEP_SUMMARY')
+    if path:
+        with open(path, 'a') as summary:
+            summary.write(message + '\n\n')
+
+
+def notify(state, info, pr, outcome):
+    """One visible outcome comment per event, reconciled before any uncertain retry."""
+    stage = 'notification_comment'
+    marker = f'<!-- pcsm-docs-event:{state.key} -->'
+    body = (marker + '\n### Documentation automation: ' + outcome + '\n\n'
+            + f"Jira: {SITE}/browse/{info['issue']['key']}\n\n"
+            + f"Target release and branch: `{info['release']}`.\n\n"
+            + 'Review request: ' + state.data['stages'].get('review', 'not attempted') + '.\n\n'
+            + 'Jira backlink: ' + state.data['stages'].get('backlink', 'not verified') + '.')
+    if outcome == 'blocked':
+        body += '\n\nExisting work is preserved. Inspect the workflow run before retrying.'
+    run_url = workflow_run_url()
+    if run_url:
+        body += f'\n\n[Workflow run]({run_url})'
+
+    def find_comment():
+        matches = [c for c in gh_pages(f"issues/{pr['number']}/comments")
+                   if (c.get('body') or '').startswith(marker + '\n')]
+        if len(matches) > 1:
+            raise Blocked('Multiple event comments found; manual reconciliation required.')
+        return matches[0] if matches else None
+
+    existing = find_comment()
+    if not existing or existing['body'] != body:
+        if not existing and state.data['stages'].get(stage) in {'sending', 'unverified', 'verified'}:
+            raise Blocked('Previous comment write is uncertain or the comment is missing; inspect the PR before retrying.')
+        state.data['stages'][stage] = 'sending'
+        state.save()
+        try:
+            if existing:
+                saved = gh(f"issues/comments/{existing['id']}", 'PATCH', {'body': body})
+            else:
+                saved = gh(f"issues/{pr['number']}/comments", 'POST', {'body': body})
+            existing = gh(f"issues/comments/{saved['id']}")
+        except Exception:
+            # A timeout can follow a successful write. Only read to reconcile it.
+            state.data['stages'][stage] = 'unverified'
+            existing = find_comment()
+        if not existing or existing.get('body') != body:
+            state.data['stages'][stage] = 'unverified'
+            state.save()
+            raise Blocked('GitHub outcome comment could not be verified; inspect the PR before retrying.')
+    state.data['stages'][stage] = 'verified'
+    state.data['comment_url'] = existing['html_url']
     state.save()
-    message = EmailMessage()
-    message['From'] = required('SMTP_FROM')
-    message['To'] = RECIPIENT
-    message['Subject'] = subject
-    message['Message-ID'] = f'<pcsm-{state.key}-{stage}@percona.com>'
-    message.set_content(body)
-    try:
-        with smtplib.SMTP(required('SMTP_HOST'), int(os.environ.get('SMTP_PORT') or '587'), timeout=30) as smtp:
-            smtp.ehlo()
-            smtp.starttls(context=ssl.create_default_context())
-            smtp.ehlo()
-            smtp.login(required('SMTP_USER'), required('SMTP_PASSWORD'))
-            refused = smtp.send_message(message)
-            if refused:
-                raise Blocked('SMTP recipient rejected.')
-        state.data['stages'][stage] = 'accepted'
-    except Exception:
-        state.data['stages'][stage] = 'unverified'
-    state.save()
-    return state.data['stages'][stage]
+    return existing['html_url']
 
 
 def collect_sources(info):
@@ -312,7 +345,7 @@ def collect_sources(info):
     for number in numbers:
         pr = gh('pulls/' + number, source=True)
         files = gh_pages('pulls/' + number + '/files', source=True)
-        if any(f.get('status') != 'removed' and not f.get('patch') for f in files):
+        if any(not f.get('patch') for f in files):
             raise Blocked('Implementation diff is incomplete or contains binary evidence; manual research required.')
         if len(files) != pr.get('changed_files'):
             raise Blocked('Incomplete implementation PR file list.')
@@ -320,6 +353,10 @@ def collect_sources(info):
                     'discussion': gh_pages('issues/' + number + '/comments', source=True),
                     'reviews': gh_pages('pulls/' + number + '/reviews', source=True),
                     'inline_comments': gh_pages('pulls/' + number + '/comments', source=True)})
+        refreshed = gh('pulls/' + number, source=True)
+        if (pr['head']['sha'], pr['base']['sha'], pr['state'], pr['merged']) != (
+                refreshed['head']['sha'], refreshed['base']['sha'], refreshed['state'], refreshed['merged']):
+            raise Blocked('Implementation PR changed during evidence collection; review a fresh run.')
     return {'ticket': info['issue'], 'comments': comments, 'remote_links': links,
             'implementation_prs': prs, 'release': info['release'], 'docs_base': info['base']}
 
@@ -432,10 +469,11 @@ def draft_and_build(info, evidence, root):
     for p in checkout.rglob('AGENTS.md'):
         context[str(p.relative_to(checkout))] = p.read_text()
     evidence['documentation'] = context
-    proposal = model_response(evidence, 'Produce a minimal, evidence-backed first draft.')
     sources = {SITE + '/browse/' + info['issue']['key']}
     for pr in evidence['implementation_prs']:
         sources.add(pr['pr']['html_url'])
+    evidence['allowed_claim_sources'] = sorted(sources)
+    proposal = model_response(evidence, 'Produce a minimal, evidence-backed first draft.')
     apply_edits(files, proposal, sources)
     reviewed = model_response({'sources': evidence, 'proposal': proposal},
                               'Pass 2: critically check every claim, release applicability, public-data suitability, '
@@ -449,9 +487,9 @@ def draft_and_build(info, evidence, root):
     return reviewed, changes
 
 
-def publish(info, proposal, changes, test, state):
+def publish(info, proposal, changes, test, state, event):
     # Recheck current eligibility immediately before external publication.
-    current = verify(EVENT)
+    current = verify(event)
     if (current['release'], current['base'], current['sha']) != (info['release'], info['base'], info['sha']):
         raise Blocked('Eligibility or base changed during drafting; review a fresh run.')
     prior = existing_pr(info, test)
@@ -514,9 +552,11 @@ def process(event, test=False):
     if required(activation) != 'true':
         raise Blocked('Processing is disabled.')
     validate_event(event)
-    if test and event['issue_key'] != 'PCSM-436':
-        raise Blocked('Test-PR mode is restricted to PCSM-436.')
-    for name in ('OPENAI_API_KEY', 'PCSM_DOCS_MODEL', 'SMTP_HOST', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM'):
+    if test:
+        test_issue = required('PCSM_DOCS_TEST_ISSUE')
+        if not re.fullmatch(r'PCSM-[1-9][0-9]*', test_issue) or event['issue_key'] != test_issue:
+            raise Blocked('Test-PR mode is restricted to the configured PCSM_DOCS_TEST_ISSUE.')
+    for name in ('OPENAI_API_KEY', 'PCSM_DOCS_MODEL'):
         required(name)
     ensure_state_branch()
     state = State(event, test)
@@ -540,32 +580,50 @@ def process(event, test=False):
     if state.data['status'] != 'new':
         raise Blocked('Interrupted attempt remains locked for manual reconciliation.')
     state.data.update(status='running', run_id=os.environ.get('GITHUB_RUN_ID', 'local'), lock=lock)
+    pr = None
+    phase = 'initial checkpoint'
     try:
         state.save()
-        prefix = '[TEST] ' if test else ''
-        notify(state, 'start_email', prefix + event['issue_key'] + ': documentation processing started',
-               SITE + '/browse/' + event['issue_key'])
+        job_summary('Documentation processing started. Outcomes appear here and on the verified documentation PR.')
+        phase = 'PR lookup'
         pr = existing_pr(info, test)
         if not pr:
+            phase = 'implementation research'
             evidence = collect_sources(info)
             with tempfile.TemporaryDirectory(prefix='pcsm-docs-') as directory:
+                phase = 'draft and documentation build'
                 proposal, changes = draft_and_build(info, evidence, Path(directory))
-                pr = publish(info, proposal, changes, test, state)
-        followups(info, pr, state, test)
+                phase = 'PR publication'
+                pr = publish(info, proposal, changes, test, state, event)
+        phase = 'eligibility recheck'
+        current = verify(event)
+        if (current['release'], current['base'], current['sha']) != (info['release'], info['base'], info['sha']):
+            raise Blocked('Eligibility or base changed before PR follow-ups; review a fresh run.')
         state.data['pr_url'] = pr['html_url']
-        notify(state, 'completion_email', prefix + event['issue_key'] + ': documentation processing finished',
-               pr['html_url'] + '\nReview request: ' + state.data['stages'].get('review', 'existing PR reused'))
+        state.save()
+        phase = 'Jira backlink and review request'
+        followups(info, pr, state, test)
+        phase = 'PR outcome comment'
+        notify(state, info, pr, 'completed')
+        phase = 'final checkpoint and lock release'
         state.data['status'] = 'completed'
         state.save()
         gh('git/refs/heads/' + lock, 'DELETE')
+        job_summary('Documentation processing completed: ' + pr['html_url'])
         return state.data
-    except Exception:
+    except Exception as exc:
         state.data['status'] = 'blocked'
-        state.save()
-        notify(state, 'completion_email', event['issue_key'] + ': documentation processing blocked',
-               'Inspect the GitHub Actions run. Existing work is preserved; do not retry uncertain writes.\n'
-               + state.data.get('pr_url', 'No verified PR recorded.'))
-        # Preserve the lock after any failure; an operator must reconcile external writes.
+        job_summary(f'Documentation processing blocked during {phase}. ' +
+                    (str(exc) if isinstance(exc, Blocked) else 'Unexpected worker failure; manual review required.'))
+        try:
+            state.save()
+            if pr and state.data.get('pr_url'):
+                notify(state, info, pr, 'blocked')
+            else:
+                job_summary('No verified documentation PR is available for an outcome comment.')
+        except Exception:
+            job_summary('Checkpoint or PR notification could not be verified. Inspect the run and PR before retrying.')
+        # Preserve the original failure and lock; an operator must reconcile external writes.
         raise
 
 
@@ -582,7 +640,9 @@ if __name__ == '__main__':
             print(json.dumps({k: result[k] for k in ('status', 'pr_url', 'stages') if k in result}))
         else:
             raise Blocked('Unknown mode.')
-    except (Blocked, KeyError, ValueError, TypeError) as exc:
+    except Exception as exc:
         # Only application-authored blocker messages are public; never print raw source/API responses.
-        print(str(exc) if isinstance(exc, Blocked) else 'Invalid configuration or incomplete evidence.', file=sys.stderr)
+        message = str(exc) if isinstance(exc, Blocked) else 'Invalid configuration, incomplete evidence, or unexpected worker failure.'
+        job_summary('Documentation automation blocked. ' + message)
+        print(message, file=sys.stderr)
         sys.exit(1)

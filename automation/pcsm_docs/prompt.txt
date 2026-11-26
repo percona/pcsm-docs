@@ -23,7 +23,8 @@ Do not add version admonitions when the version switcher already conveys the rel
 
 Critique and revise for technical accuracy, useful task flow, unsupported claims, verbosity,
 broken relative links and accidental changes before returning. Every substantive claim needs a
-claim-to-source entry using an exact source URL in the supplied evidence and a precise locator.
+claim-to-source entry using an exact URL from allowed_claim_sources and a precise locator.
+Use comment IDs, review IDs, file paths and test names in the locator, not as alternative source URLs.
 Keep the PR description short: the reader's problem and resulting behavior, plus that source map.
 Do not include logs, credentials, internal setup instructions or a routine validation checklist.
 The PR will be public: do not disclose credentials, customer details or confidential ticket content.

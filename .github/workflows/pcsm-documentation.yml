@@ -13,7 +13,7 @@ on:
         default: '{}'
         type: string
       mode:
-        description: Self-test, validate Jira, test PR for PCSM-436, or process
+        description: Self-test, validate Jira, controlled test PR, or process
         type: choice
         default: validate
         options:
@@ -101,6 +101,7 @@ jobs:
           PCSM_EVENT_JSON: ${{ inputs.event_json }}
           PCSM_DOCS_ENABLED: ${{ vars.PCSM_DOCS_ENABLED }}
           PCSM_DOCS_TEST_ENABLED: ${{ vars.PCSM_DOCS_TEST_ENABLED }}
+          PCSM_DOCS_TEST_ISSUE: ${{ vars.PCSM_DOCS_TEST_ISSUE }}
           PCSM_MODE: ${{ inputs.mode }}
           PCSM_BOARD_FILTER_ID: ${{ vars.PCSM_BOARD_FILTER_ID }}
           PCSM_DOCS_MODEL: ${{ vars.PCSM_DOCS_MODEL }}
@@ -109,10 +110,5 @@ jobs:
           GH_TOKEN: ${{ steps.app.outputs.token }}
           PCSM_SOURCE_TOKEN: ${{ secrets.PCSM_SOURCE_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.PCSM_OPENAI_API_KEY }}
-          SMTP_HOST: ${{ vars.PCSM_SMTP_HOST }}
-          SMTP_PORT: ${{ vars.PCSM_SMTP_PORT }}
-          SMTP_USER: ${{ secrets.PCSM_SMTP_USER }}
-          SMTP_PASSWORD: ${{ secrets.PCSM_SMTP_PASSWORD }}
-          SMTP_FROM: ${{ vars.PCSM_SMTP_FROM }}
           PCSM_COPILOT_REVIEWER: ${{ vars.PCSM_COPILOT_REVIEWER }}
         run: python automation/pcsm_docs/worker.py "$PCSM_MODE"
