@@ -1,0 +1,7 @@
+{
+  "ref": "main",
+  "inputs": {
+    "mode": "validate",
+    "event_json": {{eventPayload.asJsonString}}
+  }
+}
