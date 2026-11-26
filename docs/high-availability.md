@@ -53,7 +53,7 @@ Starting with version 1.1.0, HA takeover also keeps the target write concern sel
 
 !!! admonition "Version added: 1.2.0"
 
-After a restart or HA failover, PCSM restores the run's clone and replication tuning, bulk write mode, and any pending `pauseOnInitialSync` request. Startup flags and environment variables on the recovering instance don't override these saved settings. To change them, start a new run.
+After a restart or HA failover, PCSM restores the run's clone and replication tuning, bulk write mode, and any pending `pauseOnInitialSync` request. Startup flags and environment variables on the recovering instance don't override these saved settings, so they stay fixed for the run. To change them, you have to abandon the run: stop all PCSM instances, [reset PCSM state](#reset-ha-state), restart PCSM, and start a new run with the settings you want. The new run clones the data again from scratch. If you upgrade from an earlier version and keep the stored replication state, the recovered run uses the built-in default tuning, not your startup flags, and has no pending pause.
 
 Settings that PCSM tunes automatically stay automatic. For example, if the replication worker count is automatic, PCSM recalculates it from the CPU count of the recovering instance. To keep performance consistent, run all PCSM instances on hosts with the same specifications. See [Set up high availability](#set-up-high-availability).
 
