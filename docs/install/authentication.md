@@ -33,6 +33,15 @@ You need to create users in both source and target clusters. You will use these 
       });
     ```
 
+## Privileges for FCV validation
+
+Starting with PCSM 1.2.0, the MongoDB users that PCSM uses must be able to read the FCV on both the source and target clusters. The built-in roles in the examples above include the needed access. If you use custom roles, grant the privilege that matches each cluster's topology:
+
+- **Replica sets:** the user needs the `getParameter` action on the cluster. Built-in roles that grant this action include `clusterMonitor`, `backup`, `restore`, `clusterAdmin`, and `root`.
+- **Sharded clusters:** PCSM reads the FCV from `admin.system.version` through `mongos`. The user needs the `find` action on that collection. Built-in roles that grant access include `backup`, `restore`, `userAdminAnyDatabase`, and `root`. The `clusterMonitor` role alone does not grant this access.
+
+If these privileges are missing, PCSM cannot start and reports an authorization error. For details about MongoDB built-in roles, see the [MongoDB documentation](https://www.mongodb.com/docs/manual/reference/built-in-roles/).
+
 ## Set MongoDB connection string URI
 
 {{pcsm.full_name}} authenticates in source and target clusters using the MongoDB Connection string URI. It has the following format:
