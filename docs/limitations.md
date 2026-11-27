@@ -13,12 +13,11 @@ This page lists known limitations for using {{pcsm.full_name}} (PCSM).
 
 ## Cross-version replication
 
-- **Feature Compatibility Version (FCV) is not automatically checked between your source and target clusters**
+- **PCSM checks feature compatibility version (FCV) at startup**
 
-    PCSM does not automatically check the Feature Compatibility Version (FCV) between your source and target clusters. Because an incompatible FCV might cause replication failures, it is important to perform this check manually before you begin:
+    Starting with PCSM 1.2.0, each PCSM process checks the FCV on both clusters when it starts. The target FCV must be equal to or higher than the source FCV. Startup is rejected if the source FCV is higher or if either cluster is changing its FCV. If the source FCV is lower than the target FCV, PCSM starts, but replication cannot be reversed unless you raise the source FCV to match the target.
 
-    Confirm the FCV for both your source and target clusters.
-    Ensure the target cluster's FCV is equal to or higher than the source cluster's FCV.
+    PCSM does not recheck the FCV of a running process or repeat the check when an HA standby is promoted. If a process restarts while the source FCV is higher than the target FCV, it cannot start until the target FCV catches up. For details, see [FCV compatibility](version-compatibility.md#feature-compatibility-version-fcv).
 
 - **Downgrade replication is not supported**
 
